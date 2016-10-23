@@ -1,0 +1,97 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{akan2009cognitive}
+O.~B. Akan, O.~Karli, and O.~Ergul, ``Cognitive {R}adio {S}ensor {N}etworks,''
+  \emph{Network, IEEE}, vol.~23, no.~4, pp. 34--40, 2009.
+
+\bibitem{bazerque2008}
+G.~B. Bazerque, J.A~Giannakis, ``Distributed spectrum sensing for cognitive
+  radios by exploiting sparsity,'' \emph{Proc. of 42nd Asilomar Conf. on
+  Signals, Systems, and Computers}, 2008.
+
+\bibitem{Boyd2010a}
+S.~Boyd, ``{Distributed Optimization and Statistical Learning via the
+  Alternating Direction Method of Multipliers},'' \emph{Foundations and
+  Trends® in Machine Learning}, no.~1, pp. 1--122.
+
+\bibitem{Candes2006}
+E.~J. Candes, J.~Romberg, and T.~Tao, ``{Robust Uncertainty Principles : Exact
+  Signal Frequency Information},'' vol.~52, no.~2, pp. 489--509, 2006.
+
+\bibitem{goldstein2014fast}
+T.~Goldstein, B.~O'Donoghue, S.~Setzer, and R.~Baraniuk, ``Fast alternating
+  direction optimization methods,'' \emph{SIAM Journal on Imaging Sciences},
+  vol.~7, no.~3, pp. 1588--1623, 2014.
+
+\bibitem{ling2014dlm}
+Q.~Ling, W.~Shi, G.~Wu, and A.~Ribeiro, ``{DLM}: Decentralized linearized
+  alternating direction method of multipliers,'' 2014.
+
+\bibitem{mishali2010theory}
+M.~Mishali and Y.~C. Eldar, ``From theory to practice: Sub-{N}yquist sampling
+  of sparse wideband analog signals,'' \emph{Selected Topics in Signal
+  Processing, IEEE Journal of}, vol.~4, no.~2, pp. 375--391, 2010.
+
+\bibitem{mokhtari2015dqm}
+A.~Mokhtari, W.~Shi, Q.~Ling, and A.~Ribeiro, ``{DQM}: Decentralized
+  quadratically approximated alternating direction method of multipliers,''
+  \emph{arXiv preprint arXiv:1508.02073}, 2015.
+
+\bibitem{mota2013d}
+J.~F. Mota, J.~M. Xavier, P.~M. Aguiar, and M.~Puschel, ``D-{ADMM}: A
+  communication-efficient distributed algorithm for separable optimization,''
+  \emph{Signal Processing, IEEE Transactions on}, vol.~61, no.~10, pp.
+  2718--2723.
+
+\bibitem{nishihara2015general}
+R.~Nishihara, L.~Lessard, B.~Recht, A.~Packard, and M.~I. Jordan, ``{A General
+  Analysis of the Convergence of ADMM},'' \emph{arXiv preprint
+  arXiv:1502.02009}, 2015.
+
+\bibitem{DADMMconvergence}
+W.~Shi, Q.~Ling, K.~Yuan, G.~Wu, and W.~Yin, ``{On the linear convergence of
+  the {ADMM} in decentralized consensus optimization},'' \emph{Signal
+  Processing, IEEE Transactions on}, vol.~62, no.~7, pp. 1750--1761, 2014.
+
+\bibitem{su2014differential}
+W.~Su, S.~Boyd, and E.~Candes, ``A differential equation for modeling
+  nesterov’s accelerated gradient method: Theory and insights,'' in
+  \emph{Advances in Neural Information Processing Systems}, 2014, pp.
+  2510--2518.
+
+\bibitem{tian2006wavelet}
+Z.~Tian and G.~B. Giannakis, ``A wavelet approach to wideband spectrum sensing
+  for cognitive radios,'' in \emph{Cognitive radio oriented wireless networks
+  and communications, 2006. 1st international conference on}.\hskip 1em plus
+  0.5em minus 0.4em\relax IEEE, 2006, pp. 1--5.
+
+\bibitem{tropp2010beyond}
+J.~A. Tropp, J.~N. Laska, M.~F. Duarte, J.~K. Romberg, and R.~G. Baraniuk,
+  ``Beyond {N}yquist: Efficient sampling of sparse bandlimited signals,''
+  \emph{Information Theory, IEEE Transactions on}, vol.~56, no.~1, pp.
+  520--544, 2010.
+
+\bibitem{Zhang2011b}
+H.~Zhang, Z.~Zhang, and Y.~Chau, ``{Distributed compressed wideband sensing in
+  Cognitive Radio Sensor Networks},'' in \emph{2011 IEEE Conference on Computer
+  Communications Workshops, INFOCOM WKSHPS 2011}, 2011, pp. 13--17.
+
+\end{thebibliography}

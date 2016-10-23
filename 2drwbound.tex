@@ -1,0 +1,36 @@
+\documentclass{article}
+\input{macros}
+
+\title{Hoeffding inequality for 2d random walk}
+\author{Tom Kealy}
+
+\begin{document}
+\maketitle
+In the plane, consider the sum of n 2-dimensional vectors. Let \(\theta_i\) be a phase chosen uniformly at random from \([0,2\pi)\), and let \(r_i = 1\) \(\forall i\).The position of the random walk after n steps will be:
+
+\begin{equation}
+z = \sum_{j=1}^n e^{i\theta_j}
+\end{equation}
+
+The absolute value of this distance is:
+
+\begin{align*}
+\mid z\mid ^2 &= \sum_{k}^ne^{i\theta_k}\sum_{j=1}^n e^{-i\theta_j} \\
+&= N + \sum_{j,k=1 j\neq k}^{n} e^{i(\theta_k-\theta_j)}
+\end{align*}
+
+note that the successive differences \(|z_{j=1} - z_{j}| \leq 1\) a.s. as the most the walk can differ by is 1. Then we can apply Hoeffding's inequality:
+
+\begin{equation}
+\pr\left(|X_n - X_0| \geq t\right) \leq \exp{-\frac{t^2}{2\sum_{i=1}^n c_i}}
+\end{equation} 
+
+where \(X_i\) is a martingale and \(|X_{k+1} - X_k| \leq c_k\) \(\forall k\). So we have:
+
+\begin{equation}
+\pr\left( |z_n|^2 \geq t \right) \leq \exp{-\frac{t^2}{2n}}
+\end{equation}
+
+by defining the martingale \(X_n = |z_n|^2\)
+
+\end{document}

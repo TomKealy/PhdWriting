@@ -1,0 +1,109 @@
+\section{Appendix: Nyquist rate sensing}
+We define the inner product between two vectors as follows:
+
+\begin{definition}
+\begin{equation}
+\langle x, y \rangle = x^T y = \sum_i x_i y_i
+\end{equation}	
+where \(x_i, y_i\) are the components of the vectors \(x,y\) in the \(i^{th}\) direction with respect to some basis vectors \(e_i\).
+\end{definition}
+
+We can define a matrix representation for the set of basis vectors \(f_i\), by taking all inner products between all pairs basis vectors:
+
+\begin{definition}
+\begin{equation}
+F_{n, ij} = \langle f_i, f_j \rangle
+\end{equation}
+
+This matrix has the representation:
+
+\begin{equation}
+F_{ij} = min(i,j)
+\end{equation}
+
+An example of such a matrix is:
+
+\begin{equation}
+F_n= \begin{pmatrix}
+ 1 & 1 & 1 & 1  & 1 \\
+  1 & 2 & 2 & 2  & 2\\
+     1 & 2 & 3 & 3  & 3  \\
+    1 & 2 & 3 & 4  & 4  \\
+     1 & 2 & 3 & 4  & 5 
+\end{pmatrix}
+\end{equation}
+\end{definition}
+
+This matrix is invertible.
+
+\begin{theorem}
+\begin{equation}
+det(F_n) = 1
+\end{equation}
+\end{theorem}
+\begin{proof}
+Consider the matrix \(F^n\). Subtract the \(n-1\)th column from the \(n\)th. We obtain a matrix with \(0\) on the final column except the entry \(F^n_(n,n) = 1\). Since the top \((n-1) \times (n-1)\) is \(F^{n-1}\) we find that 
+
+\begin{equation}
+det(F_n) = 1 \times det(F_{n-1})
+\end{equation} 
+
+By recursion and \(det(F_1) = 1\) we have \(det(F_n) = 1\).
+
+\end{proof}
+
+This matrix can be factorised as \(F = LL^T\) where 
+
+
+From this it follows that
+
+\begin{equation}
+F^{-1} = \begin{pmatrix}
+ 2 & -1 & 0 & 0  & 0 \ldots 0 \\
+  -1 & 2 & -1 & 0  & 0 \ldots 0\\
+     0 & -1 & 2 & -1  & 0 \ldots0  \\
+    \ldots  \\
+     0 & 0 & 0 & 0  \ldots -1 & 1 
+\end{pmatrix}
+\end{equation}
+
+To find the \(a_i\), we correlate (take the inner product of) the signal against the basis (\ref{basis}).
+
+\begin{definition}
+\begin{align}
+h_j &= \langle g, f_j \rangle \\
+&= \sum_j g\left(x\right) f_j\left(x\right) \\
+&= \sum_j a_i f_i\left(x\right) f_j\left(x\right) \\
+&= a_i \langle f_i, f_j\rangle \\
+&\left(= \sum_{x=1}^j g\left(x\right)\right)
+\end{align}
+
+In matrix language \(h = F a^T\). This is the inner product between the signal \(g\) and the basis functions \(f_i\).
+\end{definition}
+
+To recover \(\hat{a}\), we minimise
+
+\begin{equation}
+\vectornorm{h - Fa}_2^2
+\end{equation}
+
+in the noiseless case, and
+
+\begin{equation}
+\vectornorm{h_\varepsilon - Fa}_2^2 + \lambda\vectornorm{a}_1
+\label{recon}
+\end{equation}
+
+in the noisy case, where 
+
+\begin{equation}
+\left(h_\varepsilon\right)_j = \langle\left(g+\varepsilon\right), f_j\rangle
+\end{equation}
+
+and \(\varepsilon \sim \mathcal{N}(0,\sigma^2\ I)\).
+
+From \(\hat{a}\) we can recover \(\hat{g}\) from the following relation:
+
+\begin{equation}
+\hat{g} = L^{T} \hat{a}
+\end{equation}

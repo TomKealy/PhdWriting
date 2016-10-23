@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{titlesec}
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+\titleformat{\part}[display]
+{\normalfont\LARGE\bfseries\centering}{}{0pt}{}
+
+\input{macros}
+\begin{document}
+\nocite{*}
+\title{Asynchronous Network Model: Notes}
+\date{\today}
+\author{Tom Kealy}
+\maketitle
+
+\section{Model}
+We are given a connected graph \( G = \left(V,E\right) \) with vertex set \(V\), \(|V| = n\) i.e. there are \(n\) nodes. \(E\) is the edge set, which is finite: \(|E| = m\), for some \(m \in \Z \).
+
+We are given some measurements, according to some (possibly underdetermined) linear system, and we wish to find a solution. For example, we wish to compute the average of a set of numbers. We write \(x\left(0\right) = \left[x_1\left(0\right)\ldots x_n\left(0\right)\right]^T\) for the initial data at each node, and \(x_{av} = \frac{1}{n}\sum_i x_i\left(0\right)\) for the average of the entries. We wish to compute \(x_{av}\) in a distributed manner.
+
+\subsection{Asynchronous time model}
+At node \(i\), place a Poisson clock, with rate \(\lambda_i\) (for the sake of simplicity let \(\lambda_i = 1 \text{ } \forall i\) in what follows). The inter-tick times at each node are rate 1 exponentials, independent across nodes and over time. This is equivalent to having a single clock ticking according to a rate \(n\) Poisson process at times \(Z_k\), \(k \geq 1\), where \(\{Z_{k+1} - Z_k\}\) are i.i.d exponentials of rate \(n\). We denote the node whose clock ticked by time \(Z_k\) as \(I_k \in \{1 \ldots n\}\). The \(I_k\) are i.i.d distributed across \(\{1 \ldots n\}\). 
+
+Time is discretised according to clock ticks (these are the only times that \(x\left(\circ\right)\) changes). Thus, the interval \( \left[Z_k, Z_{k+1}\right)\) denotes the \(k^{th}\) time slot, and (on average) there are \(n\) clock ticks per unit of absolute time. The following lemma makes this precise:
+
+\begin{lemma} 
+For any \(k \geq 1\), \(\ep\left[Z_k\right] = k/n\), and for any \(\delta > 0\): 
+
+\begin{equation}
+\pr\left(|Z_k - \frac{k}{n}| \geq \frac{\delta k}{n} \right) \geq 2\exp\left(-\frac{\delta^2 k}{2}\right)
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By definition:
+\begin{equation}
+\ep\left[Z_k\right] = \sum_{j=1}^k \ep\left[Z_j - Z_{j-1}\right] = \sum_{j=1}^k \frac{1}{n} = \frac{k}{n}
+\end{equation}
+The concentration result follows directly from Cramer's theorem.
+\end{proof}
+As a consequence, for \(k\geq n\):
+\begin{equation}
+Z_k = \frac{k}{n}\left(1\pm\sqrt{\frac{2\log{n}}{n}}\right)
+\end{equation}
+with probability at least \(1 - 1/n^2\). I.e. dividing the quantities measured in terms of clock ticks by \(n\) gives the corresponding quantities measured in absolute time. 
+\end{document}

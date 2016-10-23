@@ -1,0 +1,29 @@
+\documentclass{article}
+\bibliographystyle{plain}
+\input{macros}
+
+\title{End of Year Report}
+
+\begin{document}
+
+\begin{table}[]
+\centering
+\caption{Things Which Do/Don't Work}
+\label{my-label}
+\begin{tabular}{lllll}
+            & Haar Wavelets & db10 Wavelets & Splines & Differences \\
+Centralised &          Y     &     Y          &     Y    &            Y \\
+Distributed &     Y          &       N        &     Y    &            Y \\
+Noise      &     N(0,1)          &     N(0,1)          &        N(0,1) &            N(0,1) \\
+Regulariser & \(\lambda\vectornorm{x}_1\) & \(\lambda\vectornorm{x}_1\)  & \(\lambda\vectornorm{x}_1\) & \(\lambda\vectornorm{x}_1\) \\
+Lambda & \(\sqrt{2\log(M)}\)  / \(\sqrt{40\log(M)}\) & \(\sqrt{2\log(M)}\) & \(\sqrt{2\log(M)}\) \ \(2.5\sqrt{2\log(M)}\)& \(\sqrt{2\log(M)}\) / \(10\sqrt{2\log(M)}\) \\
+Step Size & 0.5 & \( \frac{1}{max|eig(A^TA)|} \) & \( \frac{1}{max|eig(A^TA)|} \) & \( \frac{1}{max|eig(A^TA)|} \)
+\end{tabular}
+\end{table}
+
+\cite{mota}
+\bibliography{cswireless1}
+
+\end{document}
+
+

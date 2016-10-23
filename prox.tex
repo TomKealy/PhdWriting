@@ -1,0 +1,72 @@
+\documentclass{article}
+\bibliographystyle{plain}
+\input{macros}
+
+\title{The Proximity Operator}
+
+\begin{document}
+\maketitle
+
+\section{The Proximity Operator}
+The Proximity Operator for a closed, convex, and proper function \(f\) is defined as:
+
+\begin{equation}
+\mathrm{Prox}_f\left(x\right) :=  \argmin_y f\left(y\right) + \frac{1}{2}\vectornorm{y-x}^2
+\end{equation}
+
+Intuitively the Proximity Operator approximates a point \(x\) by another point \(y\), that is close in the mean-square sense under the penalty \(f\).
+
+The \(\mathrm{Prox}\left(\circ\right)\) operator exists for closed and convex \(f\) as \(\left(y\right) + \frac{1}{2}\vectornorm{y-x}^2\) is closed with compact level sets and is unique as \(\left(y\right) + \frac{1}{2}\vectornorm{y-x}^2\) is strictly convex.
+\section{Examples}
+
+\subsection{Indicator}
+From the definition 
+
+\begin{align}
+\mathrm{Prox}_I\left(x\right) &:=  \argmin_y I_C(y) + \frac{1}{2}\vectornorm{y-x}^2 \\
+& = \argmin_{y \in C} \frac{1}{2}\vectornorm{y-x}^2 \\
+& = P_C\left(x\right)
+\end{align}
+
+where \(I_C(y)\) is the indicator of some set \(C\) and \(P_C\) is the projection operator onto that set.
+
+\subsection{\(l_2\) norm}
+For \(f(y) = \frac{\mu}{2}\vectornorm{y}^2\) the \(\mathrm{Prox}\) operator is:
+
+\begin{align}
+\mathrm{Prox}_f\left(x\right) &:=  \argmin_y \frac{\mu}{2}\vectornorm{y}^2 + \frac{1}{2}\vectornorm{y-x}^2 \\
+& = \frac{1}{1+\mu}x
+\end{align}
+
+\subsection{\(l_1\) norm}
+\(f = \|x\|_1\)
+
+\begin{equation}
+\mathrm{Prox}_f\left(x\right) := \mathrm{sign}(x_i)\left(|x_i| - \gamma\right)^+ = S_\gamma\left(x\right)_i 
+\end{equation}
+
+\subsection{Elastic Net}
+Consider
+
+\begin{equation}
+f(x) = \lambda\|x\|_1 + \mu \vectornorm{x} 
+\end{equation}
+
+\begin{equation}
+\mathrm{Prox}_f\left(x\right) := \frac{\lambda}{1+\mu} S_\gamma\left(x\right)_i 
+\end{equation}
+
+\subsection{Fused Lasso}
+Consider
+
+\begin{equation}
+f(x) = \|x\|_1 + \sum_{i=1}^{d-1} \left( x_i - x_{i-1} \right) 
+\end{equation}
+
+i.e the sum of the \(l_1\) and \(TV\) norms
+
+\begin{equation}
+\mathrm{Prox}_f\left(x\right) := \mathrm{Prox}_{l_1} \circ \mathrm{Prox}_{TV} =  S_\gamma\left(\mathrm{Prox}_{TV}\right)_i 
+\end{equation}
+
+\end{document}

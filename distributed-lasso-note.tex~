@@ -1,0 +1,201 @@
+\documentclass{article}
+\bibliographystyle{plain}
+\input{macros}
+
+\title{Closed forms for distributed LASSO?}
+\author{Tom Kealy}
+
+
+\begin{document}
+
+\maketitle
+
+This is a short note (follwing \cite{Boyd2010a}), to write up some progress in seeing if the distributed ADMM version of LASSO (and also BPDN) have closed forms for their iterations.
+
+\section{LASSO-ADMM recap}
+The LASSO solves the following problem:
+
+\begin{equation}
+\argmin{x} \frac{1}{2}\|Ax-y\|_2^2 + \lambda \|x\|_1
+\label{minimisation}
+\end{equation}
+
+which is put into constrained form as:
+
+\begin{equation}
+\argmin{x} \frac{1}{2}\|Ax-y\|_2^2 + \lambda \|z\|_1 \text{ s.t } x-z=0
+\end{equation}
+
+The (augmented) Lagrangian of the problem is:
+
+\begin{equation}
+L_\rho\left(x,z,\eta\right) = \frac{1}{2}\|Ax-y\|_2^2 + \lambda \|z\|_1 + \eta\left(x-z\right) + \frac{\rho}{2}\|x-z\|_2^2
+\end{equation}
+
+which in turn leads to the following set of iterations:
+
+\begin{align}
+x^{k+1} &:= \left(A^TA + \rho I\right)^{-1}\left(A^Tb +\rho\left(z^k - \eta^k\right)\right)\\
+z^{k+1} &:= S_{\lambda/\rho}\left(x^{k+1} + \eta^k/\rho\right)
+ \\
+\eta^{k+1} &:= \eta^{k} + \rho \left(x^{k+1}-z^{k+1}\right)
+\label{admm_algo_lasso}
+\end{align}
+
+Where \(S_{\lambda/\rho}\left(\circ\right)\) is the soft thresholding operator: \(S_\gamma\left(x\right)_i = sign(x_i)\left(|x_i| - \gamma\right)^+\).
+
+\section{LASSO-ADMM on graphs}
+We have a network of nodes, which individually take some measurements according to the linear system:
+
+\begin{equation}
+\vec{y} = \vec{Ax} + \vec{n}
+\label{system}
+\end{equation}
+
+where \(\vec{A}\) is some measurement matrix satisfying the restricted isometry property (RIP) \cite{Candes2006}, \(\vec{y}\) are the measurements taken by the nodes, \(\vec{x}\) is the (sparse) signal we wish to reconstruct, and \(\vec{n}\) is additive white Gaussian noise. 
+
+We model the network as an undirected graph \(G = \left(V,E\right)\), where \(V = \{1 \ldots J\}\) is the set of vertices, and \(E = V \times V\) is the set of edges. An edge between nodes \(i\) and \(j\) implies that the two nodes can communicate. The set of nodes node \(i\) can communicate with is written \(\mathcal{N}_i\) and the degree of node \(i\) is \(D_i = |\mathcal{N}_i|\). 
+
+Individually nodes make the following measurements:
+
+\begin{equation}
+\vec{y}_p = \vec{A}_p\vec{x} + \vec{n}_p
+\end{equation}
+
+and the system \eqref{system} is formed by concatenating the individual nodes measurements together.
+
+We assume that a proper (or approximate) colouring of the graph is available: that is each node is assigned a number from a set \(C = \{1 \ldots c \} \), and no node shares a colour with any neighbour.
+
+To find the \(\vec{x}\) we are seeking, to each node we give a copy of \(\vec{x}, \vec{x}_p\) and we constrain the copies to be indentical across all edges in the network. 
+
+Specifically, we are solving:
+
+\begin{align}
+\text{min}_{\bar{x} = \left(x_1, \ldots x_n\right)} \sum_J \|A_jx_j - y_j\|_2^2 + \frac{\lambda}{J}\|x\|_1
+\\
+\text{ and } x_i = x_j \text{ if } \{i,j\} \in E 
+\label{constrainedbp}
+\end{align}
+
+
+The paper \cite{mota2013d} suggests that this prblem can be re-written as:
+
+\begin{align}
+\text{min}_{\bar{x} = \left(x_1, \ldots x_n\right)} \sum_J \|A_jx_j - y_j\|_2^2 + \beta\|x_j\|_1
+\\
+\text{ s.t. } \left(B^T \otimes I_n\right)\bar{x} = 0
+\label{constrainedbp1}
+\end{align}
+
+where \(\beta = \frac{\lambda}{J}\), \(B\) is the arc-incidence matrix: a \(V\) by \(E\) matrix where each column is associated with an edge \(\left(i,j\right) \in E\) and has \(1\) and \(-1\) in the \(ith\) and \(jth\) entry respectively. Figures \eqref{efig:ex-network} and \eqref{fig:incidence-matrix} show examples of a network and it's associated incidence matrix.
+
+\begin{figure}[h]
+\centering
+\includegraphics[height = 5 cm]{network-ex-incidence-mat.jpg}
+\caption{An example of a network}
+\label{efig:ex-network}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[height = 3 cm]{ex-incidencematrix.png}
+\caption{The incidence matrix associated with \ref{efig:ex-network}}
+\label{fig:incidence-matrix}
+\end{figure}
+
+The Augmented Lagrangian for the problem \eqref{constrainedbp1} can be written down as:
+
+\begin{equation}
+L = \sum_J \|A_jx_j - y_j\|_2^2 + \frac{\lambda}{J}\|x\|_1 + \eta^T\left(B^T \otimes I_n\right)\bar{x} + \frac{\rho}{2}\|\left(B^T \otimes I_n\right)\bar{x}\|^2
+\end{equation}
+
+the general update (at node \(1\)) is:
+
+\begin{align}
+\bar{x}_1^{k+1} = \sum_J \|A_1x_1 - y_1\|_2^2 + \|x_1\|_1 + \eta^T\left(B_1^T \otimes I_n\right)\bar{x}_1 + \frac{\rho}{2}\|\left(B_1^T \otimes I_n\right)\bar{x}_1 + \sum_{j=2}^J \left(B_1^T \otimes I_n\right)\bar{x}_j\|^2
+\label{generic-iterations0}
+\end{align}
+
+The paper \cite[P.3]{mota2013d} shows how \eqref{generic-iterations0} can be written in the following form
+
+\begin{align*}
+\bar{x}_1^{k+1} = \sum_{j \in C_1} \|A_1x_1 - y_1\|_2^2 + \|x_1\|_1 + \left(\sum_{k \in \mathcal{N}_1} sign\left(k-1\right)\eta_{\{1,k\}} - \rho x_k \right)^T x_1 + \frac{\rho}{2}D_i\vectornorm{x_1}^2
+\label{generic-iterations}
+\end{align*}
+
+where \(D_p\) is the degree of node \(p\), and \(C_1\) is the set of nodes all of the same colour. 
+
+To tidy this up define:
+
+\begin{equation}
+\nu_i = \left(\sum_{k \in \mathcal{N}_i} sign\left(k-i\right)\eta_{\{i,k\}} - \rho x_k \right)
+\end{equation}
+
+this is a rescaled version of the Lagrange multiplier, \(\eta\), which respects the graph structure. Finally \eqref{generic-iterations0} reduces to:
+
+\begin{align}
+\bar{x}_1^{k+1} = \sum_{j \in C_1} \|A_1x_1 - y_1\|_2^2 + \|x_1\|_1 + \nu_1^T x_1 + \frac{\rho}{2}D_i\vectornorm{x_1}^2
+\label{generic-iterations}
+\end{align}
+
+We seek a set of closed form iterates to \eqref{doubleconstrainedbp}, like \eqref{admm_algo_lasso} except now including information about the network.
+
+To this end we can write \eqref{constrainedbp1} as:
+
+\begin{align}
+\text{min}_{\bar{x} = \left(x_1, \ldots x_n\right)} \sum_J \|A_jx_j - y_j\|_2^2 + \|z_j\|_1
+\\
+\text{ s.t. } \left(B^T \otimes I_n\right)\bar{x} = 0
+\\
+\text{ and } \bar{x} - \bar{z} = 0
+\label{constrainedbp2:switching trick}
+\end{align}
+
+which can be written more compactly as:
+
+\begin{align}
+\text{min}_{\bar{x} = \left(x_1, \ldots x_n\right)} \sum_J \|A_jx_j - y_j\|_2^2 + \|z_j\|_1
+\\
+\text{ s.t. } \left(\left(B^T \otimes I_n\right) + I_n \right)\bar{x} - \bar{z} = 0
+\label{constrainedbp2:switching trick}
+\end{align}
+
+The Augmented Lagrangian for this problem can be written down as:
+
+\begin{equation}
+L = \sum_J \|A_jx_j - y_j\|_2^2 + \|x_j\|_1 + \eta^T M \bar{x} - \bar{z} + \frac{\rho}{2}\|M\bar{x} - \bar{z}\|^2
+\end{equation}
+
+where we have defined \(M = \left(\left(B^T \otimes I_n\right) + I_n \right) \)
+
+\textbf{Conjecture}:
+
+Following steps similar to \cite{mota2013d} this Lagrangian can be written in the following form 
+
+\begin{equation}
+L = \sum_J \|A_jx_j - y_j\|_2^2 + \|z_j\|_1 + \nu_j^T \left(x_j-z_j\right) + \frac{\rho}{2}D_i\vectornorm{x_j-z_j}^2
+\end{equation}
+
+Then by differentiating with respect to \(x_j\) and \(z_j\) we  can find closed forms for the updates as:
+
+\begin{align}
+x_j^{k+1} &:= \left(A_j^TA_j + \rho D_J I\right)^{-1}\left(A_j^Ty_j +\rho D_j z^k - \nu^k\right)\\
+z^{k+1} &:= S_{\lambda/J}\left(x_j^{k+1} + \frac{1}{\rho D_j}\nu_j^{k+1}\right)
+ \\
+\nu^{k+1} &:= \nu^{k} + \rho \left(x^{k+1}-z^{k+1}\right)
+\label{dadmm_algo_lasso}
+\end{align}
+
+\subsection{Example: Consensus}
+Given a network with \(J\) nodes, node \(j\) generates a number \(\theta_p\) and the goal is to compute the average \( \frac{1}{2}\sum_j\left(x-\theta_p\right)^2 \).
+
+This can be solved with the iterations \eqref{generic-iterations}, and has a closed form:
+
+\begin{equation}
+x_j^{k+1} = \frac{\left(\theta_p - \left(\sum_{k \in \mathcal{N}_i} sign\left(k-i\right)\lambda_{\{i,k\}} - \sum_{k \in \mathcal{N}_i}x_j^k \right)\right)}{1+D_p\rho}
+\end{equation}
+
+
+\bibliography{cswireless1}
+
+\end{document}

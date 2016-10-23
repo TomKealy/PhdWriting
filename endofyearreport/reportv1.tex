@@ -1,0 +1,25 @@
+\documentclass[titlepage]{article}
+\usepackage{titlesec}
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+\titleformat{\part}[display]
+{\normalfont\LARGE\bfseries\centering}{}{0pt}{}
+
+\input{macros}
+\begin{document}
+\nocite{*}
+\title{Group Testing and Spectrum Sensing}
+\date{\today}
+\author{Tom Kealy}
+\maketitle
+\part{Introduction}
+\include{chapter1}
+\part{Group Testing}
+\include{chapter2}
+\part{Optimisation on Graphs}
+\include{chapter3}
+\bibliographystyle{plain}
+\bibliography{../../,Distributed_Sensing}
+\end{document}
+

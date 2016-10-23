@@ -1,0 +1,150 @@
+\documentclass{article}
+\bibliographystyle{plain}
+\input{macros}
+
+\title{Wavelet Model}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+
+\section{Wavelet Transform}
+
+\subsection{Wavelets}
+Wavelets are, as the name suggests, mini-waves - they begin at zero, have a single oscillation (which increases, then decreases, which may go negative and increase again to zero), and end again at zero. In more formal languagem, wavelets are orthonormal families of (discretised) functions taken from \(L_1\left(\re\right) \cap L_2\left(\re\right)\), chosen to have desirable properties for signal analysis. 
+
+The advantage of wavelet based signal analysis over traditional Fourier analysis, is that it allows for signals to be analysed simultaneously in time as well as frequency (or in the case of images, space and scaling). 
+
+For example, Haar wavelets are defined by:
+
+\begin{equation}
+\psi\left(x\right) =
+\begin{cases}
+ 1 & \text{if } \frac{1}{2} \leq	x < 0 \\
+-1 & \text{if } \frac{1}{2} <  x \leq 1 \\
+0 & \text{otherwise} 
+\end{cases}
+\end{equation}
+
+and 
+
+\begin{equation}
+\psi_{j,k}\left(x\right) = 2^{j/2}\psi\left(2^j x - k\right)
+\end{equation}
+
+note that \(\psi\) and \(\psi_{j,k}\) are orthogonal in \([0,1]\). 
+
+\subsection{Wavelet Transform}
+The Wavelet transform of a function \(f\) is simply the convolution of the wavelet with the function:
+
+\begin{equation}
+\gamma_{j.k} = \int f \, \psi_{j,k} \, d\lambda
+\end{equation}
+
+where \(d\lambda\) is a suitable measure (e.g. Lebesgue, discrete etc). I.e the wavelet transform measures the overlap of the function \(f\) with the wavelet at scale \(j\) and position \(k\). 
+
+The discrete Haar wavelet transform may be represented compactly as a unitary transform:
+
+\begin{equation}
+y_n = H_n x_n
+\end{equation}
+
+where \(y_n\) is the wavelet transform, \(x_n\) is the original signal, and \(H_n\) is the Haar wavelet matrix defined recursively:
+
+\begin{equation}
+H_{2n} = \begin{pmatrix}
+H_n \otimes (1,1)\\
+I_n \otimes (1, -1) 
+\end{pmatrix}
+\end{equation}
+
+where \(\otimes\) is the Kronecker product, \(I_n\) is the identity matrix and:
+
+\begin{equation}
+H_{2} = \begin{pmatrix}
+1& 1\\
+1& -1 
+\end{pmatrix}
+\end{equation}
+
+The inverse is:
+
+\begin{equation}
+x_n = H^t y_n
+\end{equation}
+
+\subsection{Implementation as a filter bank}
+All discrete wavelet transforms can be implemented as a cascaded series of low and high pass filters. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{Wavelets_Filter_Bank.png}
+\caption{An example of a Wavelet Filter Bank}
+\end{figure}
+\end{document}
+
+At each stage,
+
+\section{Spectrum Model}
+
+We consider a radio environment with a single primary user (PU) and a network of \(J\) nodes collaboratively trying to sense and reconstruct the PU signal, either in a fully distributed manner (by local communication), or by transmitting measurements to a fusion centre which then solves the linear system. 
+
+We try to sense and reconstruct a wideband signal, divided into \(L\) channels. We have a (connected) network of \(J\) (= 50) nodes placed uniformly at random within the square \(  \left[0,1\right]\times \left[0,1\right] \). This is the same model, as in \cite{Zhang2011b}. The calculations which follow are taken from \cite{Zhang2011b} as well.
+
+The nodes individually take measurements (as in \cite{mishali2010theory}) by mixing the incoming analogue signal \(x\left(t\right)\) with a mixing function \(p_i\left(t\right)\) aliasing the spectrum. \(x\left(t\right)\) is assumed to be bandlimited and composed of up to \(k\) uncorrelated transmissions over the \(L\) possible narrowband channels - i.e. the signal is \(k\)-sparse. 
+
+The mixing functions - which are independent for each node - are required to be periodic, with period \(T_p\). Since \(p_i\) is periodic it has Fourier expansion:
+
+\begin{equation}
+p_i\left(t\right) = \sum_{l=-\infty}^{\infty} c_{il} \exp\left({jlt\frac{2\pi}{T_p}}\right)
+\end{equation}
+
+The \(c_{il}\) are the Fourier coefficients of the expansion and are defined in the standard manner. The result of the mixing procedure in channel \(i\) is therefore the product \(xp_i\), with Fourier transform (we denote the Fourier Transform of \(x\) by \(X\left( \dot{.} \right)\)):
+
+\begin{align}
+X_{i}\left(f\right) &=& \int_{-\infty}^{\infty} x\left(t\right) p_i\left(t\right) dt \nonumber
+\\ &=& \sum_{l=-\infty}^{\infty} c_{il} X\left(f-lf_p\right)
+\end{align}
+
+(We insert the Fourier series for \(p_i\), then exchange the sum and integral). The output of this mixing process then, is a linear combination of shifted copies of \(X\left(f\right)\), with at most \(\lceil f_NYQ/f_p\rceil\) terms since \(X\left(f\right)\) is zero outside its support (we have assumed this Nyquist frequency exists, even though we never sample at that rate).
+
+This process is repeated in parallel at each node so that each band in \(x\) appears in baseband.
+
+Once the mixing process has been completed the signal in each channel is low-pass filtered and sampled at a rate \(f_s \geq f_p\). In the frequency domain this is a ideal rectangle function, so the output of a single channel is:
+
+\begin{equation}
+Y_i\left(e^{j 2 \pi f T_s }\right) = \sum_{l = -L_0}^{+L_0} c_{il} X\left(f-lf_p\right)
+\end{equation}
+
+since frequencies outside of \([-f_s/2, f_s/2]\) will filtered out. \(L_0\) is the smallest integer number of non-zero contributions in \(X\left(f\right)\) over \([-f_s/2, f_s/2]\) - at most \(\lceil f_NYQ/f_p\rceil\) if we choose \(f_s = f_p\). These relations can be written in matrix form as:
+
+\begin{equation}
+\textbf{y} = \textbf{A}\textbf{x} + \vec{w}
+\label{system}
+\end{equation}
+
+where \(\textbf{y}\) contains the output of the measurement process, and \(\textbf{A}\) is a product matrix of the mixing functions, their Fourier coefficients, a partial Fourier Matrix, and a matrix of channel coefficients. \(\textbf{x}\) is the vector of unknown samples of \(x\left(t\right)\). 
+
+i.e. \(\textbf{A}\) can be written: 
+
+\begin{equation}
+\textbf{A}^{m\times L} = \textbf{S}^{m\times L} \textbf{F}^{L\times L} \textbf{D}^{L \times L} \textbf{H}^{L \times L}
+\end{equation}
+
+The measurements \(\textbf{y}\) are transmitted to a Fusion Centre via a control channel. The system  \ref{system} can then be solved (in the sense of finding the sparse vector \(\vec{x}\) by convex optimisation via minimising the objective function:
+
+\begin{equation}
+\frac{1}{2}\|\textbf{Ax}-\textbf{y}\|_2^2 + \lambda \|\textbf{x}\|_1
+\end{equation}
+
+where \(\lambda\) is a parameter chosen to promote sparsity. Larger \(\lambda\) means sparser \(\vec{x}\).
+
+\section{Results}
+
+\subsection{Centralised ADMM Solver}
+
+\subsection{Distributed ADMM Solver}
+
+\end{document}

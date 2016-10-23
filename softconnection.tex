@@ -1,0 +1,63 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{graphicx}
+
+\DeclareMathOperator\erf{erf}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+
+\begin{document}
+\title{Soft Connection}
+\author{Tom Kealy}
+
+\date{December 18, 2013}
+
+\maketitle
+
+This is a short note to quickly justify some bounds on the power constant \(\beta\), needed to connect a rgg with soft connection function parametrised by \(\beta\). 
+
+A result of Gupta and Kumar (Critical Power for connectivity in Wireless Networks) is that if all nodes radiate power to fill a disk of radius \(r\), then the network is asymptotically connected iff: 
+
+\begin{equation}
+\pi r^2 = \frac{log{n}+c\left(n\right)}{n}
+\end{equation}
+
+This implies that there is a radius \(r_{conn}\) above which the network is connected: 
+
+\begin{equation}
+r_{conn} = \sqrt{\frac{log{n}}{\pi n}}
+\end{equation}
+and the diameter of the connected component is
+
+\begin{equation}
+d = \Theta\left(\sqrt{\frac{\pi n}{log{n}}}\right)
+\end{equation}
+
+In the following we compare the rgg with soft connections to the equivalent rgg with hard connections: the minimal \(\beta\) we should choose, so that the (soft) graph is connected is the beta that puts a \(1 - \varepsilon\) ammount of mass in the (hard) circle around the nodes, as if it were a hard connected graph.
+
+In the case of a Rayleigh distributed variable:
+
+\begin{equation}
+F\left(r\right) = \int_0^{r_\beta} 1 - e^{-\beta r^2} dr = r_\beta	- \frac{\sqrt{\pi} \erf{\left(r_\beta \sqrt{\beta}\right)}}{2\sqrt{\beta}} = 1 - \epsilon
+\end{equation}
+
+choose \(r_\beta \geq r_{conn}\) and the graph should be connected w.h.p. I.e \(r_\beta	 = r_{conn} + \delta\) (choose a circle so that most of the mass of the distribution is in the circle, but the radius ensures connection).
+
+\begin{equation}
+\sqrt{\frac{log{n}}{\pi n}} - \frac{\sqrt{\pi} \erf{r_\beta}\sqrt{\beta}}{2\sqrt{\beta}} = 1 - \epsilon
+\end{equation}
+
+This should allow you see how varying \(\beta\) changes the diameter of the connected component. 
+
+\end{document}

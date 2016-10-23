@@ -1,0 +1,60 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{a4wide}
+\usepackage{verbatim}
+\usepackage{latexsym}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\newcommand{\Prob}[1]
+{\mathbb{P}\left( #1 \right)}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newtheoremstyle{break}
+  {\topsep}{\topsep}%
+  {\itshape}{}%
+  {\bfseries}{}%
+  {\newline}{}%
+\theoremstyle{break}
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{condition}{Condition}[section]
+
+\newcommand{\tn}{\widetilde{\nabla}_{n} }
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\re}{{\mathbb{R}}}
+\newcommand{\II}{{\mathbb{I}}}
+\newcommand{\ep}{{\mathbb{E}}}
+\newcommand{\FF}{{\mathcal{F}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\phin}{\phig{n}}
+\newcommand{\phig}[1]{\phi^{(#1)}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\eff}{{\rm eff}}
+
+\begin{document}
+
+\title{Coherence of Random Circulant matrices}
+
+\date{\today}
+
+\maketitle
+This is just a quick note about the \(S \in \{-1,+1\}^{m \times n}\) matrices that we spoke about on Friday. I've managed to find an upper bound on the coherence of the random partial circulant matrices with entries that are \(+/-1\).
+
+\begin{definition}[Coherence]
+The coherence of a matrix is the maximal inner product between it's columns
+\end{definition}
+
+\begin{thm}
+Let \(\mu\) be the coherence of the partial random circulant matrix \(\Phi\left(\varepsilon\right)\), where \(\varepsilon\) is a sequence of random \(\{+1,-1\}\)
+\end{thm}
+
+\end{document}

@@ -1,0 +1,51 @@
+\begin{thebibliography}{1}
+
+\bibitem{baraniuk2008simple}
+Richard Baraniuk, Mark Davenport, Ronald DeVore, and Michael Wakin.
+\newblock A simple proof of the restricted isometry property for random
+  matrices.
+\newblock {\em Constructive Approximation}, 28(3):253--263, 2008.
+
+\bibitem{braun2009signal}
+Martin Braun, Jens~P Elsner, and Friedrich~K Jondral.
+\newblock Signal detection for cognitive radios with smashed filtering.
+\newblock In {\em Vehicular Technology Conference, 2009. VTC Spring 2009. IEEE
+  69th}, pages 1--5. IEEE, 2009.
+
+\bibitem{Candes2006}
+Emmanuel~J Candes, Justin Romberg, and Terence Tao.
+\newblock {Robust Uncertainty Principles : Exact Signal Frequency Information}.
+\newblock 52(2):489--509, 2006.
+
+\bibitem{davenport2010signal}
+Mark Davenport, Petros~T Boufounos, Michael~B Wakin, Richard~G Baraniuk, et~al.
+\newblock Signal processing with compressive measurements.
+\newblock {\em Selected Topics in Signal Processing, IEEE Journal of},
+  4(2):445--460, 2010.
+
+\bibitem{davenport2007smashed}
+Mark~A Davenport, Marco~F Duarte, Michael~B Wakin, Jason~N Laska, Dharmpal
+  Takhar, Kevin~F Kelly, and Richard~G Baraniuk.
+\newblock The smashed filter for compressive classification and target
+  recognition.
+\newblock In {\em Electronic Imaging 2007}, pages 64980H--64980H. International
+  Society for Optics and Photonics, 2007.
+
+\bibitem{Devore09instance-optimalityin}
+Ronald Devore, Guergana Petrova, and Przemyslaw Wojtaszczyk.
+\newblock Instance-optimality in probability with an ℓ1-minimization decoder.
+\newblock {\em Appl. Comput. Harmon. Anal}, pages 275--288, 2009.
+
+\bibitem{donoho2004neighborly}
+David~L Donoho.
+\newblock Neighborly polytopes and sparse solution of underdetermined linear
+  equations.
+\newblock 2004.
+
+\bibitem{donoho2006compressed}
+David~L Donoho.
+\newblock Compressed sensing.
+\newblock {\em Information Theory, IEEE Transactions on}, 52(4):1289--1306,
+  2006.
+
+\end{thebibliography}

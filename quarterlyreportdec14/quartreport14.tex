@@ -1,0 +1,504 @@
+\documentclass{article}
+\title{Quarterly Report}
+
+\input{macros}
+
+\begin{document}
+\date{\today}
+\author{Tom Kealy}
+\maketitle
+\section{Introduction}
+
+\section{Models}
+
+\subsection{Common Setup}
+We are considering a radio environment with a single primary user (PU) and a network of \(J=\)50 nodes collaboratively trying to sense and reconstruct the PU signal, either in a fully distributed manner (by local message passing), or by transmitting measurements to a fusion centre which then solves the linear system. 
+
+We are trying to sense and reconstruct a wideband signal, divided into \(L\) channels. We have a (connected) network of \(J\) (= 50) nodes placed uniformly at random within the square \(  \left[0,1\right]\times \left[0,1\right] \).
+
+\subsection{Frequency Only}
+
+\label{sensingmodel}
+We are considering a radio environment with a single primary user (PU) and a network of \(J=\)50 nodes collaboratively trying to sense and reconstruct the PU signal, either in a fully distributed manner (by local message passing), or by transmitting measurements to a fusion centre which then solves the linear system. 
+
+We are trying to sense and reconstruct a wideband signal, divided into \(L\) channels. We have a (connected) network of \(J\) (= 50) nodes placed uniformly at random within the square \(  \left[0,1\right]\times \left[0,1\right] \). They individually take measurements in the following way: by mixing the incoming analogue signal \(x\left(t\right)\) with a mixing function \(p_i\left(t\right)\) aliasing the spectrum. \(x\left(t\right)\) is assumed to be bandlimited and composed of up to \(k\) uncorrelated transmissions over the \(L\) possible narrowband channels - i.e. the signal is \(k\)-sparse. 
+
+This process is repeated in parallel at each node (unrelated to \(N_{sig}\) so that each band in \(x\) appears in baseband. The mixing functions - which are independent for each node - are required to be periodic, with period \(T_p\). Since \(p_i\) is periodic it has Fourier expansion:
+
+\begin{equation}
+p_i\left(t\right) = \sum_{l=-\infty}^{\infty} c_{il} \exp\left({jlt\frac{2\pi}{T_p}}\right)
+\end{equation}
+
+The \(c_{il}\) are the Fourier coefficients of the expansion and are defined in the standard manner. The result of the mixing procedure in channel \(i\) is therefore \(xp_i\), with Fourier transform:
+
+\begin{align}
+X_{i}\left(f\right) &=& \int_{-\infty}^{\infty} x\left(t\right) p_i\left(t\right) dt
+\\ &=& \sum_{l=-\infty}^{\infty} c_{il} X\left(f-lf_p\right)
+\end{align}
+
+(insert the Fourier series for \(p_i\), then exchange the sum and integral). The output of this mixing process then, is a linear combination of shifted copies of \(X\left(f\right)\), with at most \(\lceil f_NYQ/f_p\rceil\) terms since \(X\left(f\right)\) is zero outside it's support (we have assumed this Nyquist frequency exists, even though we never sample at that rate).
+
+Once the mixing process has been completed the signal in each channel is low-pass filtered and sampled at a rate \(f_s \geq f_p\). In the frequency domain this is a ideal rectangle function, so the output of a single channel is:
+
+\begin{equation}
+Y_i\left(e^{j 2 \pi f T_s }\right) = \sum_{l = -L_0}^{+L_0}
+\end{equation}
+
+since frequencies outside of \([-f_2/2, f_s/2]\) will filtered out. \(L_0\) is the smallest integer number of non-zero contributions in \(X\left(f\right)\) over \([-f_2/2, f_s/2]\) - at most \(\lceil f_NYQ/f_p\rceil\) if we choose \(f_s = f_p\). These relations can be written in matrix form as:
+
+\begin{equation}
+\textbf{y} = \textbf{A}\textbf{x} + \vec{w}
+\end{equation}
+
+where \(\textbf{y}\) contains the output of the measurement process, and \(\textbf{A}\) is a product matrix of the mixing functions, their Fourier coefficients, a partial Fourier Matrix, and a matrix of channel co-efficients. \(\textbf{x}\) is the vector of unknown samples of \(x\left(t\right)\). 
+
+i.e. \(\textbf{A}\) can be written: 
+
+\begin{equation}
+\textbf{A}^{m\times L} = \textbf{S}^{m\times L} \textbf{F}^{L\times L} \textbf{D}^{L \times L} \textbf{H}^{L \times L}
+\label{system}
+\end{equation}
+
+The measurements \(\textbf{y}\) are transmitted to a Fusion Centre via a control channel. The system can then be solved by linear programming.
+
+\subsection{Joint Space and Frequency}
+We write the power spectral density (psd) of the \(sth\) transmitter as:
+
+\begin{equation}
+\phi_s = \sum_b \beta_{bs} \psi_b\left(f\right)
+\label{basis_expansion}
+\end{equation}
+\\ 
+
+This model expresses in psd of the transmitter in a suitable basis - for example \(\psi_b\left(f\right)\) could be zero everywhere except for the set of frequencies where \(f=b\) i.e. \(\psi\) is a rectangular function with height \(\beta_{bs}\) and support \(f\). Other candidates for \(\psi\) include splines (e.g. raised cosines), and complex exponentials. 
+
+Given this, the psd at the \(rth\) receiver is:
+
+\begin{equation}
+\phi_r = \sum_s g_{sr}\phi_s = \sum_s g_{sr} \sum _b \beta_{bs}\psi_b\left(f\right)
+\end{equation}
+
+where
+
+\begin{equation}
+g_{sr} = \exp\left(-||x_r - x_s||_2^\alpha\right)
+\end{equation}
+
+is the channel response between the \(sth\) transmitter and the \(rth\) reciver.
+
+This model can be summarised using Kronecker products as follows:
+
+Let \(\tilde{G} = g_sr^T\), \(e_r, e_b\) be unit vectors i.e. they are \(1\) for the \(i^{th}\) receiver or frequency band respectively.
+
+The received power at a receiver (when only a single transmitter is transmitting) can be written:
+
+\begin{equation}
+y_r = \left(	e_r^T \bigotimes I_{n_b}\right) y
+\end{equation}
+
+with,
+
+\begin{equation}
+y = \left( \tilde{G} \bigotimes I_{n_b} \right) \phi
+\end{equation}
+
+Now, we have
+
+\begin{equation}
+\phi = e_s \bigotimes \phi_s
+\end{equation}
+
+so,
+
+\begin{equation}
+y = \left( \tilde{G} \bigotimes I_{n_b} \right) \left(e_s \bigotimes \phi_s \right)
+\end{equation}
+
+finally we have,
+
+\begin{equation}
+y_r = \left(	e_r^T \bigotimes I_{n_b}\right)\left[\left( \tilde{G} \bigotimes I_{n_b} \right) \left(e_s \bigotimes \phi_s \right)\right]
+\end{equation}
+
+\(\beta_{bs} \in \re^{1 \times n_b}\), \(g_{sr} \in \re^{n_r \times n_s}\) and \(\psi_{kb} \in 1 \times n_k n_b\) where \(n_k\) is the number of frequency bands (in this example \(n_k = n_b\).
+
+In the absence of knowledge of the location of the transmitters we introduce a grid of \textit{candidate} locations, to make the above model linear. \(s\) now runs over the set of these candidate locations.
+
+The problem of estimating the coefficients, \(\beta\), from noisy observations \(y = \phi_r + N\left(0,1\right)\) is now one that can be tackled by linear regression/convex optimisation.
+
+
+\section{Distributed Optimisation}
+
+\subsubsection{ADMM}
+The alternating direction method of multipliers (ADMM), is an algorithm intended to blend the decomposability of the gradient ascent algorithm \ref{gradient_ascent}, with the more general method of multipliers \ref{mom}, i.e. when the objective function is decomposable but the dual function is not differentiable. The algorithm solves problems of the form
+
+\begin{align}
+\text{min}_{x} f\left( x \right) + g\left(z\right)
+\\
+\text{s.t } Ax +Bz = c
+\label{admm}
+\end{align}
+
+where \(f\) and \(g\) are assumed to be convex function with range in \(\re\), \(A \in \re^{p \times n}\) and \(B\in \re^{p \times m}\) are matrices (not assumed to have full rank), and \(c \in \re^p\). We begin by illustrating a few examples, relevant to the type of problems encountered in signal processing.
+
+\begin{example}
+The Basis Pursuit problem
+
+\begin{equation*}
+\begin{aligned}
+& \underset{x}{\text{minimize}}
+& & \|x\|_1 \\
+& \text{subject to}
+& & Ax = b
+\label{bp}
+\end{aligned}
+\end{equation*}
+
+can be written in the ADMM form (\ref{admm}):
+
+\begin{equation*}
+\begin{aligned}
+& \underset{x}{\text{minimize}}
+& & f\left( x \right) + \|z\|_1 \\
+& \text{subject to}
+& & x - z = 0
+\label{bp_reform}
+\end{aligned}
+\end{equation*}
+
+where \(f\) is the indicator function of \(\{x\in \re^n : Ax = b\}\). 
+
+\end{example} 
+
+\begin{example}
+Similarly the LASSO:
+
+\begin{equation}
+\text{minimise } \frac{1}{2}\|Ax-b\|_2^2 + \lambda\|x\|_1
+\end{equation}
+
+\(\lambda > 0\), can be solved by the ADMM with \(f = \frac{1}{2}\|Ax-b\|_2^2\) and \(g = \lambda\|x\|_1\).
+
+\end{example}
+
+The solution of (\ref{admm}) is:
+
+\begin{equation}
+x* = \inf\{f\left( x \right) + g\left(z\right) : Ax +Bz = c\}
+\end{equation}
+
+As previously we form the Lagrangian:
+
+\begin{equation}
+L_\rho\left(x,y\right) = f\left( x \right) + g\left(z\right) + y^T\left(Ax+Bz-c\right) + \frac{\rho}{2}\|Ax+Bz-c\|_2^2
+\end{equation}
+
+ADMM consists of the iterations:
+
+\begin{align}
+x^{k+1} &:= \argmin{x} L_\rho\left(x,z^k,y^k\right)\\
+z^{k+1} &:= \argmin{z} L_\rho\left(x^{k+1},z,y^k\right)\\
+y^{k+1} &:= y^{k} + \rho \left(Ax^{k+1} + Bz^{k+1} - c\right)
+\label{admm_algo}
+\end{align}
+
+Note that this algorithm is similar to both the gradient ascent and method of multipliers from the last section: it has an \(x\) minimisation step, an \(z\) minimisation step and a dual variable update. I.e. the Lagrangian is updated simultaneously with respect to the two primal variables. Separating minimisation into two steps (as opposed to joint minimisation) is what allows for decomposition if \(f\) or \(g\) (or both) are separable. 
+
+\subsection{Example: Consensus}
+Suppose we want to solve a problem such as:
+
+\begin{equation*}
+\begin{aligned}
+& \underset{x}{\text{minimize}}
+& & \sum_i f_i\left( x \right) \\
+\label{consensus}
+\end{aligned}
+\end{equation*}
+
+this could arise in statistical computing where \(f_i\) would be the loss function for the \(i^th\) block of training data. We can write the problem for distributed optimisation as:
+
+\begin{equation*}
+\begin{aligned}
+& \underset{x}{\text{minimize}}
+& & \sum_i f_i\left( x_i \right) \\
+& \text{subject to}
+& & x_i - z = 0
+\label{admm_consensus}
+\end{aligned}
+\end{equation*}
+
+where \(x_i\) are local variables (for example local to each node in a spectrum sensing) and \(x_i - z = 0\) are the consensus constraints. Consensus and regularisation can be achieved by adding a regularisation term \(g\left(z\right)\) - for example \(g\left(z\right) = \lambda||x||_1\) corresponds to the LASSO, and the \(f_i\) would be \(f_i = ||A_ix_i - b||_2^2\). 
+
+As per the previous sections, we form the Augmented Lagrangian:
+
+\begin{equation}
+L_\rho\left(x,y\right) = \sum_i^n \left(f_i\left( x_i \right) + y_i^T\left(x_i-z\right) + \frac{\rho}{2}\|x_i-z\|_2^2\right)
+\end{equation}
+
+The ADMM iterations for this Lagrangian are:
+
+\begin{align}
+x_i^{k+1} &:= \argmin{x_i} \left(f_i\left( x_i \right) + y_i^{kT}\left(x_i-z\right) + \frac{\rho}{2}\|x_i-z\|_2^2\right)\\
+z^{k+1} &:= \frac{1}{n}\sum_i^n \left(x_i^{k+1} + \left(1\rho\right)y_i^k\right)\\
+y_i^{k+1} &:= y_i^{k} + \rho \left(x_i^{k+1} - z^{k+1} \right)
+\label{consensus_iterations}
+\end{align}
+
+The \(z^{k+1}\) iteration is analytic as we're minimising the squared norm of \(x_i - z\) - so we average. With \(\|x\|_1\) regularisation we perform soft-thresholding after the \(z\) update.
+
+At each iteration the sum of the dual variables \(y_i\) is zero, so the algorithm can be simplified to:
+
+\begin{align}
+x_i^{k+1} &:= \argmin{x_i} \left(f_i\left( x_i \right) + y_i^{kT}\left(x_i-\bar{x}^k\right) + \frac{\rho}{2}\|x_i-\bar{x}^k\|_2^2\right)\\
+y_i^{k+1} &:= y_i^{k} + \rho \left(x_i^{k+1} - z^{k+1} \right)
+\label{simple_consensus_iterations}
+\end{align}
+ 
+where
+
+\begin{equation}
+\bar{x}^k = \frac{1}{n} \sum_i^n x_i^k
+\end{equation}
+
+This algorithm can be summarised as follows: in each iteration
+
+\begin{itemize}
+\item gather \(x^k\) and average to get \(\bar{x}^k\)
+\item scatter the average to nodes
+\item update \(y_i^k\) locally
+\item update \(x_i\) locally
+\end{itemize}
+
+Each agent is minimising it's own function, plus a quadratic term (the squared norm) which penalises the agent from moving too far from the previous average.
+
+Note that the 'gather' stage doesn't require a central processor - this can be done in a distributed manner also.
+
+
+
+\subsection{Constrained Optimisation on Graphs}
+\label{optongraphs}
+We model the network as an undirected graph \(G = \left(V,E\right)\), where \(V = \{1 \ldots J\}\) is the set of vertices, and \(E = V \times V\) is the set of edges. An edge between nodes \(i\) and \(j\) implies that the two nodes can communicate. The number of nodes node \(i\) can communicate is written \(\mathcal{N}_i\) and the degree of node \(i\) is \(D_i = |\mathcal{N}_i|\). 
+
+We assume that a proper (or approximate) colouring of the graph is available: that is each node is assigned a number from a set \(C = \{1 \ldots c \} \), and no node shares a colour with any neighbour.
+
+Given the measurement model from the section (SECTION), we can represent the linear system by concatenating the measurements of each node into a single system. Where, each row of the matrix represents the measurements of a single node. I.e we are trying to solve the following problem:
+
+\begin{equation}
+\text{min} ||x||_1 \text{ subject to } A_p x = b_p
+\end{equation}
+
+The problem is coupled at each node by the variable \(x\). To ease this issue, at each node create a local copy, denoted \(x_j\) (so there will be \(J\) copies of this variable). 
+
+Then, for consistency, we constrain the problem, so that each copy is identical: \(x_1 = x_2 = \ldots x_J\). Equivalently, given the graphical structure of the problem, we require that \(x_i = x_j\) for each edge of the network.
+
+So now we are solving the problem
+
+\begin{equation}
+\text{min} \frac{1}{J}\sum_J||x_j||_1 \text{ subject to } A_p x = b_p \text{ and } x_i = x_j \{i,j\} \in E 
+ \label{constrainedbp}
+\end{equation}
+ 
+This is exactly the kind of problem that can be attacked by the Alternating Direction Method of Multipliers, described previously. We present a short example for bipartite graphs, which can easily be generalised to graphs with many colours. 
+ 
+\subsection{Example: bipartite graphs}
+We are here considering graphs which are connected, and 2-colourable, that is nodes 1 to \(c\) have colour 1 (red say), and nodes \(c+1\) to \(J\) have colour 2 (blue). We will demonstrate that we can decompose problem (\ref{constrainedbp}) into \(c\) problems which can be executed in parallel by minimising \(x\) at the 1st set of nodes, and \(J - c\) problems which also can be executed in parallel by minimising at the second set of nodes. 
+
+Firstly, for compactness, we introduced the arc-incidence matrix of the graph \(B\). This is the \(J \times E\) matrix where each column corresponds to an edge \(\{i,j\} \in E\), with the \(ith\) and \(jth\) entries equal to 1 and -1 respectively. With this notation, we can rewrite (\ref{constrainedbp}) as:
+
+\begin{equation}
+\text{min} \frac{1}{J}\sum_J||x_j||_1 \text{ subject to } A_p x = b_p \text{ and } \left(B^T \circ I \right)\bar{x} = 0 
+ \label{constrainedbp1}
+\end{equation}
+
+where \(\bar{x} = \left(x_1, x_2, \ldots x_J \right)\), and \(\circ\) is the Kronecker product. 
+
+In this form, the Lagrangian of the problem (\ref{constrainedbp1}) can be written in the following way:
+
+\begin{align}
+L\left(\bar{x}_1, \bar{x}_2; \lambda\right) = \frac{1}{J}\sum_{j \in C_1}||x_j||_1 + \frac{1}{J}\sum_{j \in C_2}||x_j||_1 &+ \\ \phi_1\left(\bar{x_1}, \lambda\right) + \phi_2\left(\bar{x_2}, \lambda\right) &+ \\
+\rho\bar{x}_1^T\left(B_1B_2^T\circ I_n\right)\bar{x}_2
+\end{align}
+where 
+
+\begin{align}
+\phi_i\left(\bar{x}_i, \lambda\right) &= \lambda^T\left(B_i^T\circ I_n\right)\bar{x}_i + \frac{\rho}{2}\vectornorm{\left(B_i^T\circ I_n\right)\bar{x}_i }^2 \\
+&= \left(\left(B_i^T\circ I_n\right)\lambda \right)^T\bar{x}_i + \frac{\rho}{2}\bar{x}_i^T\left(B_1B_2^T\circ I_n\right)\bar{x}_i
+\end{align}
+
+Since, no nodes within \(C_i\) are neighbours \(B_iB_i^T\) is a diagonal matrix (with the degree of node \(i\) as the \(i\)th entry). So, we can finally re-write
+
+\begin{equation}
+\phi_i\left(\bar{x}_i, \lambda\right) = \sum_{j \in C_i}\left(\left(\sum_{k \in \mathcal{N}_i} sign\left(k-i\right)\lambda_{\{i,k\}}\right)^T x_i + \frac{\rho}{2}D_i\vectornorm{x_i}^2  \right)
+\end{equation}
+
+where the dual variable \(\lambda\) has been decomposed edge-wise so that \(\lambda_{\{i,j\}} = \lambda_{\{j,i\}}\) and is associated with edge \(\{i,j\}\) and the constraint \(x_i = x_j\).
+
+\section{Results}
+
+\subsection{Frequency only Model}
+
+The model described in section (\ref{sensingmodel}) was simulated, with a wideband signal of 201 channels and a network of 50 nodes (i.e. the signal will be sampled at a 1/4 of rate predicted by Nyquist theory). The mixing patterns were generated from iid Gaussian sources (i.e the matrix S had each entry drawn from an iid Gaussian source). Monte Carlo simulations were performed at EbN0db values ranging from 5 to -5 in steps of 1, and the expected Mean Squared Error (MSE) of solutions of a centralised solver (spgl1) and a distributed solver (ADMM). The results can be seen in fig (\ref{msevssnr1}). 
+
+These results indicate that for both centralised and distributed solvers, adding noise to the system results in a degrading of performance. Interestingly note, that the distributed solver seems to (slightly) outperform the centralised solver at all SNRs. This is counter-intuitive, as it would be expected that centralised solvers knowing \textit{all} the available information would outperform distributed solutions. We conjecture that the updates described in section \ref{optongraphs}, take into account differences in noise across the network. The distributed averaging steps, which form the new prior for each node, then penalise updates from relatively more noisy observations. 
+
+This observation is (partially) confirmed in figure (\ref{erroriterations}), which plots the progress of the centralised and distributed solvers (as a function of iterations) towards the optimum solution. The SNR is 0.5 (i.e the signal is twice as strong as the noise).
+
+\begin{figure}[h]
+\centering
+\includegraphics[height = 5 cm]{centvsdistmsegaussian10perpoint.jpg}
+\caption{Mse vs SNR for the 'frequency only sensing model, showing the performance of distributed and centralised solvers}
+\label{msevssnr1}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[height = 5 cm]{erroriterations1.jpg}
+\caption{The progress of a distributed and a centralised solver as a function of the number of iterations }
+\label{erroriterations}
+\end{figure}
+
+\subsection{Joint Space-Frequency}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[height = 5 cm]{betabs.jpg}
+\caption{Example of \(\beta_{bs}\) for the 'joint space-frequency' model}
+\label{beta}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[height = 5 cm]{node1.jpg}
+\caption{\(\beta_{bs}\) as seen by a node after a round o ADMM}
+\label{betanode}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[height = 5 cm]{spatialcentral.jpg}
+\caption{\(\beta_{bs}\) as produced by the centralised solver spgl1}
+\label{betacentral}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[height = 5 cm]{spatialiterations.jpg}
+\caption{The progress of ADMM as a function of iterations for the joint model}
+\label{spatialiterations}
+\end{figure}
+\clearpage{}
+\section{Conclusions and Further Work}
+To conclude:
+
+\begin{itemize}
+\item We have extended the framework of paper (REF MOTA) to include joint space-frequency estimation as well as frequency estimation. 
+\item Figure \ref{spatialiterations} suggests that we are over-fitting to the data, which could be the source of the issues 
+\item We are able to successfully recover the support of the joint model, but not the full PSD at this time. This should be fairly easy to resolve.
+\item We conjecture the superior performance of  distributed algorithms is a true phenomenon, and our statistical understanding of the ADMM algorithm allows us to begin explaining this.
+
+Improvements to the ADMM algorithm come in two forms:
+
+\begin{itemize}
+\item Reducing the total number of rounds
+\item Reducing the number of iterations per round 
+\end{itemize}
+
+Regarding the first point - since ADMM can be thought of as iterative MAP inference, we can reduce the number of iterations by more heavily penalising nodes with 'bad' iteration solutions. That is, we may be able to exploit the ability of the distributed algorithm to take account of variations in noise to drive the algorithm to a solution faster.
+
+Note that for ADMM, there is a required order of communication (in our case represented by a colouring of the network). Removing the need for a required order of communication may lead to fewer communications per iteration round.
+
+\end{itemize}
+
+
+\appendix
+
+\subsection{Statistical Interpretation}
+At each step \(k\) of the algorithm each agent is minimising it's own loss function, plus a quadratic.
+This has a simple interpretation: we're doing MAP estimation under the prior \(\mathcal{N}\left(\bar{x}^{k} + \left(1\rho\right)y_i^k, \rho I\right)\). I.e. the prior mean is the previous iteration's consensus shifted by node \(i\) disagreeing with the previous consensus. 
+
+I think what's going on is that after some (large) number of steps \(k*\) we can replace the prior iteration mean with the 'optimal' mean i.e. \(|x_i^{k*} - \bar{x*}| \leq \varepsilon \), and taking a convex combination of these \(x_j^{k*} \forall j \in \{1\ldots n\}\) we get a slightly better estimate because for any finite \(k\) large enough not all the \(x_j\) will be the same.
+
+I think that when we add regularisation, we change the prior to a Laplace prior, with parameters corresponding to the previous iteration. 
+
+\subsection{ADMM for LASSO}
+As with the previous section ADMM can be formulated as the an iterative MAP estimation for the problem:
+
+\begin{eqnarray}
+\frac{1}{2}\|Ax-b\|_2^2 + \lambda\|x\|_1
+\end{eqnarray}
+
+The ADMM iterations are (in closed form):
+
+\begin{align}
+x^{k+1} &:= \left(A^TA _ \rho I\right)^{-1}\left(A^Tb +\rho\left(z^k - y^k\right)\right)\\
+z^{k+1} &:= S_{\lambda/\rho}\left(x^{k+1} + y^k/\rho\right)
+ \\
+y^{k+1} &:= y^{k} + \rho \left(x^{k+1}-z^{k+1}\right)
+\label{admm_algo_lasso}
+\end{align}
+
+Where \(S_{\lambda/\rho}\left(\circ\right)\) is the soft thresholding operator: \(S_\gamma\left(x\right)_i = sign(x_i)\left(|x_i| - \gamma\right)^+\).
+
+This algorithm has a nice statistical interpretation: it iteratively performs ridge regression, followed by shrinkage towards zero. Exactly like the MAP estimate for LASSO problem under a Laplace prior.
+
+The soft-thresholding operator can be derived by considering the MAP estimate of the following model:
+
+\begin{equation}
+y = x + w
+\end{equation}
+
+and we seek
+
+\begin{equation}
+\hat{x} = \arg\max_x \pr_{x|y}{\left(x|y\right)}
+\end{equation}
+
+This can be recast in the following form by using Bayes rule, noting that the denominator is independent of \(x\) and taking logarithms:
+
+\begin{equation}
+\hat{x} = \arg\max_x \left[\log{\pr_{n}{\left(y-x\right)}}+\log{\pr_{n}{\left(y-x\right)}}\right]
+\label{hatx}
+\end{equation}
+
+The term \(\pr_{n}{\left(y-x\right)}\) arises because we are considering \(x+n\) with \(n\) zero mean Gaussian. So, the conditional distribution of \(y\) (given \(x\)) will be a Gaussian centred at \(x\).
+
+We will take \(\pr_{x}{\left(x\right)}\) to be a Laplacian distribution:
+
+\begin{equation}
+\pr_x{\left(x\right)} = \frac{1}{\sqrt{2}\sigma}\exp{-\frac{\sqrt{2}}{\sigma}|x|}
+\end{equation}
+
+Taking the maximum of \ref{hatx} we obtain:
+
+\begin{equation}
+\frac{y-\hat{x}}{\sigma^2_n}-\frac{\sqrt{2}}{\sigma} = 0
+\end{equation}
+
+Which leads the soft thresholding operation defined earlier, with \(\gamma = \frac{\sqrt{2}\sigma^2_n}{\sigma}\)
+
+\subsection{ADMM for BPDN}
+The basis pursuit problem:
+
+\begin{equation}
+\min_x \left[\|x\|_1 \text{ s.t. } \|Ax-b\|_2 \leq \sigma\right]
+\end{equation}
+
+also has a closed form set of ADMM iterations:
+
+Firstly, we write the program as:
+
+\begin{equation}
+\min_x \left[\|x\|_1 : Ax+y = b \|y\|_2 \leq \sigma \right]
+\end{equation}
+
+and the ADMM iterations are:
+
+\begin{align}
+x^{k+1} &:= \Pi_{B_\sigma}\left(y^k / \rho - \left( Ay^k - b\right) \right)\\
+z^{k+1} &:= S_{\lambda/\rho}\left(x^{k+1} + y^k/\rho\right)
+ \\
+y^{k+1} &:= y^{k} + \rho \left(x^{k+1}-z^{k+1}\right)
+\label{admm_algo_bpdn}
+\end{align}
+
+\end{document}

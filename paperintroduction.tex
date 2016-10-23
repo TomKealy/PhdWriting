@@ -1,0 +1,37 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\newcommand{\sectionbreak}{\clearpage}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+
+\begin{document}
+\title{Decoding bounds}
+\author{Tom Kealy}
+
+\section{Introduction}
+Digital Communications ,Audio, Images, and Text are examples of data sources we can compress. We can do this, because these data sources are sparse: they have fewer degrees of freedom than the space they live in (are defined upon). 
+
+For example: images have a well known expansion in either the Fourier or Wavelet bases. The text of an English document will only be comprised of words from the English dictionary, and not all the possible strings from the space of strings made up from the characters \(\{a \ldots z \}\). 
+
+Often, once a signal has been acquired it will be compressed. However, this isn't necessary as was shown in \ref{Candes2006}. In that paper it was shown that a 'compressed' representation of a signal could be obtained from random linear projections of the signal and some other basis (for example White Gaussian Noise). The question remains, given this representation how do we recover the original signal? For real signals, a simple linear programme suffices.
+
+Group testing is a cousin of this type of problem: given a collection of items \( S = \{1 \ldots n\}\) where some small fraction (\(k << n\)) of the items are interesting in some way, how can we find the interesting items efficiently? For example, given a set of communication bands in frequency spectra with some (unknown) sets of bands you must not utilise.
+
+Much of the work in this area has been couched in terms of the sparsity of the signal and the various bases the signal can be represented in (see for example \ref{Donoho} \ref{CandesTao}). However there has been some work on these problems from an Information Theoretic point of view \ref{AttiaSaligrama}, \ref{MattOllyLeo}. These papers have focussed on Group Testing as a Channel Coding problem, either by defining and characterising a Capacity for the Group Testing problem \ref{MattOllyLeo}, or by explicitly calculating the Mutual Information \ref{AttiaSaligrama}.
+
+In this paper, we consider Group Testing as a Source Coding problem where each item is independently defective with probability \(p_i\).
+\bibliographystyle{plain}
+\bibliography{/users/tk12098/Documents/writing/quart-report.bib}
+\end{document}

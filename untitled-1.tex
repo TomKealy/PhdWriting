@@ -1,0 +1,121 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage[arrow,matrix,curve,cmtip,ps]{xy}
+
+\usepackage{amsthm}
+
+
+\allowdisplaybreaks
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem*{theorem*}{Theorem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Question}
+
+%this has equations numbered within sections 1.1,1.2, ... 2.1,...
+\numberwithin{equation}{section}
+
+
+%-------------------------------------------
+%       Begin Local Macros
+%-------------------------------------------
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand\mc[1]{\marginpar{\sloppy\protect\footnotesize #1}}
+\newcommand{\twopartdef}[4]
+{
+	\left\{
+		\begin{array}{ll}
+			#1 & \mbox{if } #2 \\
+			#3 & \mbox{if } #4
+		\end{array}
+	\right.
+}        
+
+%-------------------------------------------
+%       End Local Macros
+%-------------------------------------------
+
+\begin{document}
+\title{How big should a group be?}
+\author{Tom Kealy}
+
+\date{\today}
+
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+GIven a series of probabilities \(q_i\), \(i=1\ldots n\),  \(\sum_i=1^n = K\), that each item is a set is defective, we need to choose the size of the set to be tested. That is, if we test a group of size \(S\) we get a payoff:
+
+\begin{equation}
+\theta\left(S\right) = \twopartdef {S} {\text{Group contains no defectives}} {0} {\text{Group contains a defective}}
+\end{equation}
+
+i.e. in a group of size \(S\) the payoff is: 
+
+\begin{equation}
+\theta\left(S\right) = S \prod_{i=1}^S (1-q_i)
+\end{equation}
+
+where \(\prod_{i=1}^S(1-q_i)\) is the probability that the group contains no defectives. How do we maximise \(\theta\)?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Approximation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Assuming that the \(q_i\) are small (say of the order \(\frac{1}{100}\) and have bounded variance, replace each \(q_i\) by the average: 
+
+\begin{equation}
+\overline{q} = \frac{1}{n} \sum_{i=1}^n q_i
+\end{equation}
+
+The payoff in this model is then: 
+
+\begin{equation}
+\theta\left(S\right) = S (1-\overline{q})^S
+\end{equation}
+
+i.e. the model is geometric (if we were flipping coins with bias \(\overline{q}\) then the number of steps until the first failure is distributed according to the geometric distribution). 
+
+The error can be computed: 
+
+\begin{equation}
+(1-\overline{q})^S - \prod_{i=1}^S (1-q_i) \leq e^{-S\overline{q}} - e^{-\sum_{i=1}^S q_i} 
+\end{equation}
+
+Since the model is geometric, the expected number of steps until the first failure is: 
+
+\begin{equation}
+\E{Steps} = \frac{1}{\overline{q}}
+\end{equation}
+
+Because of the error, I think a reasonable choice of S is: 
+
+\begin{equation}
+S = \lfloor \frac{1}{\overline{q}} \rfloor
+\end{equation}
+
+\end{document}

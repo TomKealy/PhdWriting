@@ -1,0 +1,63 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: cswirelesspaper_new_basis.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: cswireless3.bib
+Warning--I didn't find a database entry for "chen1998atomic"
+-- IEEEtranS.bst version 1.11 (2003/04/02) by Michael Shell.
+-- http://www.ctan.org/tex-archive/macros/latex/contrib/supported/IEEEtran/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+** Sorting version - not for use with work to be submitted to the IEEE.
+Warning--empty year in Boyd2010a
+Warning--empty journal in Candes2006
+Warning--empty journal in ling2014dlm
+Warning--empty year in mota2013d
+
+Done.
+You've used 15 entries,
+            4413 wiz_defined-function locations,
+            958 strings with 10758 characters,
+and the built_in function-call counts, 13806 in all, are:
+= -- 1220
+> -- 408
+< -- 112
++ -- 213
+- -- 98
+* -- 729
+:= -- 2084
+add.period$ -- 31
+call.type$ -- 15
+change.case$ -- 94
+chr.to.int$ -- 258
+cite$ -- 19
+duplicate$ -- 870
+empty$ -- 950
+format.name$ -- 111
+if$ -- 3066
+int.to.chr$ -- 0
+int.to.str$ -- 15
+missing$ -- 141
+newline$ -- 65
+num.names$ -- 30
+pop$ -- 372
+preamble$ -- 1
+purify$ -- 79
+quote$ -- 2
+skip$ -- 1007
+stack$ -- 0
+substring$ -- 692
+swap$ -- 701
+text.length$ -- 26
+text.prefix$ -- 0
+top$ -- 6
+type$ -- 135
+warning$ -- 4
+while$ -- 74
+width$ -- 17
+write$ -- 161
+(There were 5 warnings)

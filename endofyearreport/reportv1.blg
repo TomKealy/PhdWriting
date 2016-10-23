@@ -1,0 +1,111 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: reportv1.aux
+The style file: plain.bst
+A level-1 auxiliary file: chapter1.aux
+Illegal, another \bibstyle command---line 2 of file chapter1.aux
+ : \bibstyle
+ :          {abbrv}
+I'm skipping whatever remains of this command
+White space in argument---line 4 of file chapter1.aux
+ : \citation{BBC
+ :               News}
+I'm skipping whatever remains of this command
+I couldn't open database file SummerProject.bib
+---line 68 of file chapter1.aux
+ : \bibdata{SummerProject
+ :                       }
+I'm skipping whatever remains of this command
+A level-1 auxiliary file: chapter2.aux
+A level-1 auxiliary file: chapter3.aux
+Illegal, another \bibdata command---line 11 of file reportv1.aux
+ : \bibdata
+ :         {root}
+I'm skipping whatever remains of this command
+I found no database files---while reading file reportv1.aux
+Warning--I didn't find a database entry for "Ukmobil"
+Warning--I didn't find a database entry for "Strategy2013"
+Warning--I didn't find a database entry for "Burbidge2007"
+Warning--I didn't find a database entry for "Candes2006"
+Warning--I didn't find a database entry for "Donoho2006"
+Warning--I didn't find a database entry for "Donoho"
+Warning--I didn't find a database entry for "Y"
+Warning--I didn't find a database entry for "Yucek2009"
+Warning--I didn't find a database entry for "Ghozzi2006"
+Warning--I didn't find a database entry for "Tian"
+Warning--I didn't find a database entry for "Duarte2008"
+Warning--I didn't find a database entry for "singlepixelimaging"
+Warning--I didn't find a database entry for "Chen1998"
+Warning--I didn't find a database entry for "Tropp2007"
+Warning--I didn't find a database entry for "Donoho2006a"
+Warning--I didn't find a database entry for "Emma"
+Warning--I didn't find a database entry for "Candes2007"
+Warning--I didn't find a database entry for "Tibshirani1996"
+Warning--I didn't find a database entry for "Baron2010"
+Warning--I didn't find a database entry for "Ji2008"
+Warning--I didn't find a database entry for "Dorfman1943"
+Warning--I didn't find a database entry for "Atia2008"
+Warning--I didn't find a database entry for "Hwang1972"
+Warning--I didn't find a database entry for "Aldridge2013"
+Warning--I didn't find a database entry for "Chan2011"
+Warning--I didn't find a database entry for "Baldassini2013"
+Warning--I didn't find a database entry for "Sejdinovic2010"
+Warning--I didn't find a database entry for "Wadayama2013"
+Warning--I didn't find a database entry for "dorfman"
+Warning--I didn't find a database entry for "du"
+Warning--I didn't find a database entry for "malyutov"
+Warning--I didn't find a database entry for "atia"
+Warning--I didn't find a database entry for "johnsonc8"
+Warning--I didn't find a database entry for "johnson33"
+Warning--I didn't find a database entry for "wadayama"
+Warning--I didn't find a database entry for "li5"
+Warning--I didn't find a database entry for "atia2"
+Warning--I didn't find a database entry for "shental"
+Warning--I didn't find a database entry for "johnsonc10"
+Warning--I didn't find a database entry for "tan"
+Warning--I didn't find a database entry for "hwang"
+Warning--I didn't find a database entry for "aksoylar"
+Warning--I didn't find a database entry for "candes"
+Warning--I didn't find a database entry for "donoho2"
+Warning--I didn't find a database entry for "petrov"
+You've used 0 entries,
+            2118 wiz_defined-function locations,
+            572 strings with 4663 characters,
+and the built_in function-call counts, 18 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 2
+:= -- 7
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
+int.to.chr$ -- 0
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 3
+num.names$ -- 0
+pop$ -- 0
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 2
+(There were 5 error messages)

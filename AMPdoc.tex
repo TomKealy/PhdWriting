@@ -1,0 +1,123 @@
+\documentclass{article}
+\input{macros}
+
+\begin{document}
+This is just a quick document for describing the differences between vanilla gradient descent, iterative thresholding and AMP.
+
+\section{Gradient Descent}
+Suppose we observe a vector \(y \in \re^m\), through an operator \(A \in \re^{m \times n}\), i.e. we have the model
+
+\begin{equation}
+y = Ax
+\end{equation}
+
+\(x \in \re^{n}\). One way to guess x, is to minimise the mean squared error:
+
+\begin{equation}
+J = \frac{1}{2}\vectornorm{y-Ax}_2^2 = \left(y-Ax\right)^T\left(y-Ax\right)
+\end{equation}
+
+We can do this by gradient descent, as 
+
+\begin{equation}
+\frac{\partial J}{\partial x} = A^T(y-Ax)
+\end{equation}
+
+So we have an iterative algorithm:
+
+\begin{align*}
+x^{t+1} = x^t + A^T(y-Ax^t)
+\end{align*}
+
+Putting it in a more suggestive form:
+
+\begin{align*}
+x^{t+1} &= x^t + A^Tz^t \\
+z^t &= y - Ax^t
+\end{align*}
+
+\section{Iterative Thresholding}
+The algorithm from the previous section will perform poorly, as we've not used any prior information about \(x\). We assume that \(x\) is sparse, so we now seek solutions to:
+
+\begin{equation}
+J = \frac{1}{2}\vectornorm{y-Ax}_2^2 + \lambda\vectornorm{x}_1
+\end{equation}
+
+The presence of the \(\ell_1\) norm, is inconvenient: \(J\) in this case has no formal gradient. In this case we can pretend that \(J\) is differentiable by doing a step in the direction of the gradient, and correcting for any error using the soft thresholding operator:\(S_\gamma\left(x\right)_i = \mathrm{sign}(x_i)\left(|x_i| - \gamma\right)^+\).
+
+So our algorithm becomes:
+
+\begin{align*}
+x^{t+1} &= S_{\lambda}\left(x^t + A^Tz^t\right) \\
+z^t &= y - Ax^t
+\end{align*}
+
+The soft-thresholding operator can be derived by considering the MAP estimate of the following model:
+
+\begin{equation}
+y = x + w
+\end{equation}
+
+where \(x\) is some (sparse) signal, and \(w\) is additive white Gaussian noise. We seek
+
+\begin{equation}
+\hat{x} = \arg\max_x \pr_{x|y}{\left(x|y\right)}
+\end{equation}
+
+This can be recast in the following form by using Bayes rule, noting that the denominator is independent of \(x\) and taking logarithms:
+
+\begin{equation}
+\hat{x} = \arg\max_x \left[\log{\pr_{w}{\left(y-x\right)}}+\log{\pr{\left(x\right)}}\right]
+\label{hatx}
+\end{equation}
+
+The term \(\pr_{n}{\left(y-x\right)}\) arises because we are considering \(x+w\) with \(w\) zero mean Gaussian, with variance \(\sigma_n^2\). So, the conditional distribution of \(y\) (given \(x\)) will be a Gaussian centred at \(x\).
+
+We will take \(\pr{\left(x\right)}\) to be a Laplacian distribution:
+
+\begin{equation}
+\pr{\left(x\right)} = \frac{1}{\sqrt{2}\sigma}\exp{-\frac{\sqrt{2}}{\sigma}|x|}
+\end{equation}
+
+Note that \( f\left(x\right) = \log{\pr_x{ \left( x \right)}} ~ -\frac{\sqrt{2}}{\sigma} |x| \), and so by differentiating \( f'\left(x\right) = -\frac{\sqrt{2}}{\sigma} \mathrm{sign}\left(x\right) \)
+
+Taking the maximum of \ref{hatx} we obtain:
+
+\begin{equation}
+\frac{y-\hat{x}}{\sigma^2_n}-\frac{\sqrt{2}}{\sigma}sign(x) = 0
+\end{equation}
+
+Which leads the soft thresholding operation defined earlier, with \(\gamma = \frac{\sqrt{2}\sigma^2_n}{\sigma}\) as (via rearrangement):
+
+$$
+y =  \hat{x} + \frac{\sqrt{2}\sigma^2_n}{\sigma}\mathrm{sign}\left(x\right)
+$$
+
+or
+
+$$
+\hat{x}\left(y\right) = \mathrm{sign}(y)\left(y - \frac{\sqrt{2}\sigma^2_n}{\sigma}\right)_+
+$$
+
+i.e \(S_\gamma(y)\).
+
+\section{AMP}
+Approximate message passing further corrects this idea of pretending our optimisation objective is differentiable and correcting, by making a quadratic approximation to the likelihood of the model.
+
+The algorithm becomes
+
+\begin{align*}
+x^{t+1} &= S_\lambda\left(x^t + A^Tz^t\right) \\
+z^t &= y - Ax^t + b_tz^t
+\end{align*}
+
+which is similar to the iterative thresholding algorithm, but with an additional 'momentum' term added. A good choice of \(b\) is:
+
+\begin{equation}
+\frac{1}{m}\vectornorm{x^t}_0
+\end{equation}
+
+where \(\vectornorm{t}_0\) is the number of non-zero elements of t.
+
+\end{document}
+

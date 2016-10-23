@@ -1,0 +1,776 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.12.16)  27 JAN 2015 10:51
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**root.tex
+(./root.tex
+LaTeX2e <2011/06/27>
+Babel <3.9h> and hyphenation patterns for 4 languages loaded.
+(./ieeeconf.cls
+
+LaTeX Warning: You have requested document class `ieeeconf',
+               but the document class provides `cssconf'.
+
+Document Class: cssconf 2004/1/15 revision V1.6b by Pradeep Misra
+\@IEEEtrantmpdimenA=\dimen102
+\@IEEEtrantmpdimenB=\dimen103
+\@IEEEtrantmpcountA=\count79
+\@IEEEtrantmpcountB=\count80
+\@IEEEtrantmptoksA=\toks14
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 794.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+\@IEEEnormalsizefontbaselineskip=\skip41
+
+-- This is a 10 point document.
+\normalsizebaselineskip=\skip42
+\normaljot=\skip43
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <16> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <16> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1113.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1113.
+
+\IEEEilabelindentA=\dimen104
+\IEEEilabelindentB=\dimen105
+\IEEEilabelindent=\dimen106
+\IEEEelabelindent=\dimen107
+\IEEEdlabelindent=\dimen108
+\labelindent=\dimen109
+\IEEEiednormlabelsep=\dimen110
+\IEEEiedmathlabelsep=\dimen111
+\IEEEiedtopsep=\skip44
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@IEEEsubequation=\count85
+\abovecaptionskip=\skip45
+\belowcaptionskip=\skip46
+\c@figure=\count86
+\c@table=\count87
+\@IEEEeqnnumcols=\count88
+\@IEEEeqncolcnt=\count89
+\@IEEEtmpitemindent=\dimen112
+\c@biography=\count90
+\@IEEEtranrubishbin=\box26
+) (/usr/share/texlive/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 373.
+Package: cite 2010/09/10  v 5.3
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip47
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen113
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen114
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count91
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count92
+\leftroot@=\count93
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count94
+\DOTSCASE@=\count95
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box27
+\strutbox@=\box28
+\big@size=\dimen115
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count96
+\c@MaxMatrixCols=\count97
+\dotsspace@=\muskip10
+\c@parentequation=\count98
+\dspbrk@lvl=\count99
+\tag@help=\toks16
+\row@=\count100
+\column@=\count101
+\maxfields@=\count102
+\andhelp@=\toks17
+\eqnshift@=\dimen116
+\alignsep@=\dimen117
+\tagshift@=\dimen118
+\tagwidth@=\dimen119
+\totwidth@=\dimen120
+\lineht@=\dimen121
+\@envbody=\toks18
+\multlinegap=\skip48
+\multlinetaggap=\skip49
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks20
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count103
+))
+\Gin@req@height=\dimen122
+\Gin@req@width=\dimen123
+)
+(/usr/share/texlive/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+Package: algorithm2e 2013/01/06 v5.00 algorithms environments
+\c@AlgoLine=\count104
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/relsize/relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+********************************************************
+Package `algorithm2e' Release 5.0 -- january 06 2013 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (cfiorio@um2.fr)
+********************************************************
+\skiptotal=\skip50
+\skiplinenumber=\skip51
+\skiprule=\skip52
+\skiphlne=\skip53
+\skiptext=\skip54
+\skiplength=\skip55
+\algomargin=\skip56
+\skipalgocfslide=\skip57
+\algowidth=\dimen124
+\inoutsize=\dimen125
+\inoutindent=\dimen126
+\interspacetitleruled=\dimen127
+\interspacealgoruled=\dimen128
+\interspacetitleboxruled=\dimen129
+\algocf@inoutbox=\box29
+\algocf@inputbox=\box30
+\AlCapSkip=\skip58
+\AlCapHSkip=\skip59
+\algoskipindent=\skip60
+\algocf@nlbox=\box31
+\algocf@hangingbox=\box32
+\algocf@untilbox=\box33
+\algocf@skipuntil=\skip61
+\algocf@capbox=\box34
+\algoheightruledefault=\skip62
+\algoheightrule=\skip63
+\algotitleheightruledefault=\skip64
+\algotitleheightrule=\skip65
+\c@algocfline=\count105
+\c@algocfproc=\count106
+\c@algocf=\count107
+\algocf@algoframe=\box35
+\algocf@algobox=\box36
+)
+\c@theorem=\count108
+\c@condition=\count109
+
+** ATTENTION: Overriding command lockouts (line 69).
+(./root.aux)
+\openout1 = `root.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+ (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count110
+\scratchdimen=\dimen130
+\scratchbox=\box37
+\nofMPsegments=\count111
+\nofMParguments=\count112
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count113
+\MPscratchDim=\dimen131
+\MPnumerator=\count114
+\makeMPintoPDFobject=\count115
+\everyMPtoPDFconversion=\toks22
+)
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 74.
+LaTeX Font Info:    Try loading font information for U+msa on input line 74.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 74.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 74.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+
+LaTeX Warning: Citation `dorfman' on page 1 undefined on input line 88.
+
+
+LaTeX Warning: Citation `dorfman' on page 1 undefined on input line 103.
+
+
+LaTeX Warning: Citation `du' on page 1 undefined on input line 104.
+
+
+LaTeX Warning: Citation `malyutov' on page 1 undefined on input line 104.
+
+
+LaTeX Warning: Citation `malyutov' on page 1 undefined on input line 104.
+
+
+LaTeX Warning: Citation `atia' on page 1 undefined on input line 108.
+
+
+LaTeX Warning: Citation `johnsonc8' on page 1 undefined on input line 108.
+
+
+LaTeX Warning: Citation `johnson33' on page 1 undefined on input line 108.
+
+
+LaTeX Warning: Citation `wadayama' on page 1 undefined on input line 108.
+
+
+LaTeX Warning: Citation `li5' on page 1 undefined on input line 112.
+
+
+LaTeX Warning: Citation `atia2' on page 1 undefined on input line 116.
+
+
+LaTeX Warning: Citation `dorfman' on page 1 undefined on input line 118.
+
+
+LaTeX Warning: Citation `shental' on page 1 undefined on input line 119.
+
+
+LaTeX Warning: Citation `atia' on page 1 undefined on input line 125.
+
+
+LaTeX Warning: Citation `johnsonc10' on page 1 undefined on input line 125.
+
+
+LaTeX Warning: Citation `johnson33' on page 1 undefined on input line 125.
+
+
+LaTeX Warning: Citation `tan' on page 1 undefined on input line 125.
+
+
+LaTeX Warning: Citation `atia' on page 1 undefined on input line 126.
+
+
+LaTeX Warning: Citation `tan' on page 1 undefined on input line 126.
+
+
+LaTeX Warning: Citation `johnsonc10' on page 1 undefined on input line 128.
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+
+]
+
+LaTeX Warning: Citation `johnsonc10' on page 2 undefined on input line 151.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 151.
+
+
+LaTeX Warning: Citation `johnsonc10' on page 2 undefined on input line 162.
+
+
+LaTeX Warning: Citation `johnsonc10' on page 2 undefined on input line 164.
+
+
+LaTeX Warning: Citation `johnsonc10' on page 2 undefined on input line 170.
+
+
+LaTeX Warning: Citation `hwang' on page 2 undefined on input line 175.
+
+
+LaTeX Warning: Citation `du' on page 2 undefined on input line 175.
+
+
+LaTeX Warning: Citation `johnsonc10' on page 2 undefined on input line 181.
+
+
+LaTeX Warning: Citation `wadayama' on page 2 undefined on input line 182.
+
+
+LaTeX Warning: Reference `thm:main' on page 2 undefined on input line 183.
+
+
+LaTeX Warning: Reference `sec:main' on page 2 undefined on input line 183.
+
+
+LaTeX Warning: Reference `thm:mainold' on page 2 undefined on input line 184.
+
+
+LaTeX Warning: Reference `thm:main' on page 2 undefined on input line 193.
+
+
+LaTeX Warning: Reference `sec:ub' on page 2 undefined on input line 193.
+
+
+LaTeX Warning: Reference `thm:upper' on page 2 undefined on input line 194.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 195.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 195.
+
+
+LaTeX Warning: Reference `sec:algo' on page 2 undefined on input line 197.
+
+
+LaTeX Warning: Citation `hwang' on page 2 undefined on input line 197.
+
+
+LaTeX Warning: Reference `sec:main' on page 2 undefined on input line 198.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 204.
+
+
+LaTeX Warning: Reference `def:capacity' on page 2 undefined on input line 212.
+
+
+LaTeX Warning: Reference `thm:upper' on page 2 undefined on input line 215.
+
+
+LaTeX Warning: Reference `eq:bja' on page 2 undefined on input line 219.
+
+
+LaTeX Warning: Citation `johnsonc10' on page 2 undefined on input line 219.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 238.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 240.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 243.
+
+
+LaTeX Warning: Citation `li5' on page 2 undefined on input line 249.
+
+[2]
+! Undefined control sequence.
+<recently read> \SetLine 
+                         
+l.256  \SetLine
+               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Reference `prop:overall' on page 3 undefined on input line 273.
+
+
+LaTeX Warning: Reference `thm:main' on page 3 undefined on input line 273.
+
+
+LaTeX Warning: Reference `cond:ratio' on page 3 undefined on input line 278.
+
+
+LaTeX Warning: Reference `sec:boundedratio' on page 3 undefined on input line 2
+78.
+
+
+LaTeX Warning: Reference `prop:overall' on page 3 undefined on input line 279.
+
+
+LaTeX Warning: Reference `rem:algo' on page 3 undefined on input line 280.
+
+
+LaTeX Warning: Citation `li5' on page 3 undefined on input line 283.
+
+
+LaTeX Warning: Reference `sec:discard' on page 3 undefined on input line 284.
+
+
+LaTeX Warning: Reference `lem:thresh' on page 3 undefined on input line 284.
+
+
+LaTeX Warning: Reference `sec:expectation' on page 3 undefined on input line 28
+5.
+
+
+LaTeX Warning: Reference `prop:overall' on page 3 undefined on input line 285.
+
+
+LaTeX Warning: Reference `sec:main' on page 3 undefined on input line 286.
+
+
+LaTeX Warning: Reference `thm:bernstein' on page 3 undefined on input line 287.
+
+
+
+LaTeX Warning: Reference `thm:main' on page 3 undefined on input line 288.
+
+
+LaTeX Warning: Citation `aksoylar' on page 3 undefined on input line 295.
+
+
+LaTeX Warning: Citation `tan' on page 3 undefined on input line 295.
+
+
+LaTeX Warning: Citation `candes' on page 3 undefined on input line 302.
+
+
+LaTeX Warning: Citation `donoho2' on page 3 undefined on input line 302.
+
+
+LaTeX Warning: Citation `candes' on page 3 undefined on input line 303.
+
+
+LaTeX Warning: Citation `donoho2' on page 3 undefined on input line 303.
+
+
+LaTeX Warning: Reference `eq:ratio' on page 3 undefined on input line 329.
+
+
+LaTeX Warning: Reference `eq:setbd' on page 3 undefined on input line 339.
+
+[3]
+Underfull \hbox (badness 2359) in paragraph at lines 355--358
+[]\OT1/ptm/m/n/10 Consider a search set $\OMS/cmsy/m/n/10 S$ \OT1/ptm/m/n/10 sa
+t-is-fy-ing the
+ []
+
+
+LaTeX Warning: Reference `rem:algo' on page 4 undefined on input line 362.
+
+
+LaTeX Warning: Reference `lem:sfstep' on page 4 undefined on input line 362.
+
+
+LaTeX Warning: Reference `eq:depth' on page 4 undefined on input line 363.
+
+
+LaTeX Warning: Reference `rem:algo' on page 4 undefined on input line 366.
+
+
+LaTeX Warning: Reference `eq:testsperdef' on page 4 undefined on input line 375
+.
+
+
+LaTeX Warning: Reference `lem:sfstep' on page 4 undefined on input line 376.
+
+
+LaTeX Warning: Citation `li5' on page 4 undefined on input line 381.
+
+
+LaTeX Warning: Citation `li5' on page 4 undefined on input line 398.
+
+
+LaTeX Warning: Reference `cond:ratio' on page 4 undefined on input line 444.
+
+[4]
+
+LaTeX Warning: Reference `it:count' on page 5 undefined on input line 463.
+
+
+LaTeX Warning: Reference `eq:bincount' on page 5 undefined on input line 465.
+
+
+LaTeX Warning: Reference `prop:splitting' on page 5 undefined on input line 481
+.
+
+
+LaTeX Warning: Reference `lem:expset' on page 5 undefined on input line 483.
+
+
+LaTeX Warning: Reference `prop:splitting' on page 5 undefined on input line 496
+.
+
+
+LaTeX Warning: Reference `eq:toopt' on page 5 undefined on input line 500.
+
+
+LaTeX Warning: Reference `sec:expectation' on page 5 undefined on input line 51
+1.
+
+
+LaTeX Warning: Citation `petrov' on page 5 undefined on input line 514.
+
+
+Underfull \hbox (badness 1939) in paragraph at lines 517--520
+[]\OT1/ptm/m/n/10 For zero-mean ran-dom vari-
+ []
+
+
+LaTeX Warning: Reference `eq:tbd' on page 5 undefined on input line 533.
+
+
+LaTeX Warning: Reference `eq:errorprob' on page 5 undefined on input line 549.
+
+
+LaTeX Warning: Reference `lem:thresh' on page 5 undefined on input line 555.
+
+
+LaTeX Warning: Reference `eq:errorprob' on page 5 undefined on input line 556.
+
+
+LaTeX Warning: Reference `eq:testsperdef' on page 5 undefined on input line 561
+.
+
+
+LaTeX Warning: Reference `eq:thetadef' on page 5 undefined on input line 566.
+
+
+LaTeX Warning: Reference `eq:lengthbd' on page 5 undefined on input line 567.
+
+[5]
+
+LaTeX Warning: Reference `thm:bernstein' on page 6 undefined on input line 569.
+
+
+
+LaTeX Warning: Reference `thm:bernstein' on page 6 undefined on input line 572.
+
+
+
+LaTeX Warning: Reference `eq:errorprob' on page 6 undefined on input line 581.
+
+
+LaTeX Warning: Reference `it:part2' on page 6 undefined on input line 583.
+
+
+LaTeX Warning: Reference `eq:tbd' on page 6 undefined on input line 584.
+
+
+LaTeX Warning: Reference `eq:tnec' on page 6 undefined on input line 584.
+
+
+LaTeX Warning: Reference `cor:main' on page 6 undefined on input line 594.
+
+<ubvslb.png, id=37, 586.8324pt x 442.2924pt>
+File: ubvslb.png Graphic file (type png)
+ <use ubvslb.png>
+Package pdftex.def Info: ubvslb.png used on input line 618.
+(pdftex.def)             Requested size: 252.94499pt x 190.64095pt.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 618--619
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `thm:upper' on page 6 undefined on input line 623.
+
+<variousalpha.png, id=39, 586.8324pt x 442.2924pt>
+File: variousalpha.png Graphic file (type png)
+ <use variousalpha.png>
+Package pdftex.def Info: variousalpha.png used on input line 627.
+(pdftex.def)             Requested size: 252.94499pt x 190.64095pt.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 627--628
+ [][] 
+ []
+
+<nicegraphlaminar.png, id=40, 586.8324pt x 442.2924pt>
+File: nicegraphlaminar.png Graphic file (type png)
+
+<use nicegraphlaminar.png>
+Package pdftex.def Info: nicegraphlaminar.png used on input line 634.
+(pdftex.def)             Requested size: 252.94499pt x 190.64095pt.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 634--635
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `testsvsalpha' on page 6 undefined on input line 639.
+
+
+LaTeX Warning: Reference `testsvstheta' on page 6 undefined on input line 639.
+
+[6 <./ubvslb.png> <./variousalpha.png>]
+
+LaTeX Warning: Citation `li5' on page 7 undefined on input line 646.
+
+
+LaTeX Warning: Reference `eq:tbd' on page 7 undefined on input line 650.
+
+
+LaTeX Warning: Reference `eq:tbd' on page 7 undefined on input line 651.
+
+
+LaTeX Warning: Reference `eq:tbds' on page 7 undefined on input line 656.
+
+
+LaTeX Warning: Reference `eq:counting' on page 7 undefined on input line 657.
+
+
+LaTeX Warning: Reference `eq:toopt' on page 7 undefined on input line 658.
+
+
+LaTeX Warning: Reference `thm:upper' on page 7 undefined on input line 663.
+
+(./root.bbl)
+
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the US letter (8.5in X 11in) paper size.
+
+[7 <./nicegraphlaminar.png>] (./root.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 4308 strings out of 494989
+ 58781 string characters out of 6180576
+ 145791 words of memory out of 5000000
+ 7485 multiletter control sequences out of 15000+600000
+ 48143 words of font info for 108 fonts, out of 8000000 for 9000
+ 36 hyphenation exceptions out of 8191
+ 27i,10n,26p,829b,365s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
+w/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8
+a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on root.pdf (7 pages, 363845 bytes).
+PDF statistics:
+ 118 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+

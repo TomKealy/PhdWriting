@@ -1,0 +1,6 @@
+\beamer@endinputifotherversion {3.10pt}
+\contentsline {section}{Introduction}
+\contentsline {section}{Known Bounds and Algorithms}
+\contentsline {section}{Non-iid extension}
+\contentsline {subsection}{Description of Algorithm}
+\contentsline {subsection}{Performace}

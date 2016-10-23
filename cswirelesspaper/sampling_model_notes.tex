@@ -1,0 +1,25 @@
+Since \(p_i\) is periodic it has Fourier expansion:
+
+\begin{equation}
+p_j\left(t\right) = \sum_{l=-\infty}^{\infty} c_{jl} \exp\left({jlt\frac{2\pi}{T_p}}\right)
+\end{equation}
+
+The \(c_{jl}\) are the Fourier coefficients of the expansion and are defined as:
+
+\begin{equation}
+c_{jl} = \frac{1}{T_p} \int p_j\left(t\right)\exp{\left(-ilt\frac{2\pi}{T_p}\right)} dt
+\end{equation}
+
+, with Fourier transform:
+
+\begin{align}
+g_{j}\left(f\right) &= \int_{-\infty}^{\infty} G\left(t\right) \left( \sum_{l=-\infty}^{\infty} c_{jl} \exp\left({jlt\frac{2\pi}{T_p}} \right)\right) \exp{\left(-i2\pi x t\right)} dt \nonumber \\ 
+&= \sum_{l=-\infty}^{\infty} c_{jl} \int G \left(t\right) \exp{\left(-i 2\pi \left( f-1/T_p \right) \right) } dt \\
+&= \sum_{l=-\infty}^{\infty} c_{il} g\left(f-lf_p\right)
+\end{align}
+
+The output of this mixing process then, is a linear combination of shifted copies of \(g\left(f\right)\), with at most \(\lceil f_{NYQ}/f_p\rceil\) terms since \(g\left(f\right)\) is zero outside its support (we have assumed this Nyquist frequency exists, even though we never sample at that rate).
+
+This process is repeated in parallel at each node so that each band in \(g\) appears in baseband.
+
+Once the mixing process has been completed the signal at each node is low-pass filtered and sampled at a rate \(f_s \geq f_p\).

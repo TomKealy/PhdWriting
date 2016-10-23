@@ -1,0 +1,134 @@
+\documentclass{article}
+
+\linespread{1.2}
+\usepackage[margin = 1.25 in]{geometry}
+\usepackage{wrapfig}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage[algoruled]{algorithm2e}
+
+\renewcommand{\theequation}{\thesubsection.\arabic{equation}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg, .gif}
+
+
+
+\usepackage[english]{babel}
+\usepackage{mathtools}
+
+%\usepackage[OT2,T1]{fontenc}
+%\DeclareSymbolFont{cyrletters}{OT2}{wncyr}{m}{n}
+%\DeclareMathSymbol{\sha}{\mathalpha}{cyrletters}{"58}
+
+\DeclareFontFamily{U}{wncy}{}
+\DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+\DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+\DeclareMathSymbol{\Sh}{\mathord}{mcy}{"58} 
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcounter{eqn}
+\renewcommand*{\theeqn}{\alph{eqn})}
+\newcommand{\num}{\refstepcounter{eqn}\text{\theeqn}\;}
+
+\makeatother
+\newcommand{\vectornorm}[1]{\left|\left|#1\right|\right|}
+\newcommand*\conjugate[1]{\bar{#1}}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+ %\theoremstyle{plain}
+  \newtheorem{theorem}{Theorem}[section]
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{conj}[theorem]{Conjecture}
+ \newtheorem{condition}{Condition}
+ \newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\supp}{\operatorname{supp}} 
+\newcommand{\vc}[1]{{\mathbf{ #1}}}
+\newcommand{\tn}{\widetilde{\nabla}_{n} }
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\re}{{\mathbb{R}}}
+\newcommand{\II}{{\mathbb{I}}}
+\newcommand{\ep}{{\mathbb{E}}}
+\newcommand{\pr}{{\mathbb{P}}}
+\newcommand{\FF}{{\mathcal{F}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\phin}{\phig{n}}
+\newcommand{\phig}[1]{\phi^{(#1)}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\eff}{{\rm eff}}
+\newcommand{\suc}{{\rm suc}}
+\newcommand{\tends}{\rightarrow \infty}
+\newcommand{\setS}{{\mathcal{S}}}
+\newcommand{\setP}{{\mathcal{P}}}
+\newcommand{\setX}{{\mathcal{X}}}
+\newcommand{\nec}{{\rm nec}}
+\newcommand{\bd}{{\rm bd}}
+\begin{document}
+
+\title{Model}
+\author{Tom Kealy}
+
+\bibliographystyle{abbrv}
+
+\maketitle
+
+\section{Distributed Compressed Sensing}
+Distributed Compressed Sensing is a multi-sensor extension of Compressive Sensing. In this setting there is a (connected) network of sensors (nodes), which individually sense a sparse signal, and then collaboratively reconstruct what was sensed. The nodes may all sense the entire signal, or they may sense disjoint portions. In addition, they may sense a signal which is jointly sparse: all the nodes sense a common set of signal components, as well as a set of signal components unique to a particular node. For clarity let \(y_j \in \re^{m_j}\) be the measurement vector obtained by the \(j_{th}\) node, then the measurements can be described by the following linear system:
+
+\begin{equation}
+\vec{y}_j = \vec{A}_j \vec{x}_j + \vec{w}_j
+\end{equation}
+where \(A_j \in \re^{m_j \times n}\) is a measurement matrix satisfying the restricted isometry property (RIP), chosen so that the signal \(x_j \in \re^n\) is suitably sparse (for example, \(A\) could the product of time and frequency representation matrices). \(\vec{w}_j\) is additive white Gaussian noise. 
+
+\subsection{Signal Models}
+The core ideas of Distributed Compressed Sensing are to distributed the sensing load among many nodes to reduce the sensing rate required at each node, and to exploit correlations between the data sensed at each node so as to improve the quality of the signals reconstructed at each node. 
+
+The signals at each node are modelled either as having an individual and common part, or as consisting entirely of a common signal. That is,
+
+\begin{equation}
+x_j = x_{common} + x_{private}
+\end{equation}
+where \(x_j\) is an \(s\)-sparse signal, and \(x_{common}\) and \(x_{private}\) are \(s_c\)-sparse and \(s_p\)-sparse respectively (\(s_j = s_c + s_p\)) and are assumed to have disjoint support sets.
+
+\subsubsection{Common Signal Model}
+This model assumes that all nodes sense the same signal. For example, in wireless telecommunications, all nodes within the same cell would sense a common frequency spectrum. The spectra of distant cells would be independent from each other. Another example could be using sensor networks to monitor seismic activity. 
+
+I.e we have
+
+\begin{equation}
+x_j = x_{common} \text{ } \forall j \in J
+\end{equation}
+note that the sensors may all have different sampling parameters and different noise properties (i.e different SNRs depending on the environment). 
+
+Currently, in this project the common signal model is all that is being considered. 
+
+\subsubsection{Mixed Signal Model}
+This is a natural extension of the previous model, allowing for each node to sense individual signal components in addition to the joint component shared by all nodes. The model is,
+
+\begin{equation}
+x_j = x_{common} + x_{private}
+\end{equation}
+we recover the previous model by setting \(x_{private} = 0\). This is a slightly more realistic model for spectrum sensing, as it's reasonable to assume that over a cell the signal might not be constant. For example, the joint component might be the signal from a television base-station, whilst the individual signal components may be multipath reflections of other secondary users. 
+
+\subsubsection{Other models}
+There are a variety of other models to consider, but all  are some variety of the common plus private paradigm discussed above. For example all nodes could share a common support set for a signal \(x\), however each node may only sense a part of the signal with the full signal being contained in the union of the measurements from all nodes. 
+
+This model can be extended to the common plus private scenario with each node sensing a portion of the joint component in addition to an individual signal component.
+
+It's important to distinguish between distributed models, and distributed solvers. In this sections we have previously described several models in which the sensing is distributed in some way. Now, we proceed to describe several distributed solvers as well as preliminary results of experiments comparing distributed solvers to centralised solvers.
+
+\section{Sensing Model}
+We are considering a radio environment with a single primary user (PU) and a network of 50 nodes collaboratively trying to sense and reconstruct the PU signal, either in a fully distributed manner (by local message passing), or by transmitting measurements to a fusion centre which then solves the linear system. 
+
+\subsection{Setup}
+We are trying to sense and reconstruct a wideband signal, divided into 
+
+\end{document}

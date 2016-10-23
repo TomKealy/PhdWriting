@@ -1,0 +1,29 @@
+\begin{align*}
+&\frac{\rho}{2}\|\left(B_1^T \otimes I_n\right)\bar{x}_1 + \sum_{c=2}^C \left(B_1^T \otimes I_n\right)\bar{x}_j\|^2 = 
+\\
+& \frac{\rho}{2}\bar{x}_1^T  \left(B_1^T \otimes I_n\right)^T \left(B_1^T \otimes I_n\right) \bar{x}_1 \\
+&+ \rho \bar{x}_1^T \sum	_{c=2}^C \left(B_1^T \otimes I_n\right)^T \left(B_c^T \otimes I_n\right) \bar{x}_c + 
+\\
+& \|\sum_{c=2}^C  \left(B_c^T \otimes I_n\right) \bar{x}_c\|^2
+\end{align*}
+
+We will investigate the first and second terms more, as the last term doesn't depend on \(\bar{x}_1\) and can be dropped.
+
+\begin{lemma}
+\(\rho \bar{x}_1^T \sum	_{c=2}^C \left(B_1^T \otimes I_n\right)^T \left(B_c^T \otimes I_n\right) \bar{x}_c = -\rho\sum_{l\in C_1} \sum_{m\in N_l} x_l^Tx_m^k\)
+\begin{proof}
+\(\left(B_1^T \otimes I_n\right)^T \left(B_c^T \otimes  I_n\right) = B_1B_c^T \otimes I_n\) by repeating the steps from lemma \ref{diagonallemma}. 
+\end{proof}
+\end{lemma}
+
+
+\begin{lemma}
+\begin{equation}
+\frac{\rho}{2}\bar{x}_1^T  \left(B_1^T \otimes I_n\right)^T \left(B_1^T \otimes I_n\right) \bar{x}_1 = \frac{\rho}{2}\sum_{l \in C_1} D_l \|x_l\|^2
+\end{equation}
+
+\begin{proof}
+
+\end{proof}
+\label{diagonallemma}
+\end{lemma}

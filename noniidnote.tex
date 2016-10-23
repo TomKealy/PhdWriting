@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{a4wide}
+\usepackage{verbatim}
+\usepackage{latexsym}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\newcommand{\Prob}[1]
+{\mathbb{P}\left( #1 \right)}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{condition}{Condition}[section]
+
+\newcommand{\tn}{\widetilde{\nabla}_{n} }
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\re}{{\mathbb{R}}}
+\newcommand{\II}{{\mathbb{I}}}
+\newcommand{\ep}{{\mathbb{E}}}
+\newcommand{\FF}{{\mathcal{F}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\phin}{\phig{n}}
+\newcommand{\phig}[1]{\phi^{(#1)}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\eff}{{\rm eff}}
+
+\begin{document}
+
+\title{Choosing C}
+
+\date{\today}
+
+\maketitle
+
+This is a quick idea about choosing C. I think choosing \(C\) as \(n/k\) would be useful as it allows us to compare the iid and non-iid cases. As usual we parameterise \(k\) as \(n^{1-\beta}\).
+
+\begin{equation}
+\frac{n}{k} = \frac{n}{n^{1-\beta}} = nn^{-(1-\beta)} = n^{1-1+\beta} = n^\beta
+\end{equation}
+\\
+So \(\log{C}\) becomes \(\log{n^\beta} = \beta\log{n}\).
+
+Also, I think we can get a bound on the number of not-full groups by choosing this C. In the iid case we expect to have roughly \(k\) groups of size \(n/k\). The number of full groups we know is upper bounded by \(k/\ln{2}\). The difference is:
+
+\begin{equation}
+\mid k-\frac{k}{\ln{2}}\mid = \mid k\left(1-\frac{1}{\ln{2}}\right)\mid \leq \frac{k}{2}
+\end{equation}
+
+\end{document}

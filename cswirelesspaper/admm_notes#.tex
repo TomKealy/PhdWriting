@@ -1,0 +1,119 @@
+\section{ADMM }\label{sec:admm}
+The alternating direction method of multipliers \cite{Boyd2010a}, (ADMM), algorithm solves problems of the form
+
+\begin{align}
+\argmin_{x} f\left( x \right) + g\left(z\right) \nonumber
+\\
+\text{s.t } Ux +Vz = c
+\label{admm}
+\end{align}
+
+where \(f\) and \(g\) are assumed to be convex function with range in \(\re\), \(U \in \re^{p \times n}\) and \(V\in \re^{p \times m}\) are matrices (not assumed to have full rank), and \(c \in \re^p\).
+
+ADMM consists of iteratively minimising the augmented Lagrangian 
+
+\begin{align*}
+L_p\left(x, z, \eta\right) = f\left( x\right) +& g\left(z\right)+\eta^T\left(Ux+Vz-c\right) + \\ \frac{\rho}{2}\|Ux+Vz-c\|_2^2
+\label{admm_form}
+\end{align*}
+
+(\(\eta\) is a Lagrange multiplier), and \(\rho\) is a parameter we can choose to make \(g(z)\) smooth \cite{nesterov2005smooth}, with the following iterations:
+
+\begin{align}
+x^{k+1} &:= \argmin_{x} L_\rho\left(x,z^k,\eta^k\right)\\
+z^{k+1} &:= \argmin_{z} L_\rho\left(x^{k+1},z,\eta^k\right)\\
+\eta^{k+1} &:= \eta^{k} + \rho \left(Ux^{k+1} + Vz^{k+1} - c\right)
+\label{admm_algo}
+\end{align}
+
+The alternating minimisation works because of the decomposability of the objective function: the \(x\) minimisation step is independent of the \(z\) minimisation step and vice versa.  
+
+We illustrate an example, relevant to the type of problems encountered in signal processing.
+
+\subsection{Example: ADMM for Centralised LASSO}
+ADMM can be formulated as an iterative MAP estimation procedure for the problem (which is referred to as LASSO see \cite{tibshirani1996regression}):
+
+\begin{eqnarray}
+\frac{1}{2}\|Ax-b\|_2^2 + \lambda\|x\|_1
+\end{eqnarray}
+
+This can be cast in constrained form as:
+
+\begin{eqnarray}
+\frac{1}{2}\|Ax-b\|_2^2 + \lambda\|z\|_1 \\
+\text{s.t } z = x
+\end{eqnarray}
+
+i.e this is of the form \eqref{admm} with \( f\left(x\right) =\|Ax-y\|_2^2\), \(g\left(z\right) = \lambda\|z\|_1\), \(U=I\), \(V=-I\), and \(c=0\).
+
+The associated Lagrangian is:
+
+\begin{equation}
+L_\rho = \frac{1}{2}\|Ax-b\|_2^2 + \lambda\|z\|_1 + \eta\left(x-z\right) + \frac{\rho}{2}\|x-z\|^2
+\label{eq:lasso-lagrangian}
+\end{equation}
+
+Now, given a set of noisy measurements (say of radio spectra) \(\vec{y}\), and a sensing matrix \(\vec{A}\) we can use ADMM to find the (sparse) radio spectra.
+
+The ADMM iterations for LASSO, which can be found by alternately differentiating \eqref{eq:lasso-lagrangian} with respect to \(x\),\(z\) and \(\eta\), are (in closed form):
+
+\begin{align}
+x^{k+1} &:= \left(A^TA + \rho I\right)^{-1}\left(A^Tb +\rho\left(z^k - y^k\right)\right)\\
+z^{k+1} &:= S_{\lambda/\rho}\left(x^{k+1} + \eta^k/\rho\right)
+ \\
+\eta^{k+1} &:= \eta^{k} + \rho \left(x^{k+1}-z^{k+1}\right)
+\label{admm_algo_lasso}
+\end{align}
+
+where \(S_{\lambda/\rho}\left(\circ\right)\) is the soft thresholding operator: \(S_\gamma\left(x\right)_i = \mathrm{sign}(x_i)\left(|x_i| - \gamma\right)^+\).
+
+This algorithm has a nice statistical interpretation: it iteratively performs ridge regression, followed by shrinkage towards zero. This is the MAP estimate for \(x\) under a Laplace prior.
+
+The soft-thresholding operator can be derived by considering the MAP estimate of the following model:
+
+\begin{equation}
+y = x + w
+\end{equation}
+
+where \(x\) is some (sparse) signal, and \(w\) is additive white Gaussian noise. We seek
+
+\begin{equation}
+\hat{x} = \arg\max_x \pr_{x|y}{\left(x|y\right)}
+\end{equation}
+
+This can be recast in the following form by using Bayes rule, noting that the denominator is independent of \(x\) and taking logarithms:
+
+\begin{equation}
+\hat{x} = \arg\max_x \left[\log{\pr_{w}{\left(y-x\right)}}+\log{\pr{\left(x\right)}}\right]
+\label{hatx}
+\end{equation}
+
+The term \(\pr_{n}{\left(y-x\right)}\) arises because we are considering \(x+w\) with \(w\) zero mean Gaussian, with variance \(\sigma_n^2\). So, the conditional distribution of \(y\) (given \(x\)) will be a Gaussian centred at \(x\).
+
+We will take \(\pr{\left(x\right)}\) to be a Laplacian distribution:
+
+\begin{equation}
+\pr{\left(x\right)} = \frac{1}{\sqrt{2}\sigma}\exp{-\frac{\sqrt{2}}{\sigma}|x|}
+\end{equation}
+
+Note that \( f\left(x\right) = \log{\pr_x{ \left( x \right)}} ~ -\frac{\sqrt{2}}{\sigma} |x| \), and so by differentiating \( f'\left(x\right) = -\frac{\sqrt{2}}{\sigma} \mathrm{sign}\left(x\right) \)
+
+Taking the maximum of \ref{hatx} we obtain:
+
+\begin{equation}
+\frac{y-\hat{x}}{\sigma^2_n}-\frac{\sqrt{2}}{\sigma}sign(x) = 0
+\end{equation}
+
+Which leads the soft thresholding operation defined earlier, with \(\gamma = \frac{\sqrt{2}\sigma^2_n}{\sigma}\) as (via rearrangement):
+
+$$
+y =  \hat{x} + \frac{\sqrt{2}\sigma^2_n}{\sigma}\mathrm{sign}\left(x\right)
+$$
+
+or
+
+$$
+\hat{x}\left(y\right) = \mathrm{sign}(y)\left(y - \frac{\sqrt{2}\sigma^2_n}{\sigma}\right)_+
+$$
+
+i.e \(S_\gamma(y)\).

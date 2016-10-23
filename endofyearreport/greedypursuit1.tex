@@ -1,0 +1,88 @@
+\documentclass[11pt]{article}
+\usepackage{cite}
+\usepackage[cmex10]{amsmath}
+\usepackage{amsfonts,amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage[algoruled]{algorithm2e}
+%usepackage{titlesec}
+\usepackage{graphicx}
+
+\bibliographystyle{ieeeconf}
+
+
+%\usepackage{amsmath,amsfonts,amssymb,latexsym,amsthm,verbatim,a4wide}
+
+
+ %\theoremstyle{plain}
+  \newtheorem{theorem}{Theorem}[section]
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{conj}[theorem]{Conjecture}
+ \newtheorem{condition}{Condition}
+ \newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\supp}{\operatorname{supp}} 
+\newcommand{\vc}[1]{{\mathbf{ #1}}}
+\newcommand{\tn}{\widetilde{\nabla}_{n} }
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\re}{{\mathbb{R}}}
+\newcommand{\II}{{\mathbb{I}}}
+\newcommand{\ep}{{\mathbb{E}}}
+\newcommand{\pr}{{\mathbb{P}}}
+\newcommand{\FF}{{\mathcal{F}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\phin}{\phig{n}}
+\newcommand{\phig}[1]{\phi^{(#1)}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\eff}{{\rm eff}}
+\newcommand{\suc}{{\rm suc}}
+\newcommand{\tends}{\rightarrow \infty}
+\newcommand{\setS}{{\mathcal{S}}}
+\newcommand{\setP}{{\mathcal{P}}}
+\newcommand{\setX}{{\mathcal{X}}}
+\newcommand{\nec}{{\rm nec}}
+\newcommand{\bd}{{\rm bd}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\title{Greedy Pursuit Algorithms}
+
+\author{Thomas Kealy}
+
+\begin{document}
+\maketitle
+
+\section*{OMP}
+
+\begin{algorithm}[H]
+
+ \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+ \SetKwFunction{Match}{match}\SetKwFunction{Update}{update}
+ \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+ \Input{Observation vector \(\textbf{y}\), sensing matrix \(\textbf{A}\), stopping criterion \(s\)}
+ initialization \\
+ \(k \leftarrow 0\) \\
+ \(\Lambda_0 = \emptyset\) \\
+ \(\textbf{r}_k \leftarrow \textbf{y}\) \;
+ \While{\(k \neq s\) or \(\textbf{r}_k \neq 0 \)}{
+   \(k \leftarrow k+1\)\;
+   \Match{\(h_k = A^T \textbf{r}^{k-1}\)}\;
+   \(\Lambda_k = \Lambda_{k-1} \cup \argmin_j{h_k\left(j\right)} \)\;
+  \Update:\;
+  \(\hat{\textbf{x}} \leftarrow \textbf{A}_{\Lambda_k}^\dagger \textbf{y}\)\;
+  \(\textbf{r}_k \leftarrow \textbf{y} - \textbf{A}_{\Lambda_k}^\dagger \textbf{y} \)
+ }
+ \Output{\(\hat{\textbf{x}} = \argmin_{x:\supp\left(x\right) \subseteq  \Lambda_k}\|y-Ax\|_2\)}
+ \caption{Orthogonal Matching Pursuit}
+\end{algorithm}
+
+OMP iteratively detects the support set of the signal - proceeding by extending the estimate by a single index per iteration. The algorithm uses a matched filter to find the column which is maximally correlated with the current estimate, and solves a least-squares problem to update the residual vector.
+
+Remarks:
+\begin{itemize}
+\item The residual vector at step \(k\), \(\textbf{r}_k\), can be viewed as the orthoganalisation of the observation vector against the previously chosen columns of \(\textbf{A}\).
+\end{itemize}
+
+\end{document}

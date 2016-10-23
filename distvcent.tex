@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{titlesec}
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+\titleformat{\part}[display]
+{\normalfont\LARGE\bfseries\centering}{}{0pt}{}
+
+\input{macros}
+\begin{document}
+\nocite{*}
+\title{Quick thought on Distributed vs Central solvers}
+\date{\today}
+\author{Tom Kealy}
+\maketitle
+
+\section{Background}
+\section{Sensing Model}
+\label{sensingmodel}
+We are considering a radio environment with a single primary user (PU) and a network of \(J=\)50 nodes collaboratively trying to sense and reconstruct the PU signal, either in a fully distributed manner (by local message passing), or by transmitting measurements to a fusion centre which then solves the linear system. 
+
+\subsection{Setup}
+We are trying to sense and reconstruct a wideband signal, divided into \(L\) channels. We have a (connected) network of \(M\) (= 50) nodes placed uniformly at random within the square \(  \left[0,1\right]\times \left[0,1\right] \). They individually take measurements in the following way: by mixing the incoming analogue signal \(x\left(t\right)\) with a mixing function \(p_i\left(t\right)\) aliasing the spectrum. \(x\left(t\right)\) is assumed to be bandlimited and composed of up to \(k\) uncorrelated transmissions over the \(L\) possible narrowband channels - i.e. the signal is \(k\)-sparse. 
+
+We can represent the sensing problem as a linear system by concatenating the measurements of each node into a single system i.e. \(b = Ax + sigma\). Where, each row of the matrix represents the measurements of a single node. I.e we are trying to solve the following problem:
+
+\begin{equation}
+\text{min} ||x||_1 \text{ subject to } ||Ax - b||_2^2  \leq sigma
+\end{equation}
+
+where \(x\) represents the signal, \(A\) is the sensing matrix and \(b\) the set of (noisy) measurements we take.
+
+The problem is coupled at each node by the variable \(x\). To ease this issue, at each node create a local copy, denoted \(x_m\) (so there will be \(M\) copies of this variable). 
+
+Then, for consistency, we constrain the problem, so that each copy is identical: \(x_1 = x_2 = \ldots x_M\). Equivalently, given the graphical structure of the problem, we require that \(x_i = x_j\) for each edge of the network.
+
+So now we are solving the problem
+
+\begin{equation}
+\text{min} \frac{1}{J}\sum_J||x_j||_1 \text{ subject to } A_p x = b_p \text{ and } x_i = x_j \{i,j\} \in E 
+ \label{constrainedbp}
+\end{equation}
+
+The algorithm we use follows from writing the augmented Lagrangian and using the alternating direction method of multipliers (ADMM). Each node solves the following problem locally, iteratively where \(t\) denotes the iteration index: 
+
+\begin{equation}
+x^m \left(t\right) = \text{min} \left\lbrace ||y - Ax - \sigma ||_2^2 + \frac{\lambda}{M}||x||_1 + \sum_{m' \in N_m} \mu_{mm'}\left(x^m - x^{m'}\right) +  \sum_{m' \in N_m}\frac{c}{2}|| x^m - x^{m'}||_2^2\right\rbrace
+\end{equation}
+
+and updates its own multipliers using a stochastic gradient iteration:
+
+\begin{equation}
+\mu_{mm'}\left(t\right) = \mu_{mm'}\left(t-1\right)  + c\left(x^m\left(t\right) - x^{m'}\left(t\right)\right)
+\end{equation}
+
+The \(x+m\) and \(\mu_{mm'}\) are then communicated with their one hop neighbours.
+\\
+The terms \(\left(x^m\left(t\right) - x^{m'}\left(t\right)\right)\) and \(\sum_{m' \in N_m}\frac{c}{2}|| x^m - x^{m'}||_2^2\) can be thought of as the distributed algorithm being sensitive to differences between the estimation at each node whilst seeking an energy minimising solution in each clique.
+
+\end{document}

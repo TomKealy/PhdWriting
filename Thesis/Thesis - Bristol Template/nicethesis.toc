@@ -1,0 +1,81 @@
+\select@language {english}
+\par \penalty \@M \unhbox \voidb@x \hbox {}\hfill {\nag@@warning@vi \bfseries Page}\par \penalty \@M 
+\contentsline {chapter}{List of Figures}{v}{section*.1}
+\contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Introduction}{1}{section.1.1}
+\contentsline {chapter}{\chapternumberline {2}Classical Sensing}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}Introduction}{5}{section.2.1}
+\contentsline {section}{\numberline {2.2}Classical Sensing}{9}{section.2.2}
+\contentsline {section}{\numberline {2.3}Narrowband Spectrum Sensing}{10}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Classical Spectrum Sensing}{10}{subsection.2.3.1}
+\contentsline {subsubsection}{Energy Detection}{11}{section*.2}
+\contentsline {subsubsection}{Cyclostationary Feature Detection}{13}{section*.3}
+\contentsline {subsubsection}{Matched Filtering}{15}{section*.4}
+\contentsline {subsection}{\numberline {2.3.2}Distributed Approaches to Spectrum Sensing}{15}{subsection.2.3.2}
+\contentsline {subsubsection}{Limitations}{15}{section*.5}
+\contentsline {chapter}{\chapternumberline {3}Compressive Sensing}{17}{chapter.3}
+\contentsline {section}{\numberline {3.1}Introduction and Preliminaries}{17}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}RIP and Stable Embeddings}{18}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Random Matrix Constructions}{21}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Wishart Matrices}{22}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}Reconstruction Algorithms}{23}{subsection.3.1.4}
+\contentsline {section}{\numberline {3.2}Multiple Measurement Vector}{30}{section.3.2}
+\contentsline {section}{\numberline {3.3}Compressive Sensing Architechtures}{30}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Modulated Wideband Converter}{30}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Random Demodulator}{32}{subsection.3.3.2}
+\contentsline {section}{\numberline {3.4}Distributed Compressive Sensing}{33}{section.3.4}
+\contentsline {section}{\numberline {3.5}Compressive Sampling for Spectrum Sensing}{33}{section.3.5}
+\contentsline {chapter}{\chapternumberline {4}ADMM}{35}{chapter.4}
+\contentsline {section}{\numberline {4.1}ADMM}{35}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}The Proximity Operator}{40}{subsection.4.1.1}
+\contentsline {subsubsection}{Properties}{40}{section*.6}
+\contentsline {subsubsection}{Motivation}{41}{section*.7}
+\contentsline {subsubsection}{Examples}{42}{section*.8}
+\contentsline {subsection}{\numberline {4.1.2}Statistical Interpretation}{44}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Acceleration}{44}{subsection.4.1.3}
+\contentsline {chapter}{\chapternumberline {5}Optimisation on Graphs}{45}{chapter.5}
+\contentsline {section}{\numberline {5.1}Constrained Optimisation on Graphs}{45}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}DADMM-Lasso}{50}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}DADMM-Dantzig-Selector}{50}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}DADMM-MMV}{50}{subsection.5.1.3}
+\contentsline {section}{\numberline {5.2}Results}{51}{section.5.2}
+\contentsline {section}{\numberline {5.3}Conclusions}{52}{section.5.3}
+\contentsline {chapter}{\chapternumberline {6}Sensing with Heavyside Basis}{59}{chapter.6}
+\contentsline {section}{\numberline {6.1}Introduction}{59}{section.6.1}
+\contentsline {section}{\numberline {6.2}Signal Model}{60}{section.6.2}
+\contentsline {section}{\numberline {6.3}Sensing Model}{62}{section.6.3}
+\contentsline {section}{\numberline {6.4}Constrained Optimisation on Graphs}{62}{section.6.4}
+\contentsline {section}{\numberline {6.5}Results}{67}{section.6.5}
+\contentsline {section}{\numberline {6.6}Conclusions}{68}{section.6.6}
+\contentsline {chapter}{\chapternumberline {7}Compressive Inference}{71}{chapter.7}
+\contentsline {section}{\numberline {7.1}Introduction}{71}{section.7.1}
+\contentsline {section}{\numberline {7.2}Compressive Estimation}{73}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Example: Single Spike}{75}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Estimating a single rectangle}{76}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}Estimating Frequency spectra}{77}{subsection.7.2.3}
+\contentsline {chapter}{\chapternumberline {8}Results on OFCOM Data}{81}{chapter.8}
+\contentsline {section}{\numberline {8.1}Introduction}{81}{section.8.1}
+\contentsline {section}{\numberline {8.2}Data Set}{81}{section.8.2}
+\contentsline {section}{\numberline {8.3}Results: Distributed Estimation with Heaviside Basis}{81}{section.8.3}
+\contentsline {section}{\numberline {8.4}Compressive Estimation}{82}{section.8.4}
+\contentsline {chapter}{\chapternumberline {9}Group Testing}{87}{chapter.9}
+\contentsline {section}{\numberline {9.1}Introduction and notation}{87}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}Group Testing}{87}{subsection.9.1.1}
+\contentsline {subsubsection}{Comparison to Compressive Sensing}{91}{section*.12}
+\contentsline {subsection}{\numberline {9.1.2}The Probabilistic group testing problem}{92}{subsection.9.1.2}
+\contentsline {subsection}{\numberline {9.1.3}Group testing capacity}{93}{subsection.9.1.3}
+\contentsline {subsection}{\numberline {9.1.4}Main results}{93}{subsection.9.1.4}
+\contentsline {section}{\numberline {9.2}Algorithms and existing results}{94}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Upper bounds on success probability}{94}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}Binary search algorithms}{95}{subsection.9.2.2}
+\contentsline {subsection}{\numberline {9.2.3}Summary of our contribution}{95}{subsection.9.2.3}
+\contentsline {subsection}{\numberline {9.2.4}Wider context: sparse inference problems}{96}{subsection.9.2.4}
+\contentsline {section}{\numberline {9.3}Analysis and new bounds}{97}{section.9.3}
+\contentsline {subsection}{\numberline {9.3.1}Searching a set of bounded ratio}{97}{subsection.9.3.1}
+\contentsline {subsection}{\numberline {9.3.2}Discarding low probability items}{98}{subsection.9.3.2}
+\contentsline {subsection}{\numberline {9.3.3}Searching the entire set}{99}{subsection.9.3.3}
+\contentsline {subsection}{\numberline {9.3.4}Bounding the expected number of tests}{100}{subsection.9.3.4}
+\contentsline {subsection}{\numberline {9.3.5}Controlling the error probabilities}{101}{subsection.9.3.5}
+\contentsline {section}{\numberline {9.4}Results}{103}{section.9.4}
+\contentsline {section}{\numberline {9.5}Discussion}{104}{section.9.5}
+\contentsline {chapter}{Bibliography}{107}{section*.14}

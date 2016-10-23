@@ -1,0 +1,90 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{a4wide}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{conj}{Conjecture}[section]
+
+\begin{document}
+\title{Note on PS2 Q3}
+\author{Tom Kealy}
+\maketitle
+\begin{abstract}
+This is a short note on methods of proof required to answer IT problem sheet 2, question 3.
+\end{abstract}
+
+\section{The problem}
+\begin{definition}[Problem 3]
+Show that the expected length of a Shannon code is equal to \(H\left(P\right)\) if and only if there exist natural numbers, \(\{n_x\} \in \mathbb{N}\), \(x \in \mathcal{X}\), such that \(P\left(x\right) = 2^{-n_x}\).
+\end{definition}
+
+\section{Solution}
+There are several solutions that you an use to solve problems like this. One is to form a chain of equivalences between the two statements. The other is to prove the theorem one way and then prove it in the opposite direction. The catch with this way, is that you must supply different ideas for the direct and converse parts..
+
+An example of the first way is to demonstrate the positivity of \(\mathbb{E}_P\left(l\circ f\right) - H\left(P\right)\), (with \(l\left(f\left(x\right)\right) = \lceil -\log{P\left(x\right)}\rceil\)), and then using the inequalities for the ceiling function to deduce the conditions where equality occurs. This is covered in more detail in the first section.
+
+Most students followed the second method, with ideas looking something like:
+\begin{proof}{Example proof}
+\\
+(\(\leftarrow\)) by direct computation. Let \(P\left(x\right) = 2^{-n_x}\) for some \(\{n_x\} \in \mathbb{N}\). By Shannon's LSCT (direct part) \(\exists\) a uniquely decodable code (UDC) with \(l_x = \lceil -\log{P\left(x\right)}\rceil\) \(\forall x \in \mathcal{X}\). 
+
+In this case \(l_x = -\log{P\left(x\right)}\), \(\forall x \in \mathcal{X}\), as \(-\log{P\left(x\right)} \in \mathbb{N}\) for some \(\{n_x\} \in \mathbb{N}\) by assumption (we can choose these \(\{n_x\}\) to coincide with the requirements for the Shannon code). So,
+
+\begin{align}
+\mathbb{E}_P \left( l \circ f \right) = \sum_{x \in \mathcal{X}} P\left(x\right)l_x &=& \\
+&=& - \sum_{x \in \mathcal{X}} P\left(x\right) \log{P\left(x\right)} = H\left(P\right)
+\end{align}
+\\
+(\(\rightarrow\)) Let \(\mathbb{E}_P \left( l \circ f \right)  = H\left(P\right)\). So,
+
+\begin{align}
+\mathbb{E}_P \left( l \circ f \right) = \sum_{x \in \mathcal{X}} P\left(x\right)\lceil -\log{P\left(x\right)}\rceil\ &=& \\
+&=&  \sum_{x \in \mathcal{X}} P\left(x\right) \left(-\log{P\left(x\right)}\right) = H\left(P\right)
+\end{align}
+This is equivalent to \(-\log{P\left(x\right)} = \lceil -\log{P\left(x\right)} \rceil \) i.e. \(-\log{P\left(x\right)}\) is an integer, which implies \(P\left(x\right)\) is a power of 2.
+\end{proof}
+This proof fails because while two sums may be identical, the terms needn't be identical. For example:
+
+\begin{equation}
+\sum_{n=1}^\infty \frac{1}{2^n} = \sum_{n=1}^\infty \frac{6}{\pi n^2} = 1
+\end{equation}
+
+but it's not true that
+
+\begin{equation}
+\frac{1}{2^n} = \frac{6}{\pi n^2}
+\end{equation}
+
+However, this proof is only checking that the statement is true as the same idea is used in both the direct and converse part. Also, absent are any ideas about UDCs.
+
+An example of a correct proof with a direct and converse part is:
+
+\begin{proof}
+
+((\(\leftarrow\))) by direct computation. Let \(P\left(x\right) = 2^{-n_x}\) for some \(\{n_x\} \in \mathbb{N}\). By Shannon's LSCT (direct part) \(\exists\) a uniquely decodable code (UDC) with \(l_x = \lceil -\log{P\left(x\right)}\rceil\) \(\forall x \in \mathcal{X}\). 
+
+In this case \(l_x = -\log{P\left(x\right)}\), \(\forall x \in \mathcal{X}\), as \(-\log{P\left(x\right)} \in \mathbb{N}\) for some \(\{n_x\} \in \mathbb{N}\) by assumption (we can choose these \(\{n_x\}\) to coincide with the requirements for the Shannon code). So,
+
+\begin{align}
+\mathbb{E}_P \left( l \circ f \right) = \sum_{x \in \mathcal{X}} P\left(x\right)l_x &=& \\
+&=& - \sum_{x \in \mathcal{X}} P\left(x\right) \log{P\left(x\right)} = H\left(P\right)
+\end{align}
+\\
+(\(\rightarrow\)) From the converse part to Shannon's LSCT we know:
+\begin{equation}
+H\left(P\right) \leq \mathbb{E}_P \left(l \circ f\right)
+\end{equation}
+for any UDC.
+In the proof of the theorem, Kraft's inequality and the log-sum inequality are used to demonstrate this result. Therefore, equality occurs when \( \sum_{x \in \mathcal{X}} 2^{-l\left(f\left(x\right)\right)} = 1 \) and \( \exists c\geq 0 : P\left(x\right) = c 2^{-l\left(f \left( x \right)\right)} \). This implies \(c = 1\) from summing over both sides of the second condition. Then \(P\left(x\right) = 2^{-l\left(f \left( x \right)\right)} \) and because \(l_x \in \mathbb{N}\) from the definition of the length function, we are done.
+\end{proof}
+\end{document}

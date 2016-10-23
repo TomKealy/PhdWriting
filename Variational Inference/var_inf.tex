@@ -1,0 +1,141 @@
+\documentclass{article}
+\bibliographystyle{plain}
+\input{macros}
+
+\title{Variational Inference for Sparse Linear Models}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+In this note we provide a (simple) probabilistic model for sparse linear models, as applied to Compressive Sensing. It allows the modelling of sparsity patterns from heavy-tailed distributions (for example, Laplace or Student-t).
+
+In particular, we present a method to fully reconstruct the full posterior distribution on the latent variables; as opposed to finding the most probable (MAP) solution. 
+
+However, computing the exact posterior under heavy-tailed priors is not tractable. We instead present a variational technique where we approximate the true posterior by a parameterised Gaussian, which allows closed form computations. 
+
+\section{Variational Bayes for Sparse Linear Models}
+
+Consider an undersampled linear system:
+
+\begin{equation}
+y = Sx + n 
+\end{equation}
+
+where \(y, n \in \re^{m}\), \(S \in \re^{m \times n}\), \(x \in \re^n\) and \(n\) is white Gaussian noise with variance 1.
+
+We can model simply as follows:
+
+\begin{equation}
+p\left(y|x\right) = \mathcal{N}\left(y;Sx,1\right) \approx \exp\left( -\frac{1}{2}\left(y-Sx\right)^T\left(y-Sx\right) \right)
+\end{equation}
+
+and we place a Laplace prior over the signal \(x\):
+
+\begin{equation}
+p\left(x\right) \approx \exp\left(-\lambda	\sum	_{i=1}^n |x_i| \right)
+\end{equation}
+
+we choose \(\lambda = \sqrt{2*log{n}}\) to simply the discussion.
+
+The entire posterior distribution is given by:
+
+\begin{align}
+p\left(x|y\right) &= p\left(y|x\right)p\left(x\right) \nonumber \\
+& = \exp\left( - \left(\frac{1}{2}\left(y-Sx\right)^T\left(y-Sx\right) + \lambda	\sum	_{i=1}^n |x_i| \right)  \right) 
+\label{post}
+\end{align}
+
+This leads to the familiar MAP estimate:
+
+\begin{equation}
+\hat{x}_{MAP} = \argmin_x \frac{1}{2}\left(y-Sx\right)^T\left(y-Sx\right) + \lambda	\sum	_{i=1}^n |x_i|
+\end{equation}
+
+However, computing the entire posterior \ref{post} is difficult. In this case we can approximate it with an appropriately parameterised Gaussian distribution:
+
+\begin{align}
+q\left(x|y\right) &\approx P(y|x)\exp\left( \beta^Tx - \frac{1}{2}x^T\Gamma^{-1}x \right) \\
+&= \mathcal{N}\left(x; \hat{x}_Q, A^{-1}\right)
+\end{align}
+
+where
+
+\begin{equation}
+\hat{x}_Q = A^{-1} b
+\end{equation}
+
+\begin{equation}
+A = S^TS + \Gamma^{-1}
+\end{equation}
+
+\begin{equation}
+b = S^T y + \beta
+\end{equation}
+
+and
+
+\begin{equation}
+\Gamma = \text{diag}\left(\gamma\right)
+\end{equation}
+
+and we minimise the KL divergence:
+
+\begin{equation}
+KL\left( p\left(x|y\right) || q\left(x|y\right) \right)
+\end{equation}
+
+This can be expressed as:
+
+\begin{align}
+\mathcal{L}_{KL}\left(\beta, \Gamma\right) &= q\left(x|y\right)\log{p\left(x|y\right)} - q\left(x|y\right)\log{q\left(x|y\right)} \\
+&= \frac{1}{2}\vectornorm{y-Sx}_2^2 + \lambda\vectornorm{x}_1 - \frac{1}{2}\left(x - A^{-1}b\right)^TA^{-1}\left(x - A^{-1}b\right)
+\end{align}
+
+\section{Bregman ADMM }\label{sec:admm}
+The alternating direction method of multipliers \cite{Boyd2010a}, (ADMM), algorithm solves problems of the form
+
+\begin{align}
+\argmin_{x} f\left( x \right) + g\left(z\right) \nonumber
+\\
+\text{s.t } Ux +Vz = c
+\label{admm}
+\end{align}
+
+where \(f\) and \(g\) are assumed to be convex function with range in \(\re\), \(U \in \re^{p \times n}\) and \(V\in \re^{p \times m}\) are matrices (not assumed to have full rank), and \(c \in \re^p\).
+
+ADMM consists of iteratively minimising the augmented Lagrangian 
+
+\begin{align*}
+L_p\left(x, z, \eta\right) = f\left( x\right) +& g\left(z\right)+\eta^T\left(Ux+Vz-c\right) + \\ \frac{\rho}{2}\|Ux+Vz-c\|_2^2
+\label{admm_form}
+\end{align*}
+
+(\(\eta\) is a Lagrange multiplier), and \(\rho\) is a parameter we can choose to make \(g(z)\) smooth \cite{nesterov2005smooth}, with the following iterations:
+
+\begin{align}
+x^{k+1} &:= \argmin_{x} L_\rho\left(x,z^k,\eta^k\right)\\
+z^{k+1} &:= \argmin_{z} L_\rho\left(x^{k+1},z,\eta^k\right)\\
+\eta^{k+1} &:= \eta^{k} + \rho \left(Ux^{k+1} + Vz^{k+1} - c\right)
+\label{admm_algo}
+\end{align}
+
+The alternating minimisation works because of the decomposability of the objective function: the \(x\) minimisation step is independent of the \(z\) minimisation step and vice versa.  
+
+Bregman ADMM differes from the standard ADMM by replacing the quadratic penalty with a KL divergence:
+\begin{align*}
+L_{KL}\left(x, z, \eta\right) = f\left( x\right) +& g\left(z\right)+\eta^T\left(Ux+Vz-c\right) + KL\left( Ux || Vz \right)
+\label{admm_form}
+\end{align*}
+
+so that the updates now become
+
+\begin{align}
+x^{k+1} &:= \argmin_{x} f\left(x\right) + \eta^T\left(Ux + Vz - c\right) + \rho KL\left(c-Ux || Vz^{k} \right) \\
+z^{k+1} &:= \argmin_{z} g\left(z\right) + \eta^T\left(Ux + Vz - c\right) + \rho KL\left(Vz || c-Ux^{k+1} \right)  \\
+\eta^{k+1} &:= \eta^{k} + \rho \left(Ux^{k+1} + Vz^{k+1} - c\right)
+\label{admm_algo}
+\end{align}
+
+\end{document}
+

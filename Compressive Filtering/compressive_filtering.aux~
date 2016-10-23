@@ -1,0 +1,36 @@
+\relax 
+\bibstyle{plain}
+\citation{Candes2006}
+\citation{donoho2006compressed}
+\select@language{english}
+\@writefile{toc}{\select@language{english}}
+\@writefile{lof}{\select@language{english}}
+\@writefile{lot}{\select@language{english}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\citation{Candes2006}
+\citation{donoho2004neighborly}
+\citation{davenport2010signal}
+\citation{davenport2007smashed}
+\newlabel{minsamples}{{1}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Preliminaries}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}RIP and Stable Embeddings}{2}}
+\newlabel{d-stable}{{2.3}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Random Matrix Constructions}{3}}
+\newlabel{sec:mtx-contruction}{{2.2}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Wishart Matrices}{3}}
+\citation{davenport2007smashed}
+\citation{braun2009signal}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Maximum Likelihood estimation: non-compressive case}{4}}
+\bibdata{cswireless2}
+\bibcite{braun2009signal}{1}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Compressive Estimation}{5}}
+\newlabel{smashed_filter}{{3.0.25}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Example: Single Spike}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces }}{5}}
+\newlabel{fig:new_basis_25}{{3.1}{5}}
+\bibcite{Candes2006}{2}
+\bibcite{davenport2010signal}{3}
+\bibcite{davenport2007smashed}{4}
+\bibcite{donoho2004neighborly}{5}
+\bibcite{donoho2006compressed}{6}
+\bibcite{donoho2006most}{7}

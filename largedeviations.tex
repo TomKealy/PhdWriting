@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{a4wide}
+\usepackage{verbatim}
+\usepackage{latexsym}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\newcommand{\Prob}[1]
+{\mathbb{P}\left( #1 \right)}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\twopartdef}[4]
+{
+	\left\{
+		\begin{array}{ll}
+			#1 & \mbox{ } #2 \\
+			#3 & \mbox{ } #4
+		\end{array}
+	\right.
+}
+
+\newtheoremstyle{break}
+  {\topsep}{\topsep}%
+  {\itshape}{}%
+  {\bfseries}{}%
+  {\newline}{}%
+\theoremstyle{break}
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{condition}{Condition}[section]
+
+\newcommand{\tn}{\widetilde{\nabla}_{n} }
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\re}{{\mathbb{R}}}
+\newcommand{\II}{{\mathbb{I}}}
+\newcommand{\ep}{{\mathbb{E}}}
+\newcommand{\FF}{{\mathcal{F}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\phin}{\phig{n}}
+\newcommand{\phig}[1]{\phi^{(#1)}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\eff}{{\rm eff}}
+
+\begin{document}
+
+\title{Large Deviations}
+
+\date{\today}
+
+\maketitle
+
+\section{Cramer's Theorem}
+
+\begin{definition}
+\begin{equation}
+\Lambda(t) = \log{M_x(t)} = \log{\ep{e^{tX}}}
+\end{equation}
+\end{definition}
+
+\begin{definition}[LF Transform]
+
+\begin{equation}
+\Lambda^*(t) = \sup_{t\in\re}\{tx - \Lambda(t)\}
+\end{equation}
+\end{definition}
+
+\begin{lem}[Properties of Rate Functions]
+\leavevmode
+\begin{enumerate}
+\item \(\Lambda\) is convex. \(\Lambda^*\) is convex and a Rate Function:
+\begin{enumerate}
+
+\item \(\Lambda^*\) is Lower Semi-continuous 
+
+\item If all level sets are compact, \(\Lambda^*\) is a Good Rate Function
+
+\end{enumerate}
+
+\item \(D_\Lambda = \{t: \Lambda(t) < \infty\}\), \(D_\Lambda^*\) likewise.
+
+\begin{enumerate}
+\item \(D_\Lambda = \{0\} \rightarrow \Lambda^* = 0\) 
+
+\item \(\Lambda(t) < \infty \text{ for some } t>0 \rightarrow \bar{x}<\infty \text{ and } \forall x \geq \bar{x}\)
+\begin{equation}
+\Lambda^*(x) = \sup_{t\geq 0}\{tx - \Lambda(t)\}
+\end{equation}
+and it is non-decreasing for \(x\geq \bar{x}\)
+
+\item \(\Lambda(t) < \infty \text{ for some } t<0 \rightarrow \bar{x}>-\infty \text{ and } \forall x \geq \bar{x}\)
+\begin{equation}
+\Lambda^*(x) = \sup_{t\leq 0}\{tx - \Lambda(t)\}
+\end{equation}
+
+and it is non-increasing for \(x\leq \bar{x}\)
+
+\item \(\mid \bar{x} \mid < \infty \rightarrow \Lambda^*(\bar{x}) = 0\)
+
+\item \(\inf_{x \in \re} \Lambda^*(\bar{x}) = 0\)
+\end{enumerate}
+\item \(\Lambda(\dot{•})\) is differentiable in \(D_\Lambda^{\dot{•}}\) with 
+\begin{equation}
+\Lambda^{'}(\eta) = \frac{1}{M(\eta)}\ep{X_1e^{\eta X_1}}
+\end{equation}
+and
+\begin{equation}
+\Lambda^{'}(\eta) = y \rightarrow \Lambda^* = \eta y - \Lambda(\eta)
+\end{equation}
+\end{enumerate}
+\end{lem}
+
+\begin{proof}
+\leavevmode
+\begin{enumerate}
+\item We use Holder's inequality: given \(p,q \in [1,\infty] \text{ s.t } \frac{1}{p}+\frac{1}{q} = 1 \text{ } \forall f,g \text{ measurable}\): 
+\begin{equation}
+\norm{fg}_1 \leq \norm{f}_p \norm{g}_q
+\end{equation}
+\begin{eqnarray}
+\Lambda(t\theta + (1-\theta)s) &= \log{\ep[{e^{(tX_1)\theta}e^{(sX_1)(1-\theta)}}}]\\
+& \leq \log{\ep[{e^{(tX_1)\theta}]\ep[e^{(sX_1)(1-\theta)}}}]\\
+&= \theta\log{\ep[e^{tX_1}]} +(1-\theta)\log{\ep[e^{sX_1}]}
+\end{eqnarray}
+
+\begin{eqnarray}
+\Lambda^*(x_1\theta + (1-\theta)x_2) &= \sup\limits_{\lambda \in \re}\{\lambda(x_1\theta + (1-\theta)x_2) - \Lambda(\lambda)\} \\
+& \leq \sup\limits_{\lambda \in \re}\{\lambda(x_1\theta -\theta\Lambda(\lambda)\} + \\ &   \sup\limits_{\lambda\in\re}\{(1-\theta)\lambda x_2) - (1-\theta)\Lambda(\lambda)\} \\
+&= \theta\Lambda^*(x_1) + (1-\theta)\Lambda^*(x_2)
+\end{eqnarray}
+To prove that \(\Lambda^*\) is a Rate Function:
+\begin{enumerate}
+
+\item (Non-negativity) \(\Lambda(0) = \log{\ep[1]} = 0 \rightarrow \Lambda^*(x) \geq 0x - \Lambda(0) = 0\)
+\item (Lower semi-continuity) FIx a sequence \(x_n \rightarrow x\). Then \(\forall \lambda\in\re\) 
+\begin{eqnarray}
+\liminf\limits_{x_n\rightarrow x} \Lambda^* \left(x_n\right) &\geq \liminf\limits_{x_n\rightarrow x} \left(\lambda x_n -\Lambda\left(\lambda\right) \right) \\
+&=\lambda x - \Lambda\left(\lambda\right) \\
+&\implies \liminf\limits_{x_n\rightarrow x} \Lambda^* \left(x_n\right) \geq \sup\limits_{\lambda \in \re} \left( \lambda x_n - \Lambda\lambda\right) \\
+&= \Lambda^* \left(x\right)
+\end{eqnarray}
+\\
+which is the definition of lower-semicontinuity.
+\end{enumerate}
+
+\item
+\begin{enumerate}
+\item \( D_\Lambda  := \{t:\Lambda\left(t\right)<\infty \}\) 
+\(D_\Lambda = \{0\} \implies \Lambda\left(\lambda\right) \twopartdef{0}{\lambda = 0}{\infty}{\text{otherwise}}\)
+\\
+\(\implies \Lambda^*\left(x\right) = 0 \forall x\)
+
+\item Let \( \Lambda\left(\lambda\right) = \log{M\left(\lambda\right)} < \infty \text{ for some } \lambda > 0\)
+
+\begin{equation}
+\implies \int_0^{\infty} xd\mu \leq \frac{\log\int_{\re} e^{\lambda x}d\mu }{ \lambda}
+\end{equation}
+
+\begin{eqnarray}
+log\int_{\re} e^{\lambda x}d\mu &\geq \log\int_{0}^{\infty} e^{\lambda x}d\mu\\
+&\geq \int_{\re} \log{e^{\lambda x}}d\mu\\
+&= \lambda \int_{0}^{\infty} x d\mu \\
+&\implies \bar{x}<\infty
+\end{eqnarray}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{proof}
+
+
+\end{document}

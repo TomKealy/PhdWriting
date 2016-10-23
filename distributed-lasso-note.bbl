@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{Boyd2010a}
+Stephen Boyd.
+\newblock {Distributed Optimization and Statistical Learning via the
+  Alternating Direction Method of Multipliers}.
+\newblock {\em Foundations and Trends® in Machine Learning}, 3(1):1--122,
+  2010.
+
+\bibitem{Candes2006}
+Emmanuel~J Candes, Justin Romberg, and Terence Tao.
+\newblock {Robust Uncertainty Principles : Exact Signal Frequency Information}.
+\newblock 52(2):489--509, 2006.
+
+\bibitem{mota2013d}
+Jo{\~a}o~FC Mota, Jo{\~a}o~MF Xavier, Pedro~MQ Aguiar, and Markus Puschel.
+\newblock D-admm: A communication-efficient distributed algorithm for separable
+  optimization.
+\newblock {\em Signal Processing, IEEE Transactions on}, 61(10):2718--2723.
+
+\end{thebibliography}

@@ -1,0 +1,212 @@
+\documentclass{article}
+
+\linespread{1.2}
+\usepackage[margin = 1.25 in]{geometry}
+\usepackage{wrapfig}
+\usepackage{amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage[algoruled]{algorithm2e}
+
+\renewcommand{\theequation}{\thesubsection.\arabic{equation}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg, .gif}
+
+
+
+\usepackage[english]{babel}
+\usepackage{mathtools}
+
+%\usepackage[OT2,T1]{fontenc}
+%\DeclareSymbolFont{cyrletters}{OT2}{wncyr}{m}{n}
+%\DeclareMathSymbol{\sha}{\mathalpha}{cyrletters}{"58}
+
+\DeclareFontFamily{U}{wncy}{}
+\DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+\DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+\DeclareMathSymbol{\Sh}{\mathord}{mcy}{"58} 
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcounter{eqn}
+\renewcommand*{\theeqn}{\alph{eqn})}
+\newcommand{\num}{\refstepcounter{eqn}\text{\theeqn}\;}
+
+\makeatother
+\newcommand{\vectornorm}[1]{\left|\left|#1\right|\right|}
+\newcommand*\conjugate[1]{\bar{#1}}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+ %\theoremstyle{plain}
+  \newtheorem{theorem}{Theorem}[section]
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{conj}[theorem]{Conjecture}
+ \newtheorem{condition}{Condition}
+ \newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\supp}{\operatorname{supp}} 
+\newcommand{\vc}[1]{{\mathbf{ #1}}}
+\newcommand{\tn}{\widetilde{\nabla}_{n} }
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\re}{{\mathbb{R}}}
+\newcommand{\II}{{\mathbb{I}}}
+\newcommand{\ep}{{\mathbb{E}}}
+\newcommand{\pr}{{\mathbb{P}}}
+\newcommand{\FF}{{\mathcal{F}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\phin}{\phig{n}}
+\newcommand{\phig}[1]{\phi^{(#1)}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\eff}{{\rm eff}}
+\newcommand{\suc}{{\rm suc}}
+\newcommand{\tends}{\rightarrow \infty}
+\newcommand{\setS}{{\mathcal{S}}}
+\newcommand{\setP}{{\mathcal{P}}}
+\newcommand{\setX}{{\mathcal{X}}}
+\newcommand{\nec}{{\rm nec}}
+\newcommand{\bd}{{\rm bd}}
+\begin{document}
+
+\title{ADMM}
+\author{Tom Kealy}
+
+\bibliographystyle{abbrv}
+
+\maketitle
+
+\section{Constrained Convex Optimisation}
+
+This is a method of constrained optimisation, which adds a Lagrange multiplier like term to the an unconstrained objective (which coincides with the constrained optimisation problem). For example say you are trying to solve the following problem:
+
+\begin{align}
+\text{min}_{x} f\left( x \right)
+\\
+\text{s.t } Ax = b
+\label{orig_problem}
+\end{align}
+
+where \(f\) is a function in \(\re\), \(A \in \re^{n \times m}\) is a matrix, and \(x\in X\), \(X\) is some convex set.
+
+This problem has Lagrangian:
+
+\begin{equation}
+L\left(x,y\right) = f\left( x \right) + y^T\left(Ax-b\right)
+\end{equation}
+
+where \(y\) is the Lagrange multiplier.
+
+This implies the dual problem:
+
+\begin{equation}
+g\left(y\right) = \inf_x L\left(x,y\right) = -f^*\left(-A^Ty\right) -b^Ty
+\end{equation}
+
+where \(f^*\) is the convex conjugate (Legendre-Fenchel) transform of \(f\). The problem is now to maximise \(g\). 
+
+The solution is:
+
+\begin{equation}
+x^* = \argmin{x} L\left(x, y^*\right) 
+\end{equation}
+
+where \(y^*\) is the soln of the dual problem. 
+
+Together these suggest a iterative algorithm:
+
+\begin{align}
+x^{k+1} &:= \argmin{x} L \\
+y^{k+1} &:= y^{k} + \alpha^k \left(Ax^{k+1} - b\right)
+\label{gradient_ascent}
+\end{align}
+
+This is a form of gradient ascent, with \( \alpha \) as the step size and \(k\) is the iteration counter. Assuming that \(g\) is differentiable, the algorithm is monotone (i.e. \( g\left(y^{k+1}\right) > g\left(y^{k}\right)\).
+
+This algorithm is easily extended to the case where the objective function is linearly separable.
+
+For problems with \(g\) not differentiable, the augmented Lagrangian is introduced as:
+
+\begin{equation}
+L_\rho\left(x,y\right) = f\left( x \right) + y^T\left(Ax-b\right) + \frac{\rho}{2}\|Ax-b\|_2^2
+\end{equation}
+
+where \(\rho\) is a penalty parameter. The associated dual function is \(g_\rho\left(y\right) = \inf_x L_\rho\). By adding the penalty term, \(g_\rho\) is no differentiable, and the \(\rho \rightarrow 0\) regime corresponds to the solution of the original problem. 
+
+The algorithm in this case can be found by first minimising over \(x\) and then evaluating the resulting equality constraint residual, i.e.:
+
+\begin{align}
+x^{k+1} &:= \argmin{x} L_\rho \\
+y^{k+1} &:= y^{k} + \rho \left(Ax^{k+1} - b\right)
+\label{mom}
+\end{align}
+
+This algorithm is known as the method of multipliers for solving the problem (\ref{orig_problem}). Note that even if \(f\) is separable, the augmented Lagrangian may not be.
+
+\section{ADMM}
+The alternating direction method of multipliers (ADMM), is an algorithm intended to blend the decomposability of the gradient ascent algorithm \ref{gradient_ascent}, with the more general method of multipliers \ref{mom}. The algorithm solves problems of the form
+
+\begin{align}
+\text{min}_{x} f\left( x \right) + g\left(z\right)
+\\
+\text{s.t } Ax +Bz = c
+\label{admm}
+\end{align}
+
+where \(f\) and \(g\) are assumed to be convex function with range in \(\re\), \(A \in \re^{p \times n}\) and \(B\in \re^{p \times m}\) are matrices (not assumed to have full rank), and \(c \in \re^p\).
+
+For example the Basis Pursuit problem
+
+\begin{align}
+\text{min}_{x} \|x\|_1
+\\
+\text{s.t } Ax = b
+\label{bp}
+\end{align}
+
+can be written in the ADMM form:
+
+\begin{align}
+\text{min}_{x} f\left( x \right) + \|z\|_1
+\\
+\text{s.t } x - z = 0
+\label{orig_problem}
+\end{align}
+
+where \(f\) is the indicator function of \(\{x\in \re^n : Ax = b\}\). 
+
+Similarly the LASSO:
+
+\begin{equation}
+\text{minimise } \frac{1}{2}\|Ax-b\|_2^2 + \lambda\|x\|_1
+\end{equation}
+
+\(\lambda > 0\), can be solved by the ADMM with \(f = \frac{1}{2}\|Ax-b\|_2^2\) and \(g = \lambda\|x\|_1\).
+
+The solution of (\ref{admm}) is:
+
+\begin{equation}
+x* = \inf\{f\left( x \right) + g\left(z\right) : Ax +Bz = c\}
+\end{equation}
+
+As previously we form the Lagrangian:
+
+\begin{equation}
+L_\rho\left(x,y\right) = f\left( x \right) + g\left(z\right) + y^T\left(Ax+Bz-c\right) + \frac{\rho}{2}\|Ax+Bz-c\|_2^2
+\end{equation}
+
+ADMM consists of the iterations:
+
+\begin{align}
+x^{k+1} &:= \argmin{x} L_\rho\left(x,z^k,y^k\right)\\
+z^{k+1} &:= \argmin{z} L_\rho\left(x^{k+1},z,y^k\right)\\
+y^{k+1} &:= y^{k} + \rho \left(Ax^{k+1} + Bz^{k+1} - c\right)
+\label{admm_algo}
+\end{align}
+
+Note that this algorithm is similar to both the gradient ascent and method of multipliers from the last section: it has an \(x\) minimisation step, an \(z\) minimisation step and a dual variable update. I.e. the Lagrangian is updated simultaneously with respect to the two primal variables. Separating minimisation into two steps (as opposed to joint minimisation) is what allows for decomposition if \(f\) or \(g\) (or both) are separable. 
+
+\end{document}

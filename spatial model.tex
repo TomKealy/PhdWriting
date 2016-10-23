@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{titlesec}
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+\titleformat{\part}[display]
+{\normalfont\LARGE\bfseries\centering}{}{0pt}{}
+
+\input{macros}
+\begin{document}
+\nocite{*}
+\title{Spatial Model}
+\date{\today}
+\author{Tom Kealy}
+\maketitle
+
+\section{Model}
+We are trying to sense and reconstruct a wideband signal, divided into \(L\) channels. We have a (connected) network of \(M\) (= 50) nodes placed uniformly at random within the square \(  \left[0,1\right]\times \left[0,1\right] \).
+
+We write the power spectral density (psd) of the \(sth\) transmitter as:
+
+\begin{equation}
+\phi_s = \beta_{bs} \psi_b\left(f\right)
+\label{basis_expansion}
+\end{equation}
+\\
+with the convention that repeated indices are summed over. 
+
+This model expresses in psd of the transmitter in a suitable basis - for example \(\psi_b\left(f\right)\) could be zero everywhere except for the set of frequencies where \(f=b\) i.e. \(\psi\) is a rectangular function with height \(\beta_{bs}\) and support \(f\). Other candidates for \(\psi\) include splines (e.g. raised cosines), and complex exponentials. 
+
+Given this, the psd at the \(rth\) receiver is:
+
+\begin{equation}
+\phi_r = g_{sr}\phi_s = g_{sr}\beta_{bs}\psi_b\left(f\right)
+\end{equation}
+
+where
+
+\begin{equation}
+g_{sr} = \exp\left(-||x_r - x_s||_2^\alpha\right)
+\end{equation}
+
+is the channel response between the \(sth\) transmitter and the \(rth\) reciver.
+
+We can write the psd at the rth receiver, over all \(k\) frequencies as:
+
+\begin{equation}
+\phi_{rk} = g_{sr}\phi_s 
+\end{equation}
+
+This model can be summarised using Kronecker products as follows:
+
+\begin{equation}
+\phi_{rk} = \left( g_{sr} \bigotimes \psi_{bk} \right)\left(\psi_{bk} \bigotimes \beta_{bs}\right) = g_{sr}\psi_{kb} \bigotimes \psi_{kb}\beta_bs
+\end{equation}
+
+\(\beta_{bs} \in \re^{1 \times n_s}\), \(g_{sr} \in \re^{n_r \times n_s}\) and \(\psi_{kb} \in 1 \times n_kn_b\) where \(n_k\) is the number of frequency bands (in this example \(n_k = n_b\).
+
+For example
+
+In the absence of knowledge of the location of the transmitters we introduce a grid of \textit{candidate} locations, to make the above model linear. \(s\) now runs over the set of these candidate locations.
+
+The problem of estimating the coefficients, \(\beta\), from noisy observations \(y = \phi_r + N\left(0,1\right)\) is now one that can be tackled by linear regression/convex optimisation.
+
+\section{Thoughts}
+In the noiseless case we would like to calculate:
+
+\begin{equation}
+\pr\left(\text{obs at r} | \text{transmission from s}\right) = \pr(Obs | Tx)
+\end{equation}
+
+Applying Bayes formula:
+
+\begin{equation}
+\pr(Obs | Tx) = \frac{\pr(Tx | Obs) \pr(Obs)}{\pr(Tx)}
+\end{equation}
+
+From \ref{basis_expansion}, \(\pr(Tx | Obs)\) is \(g_{rs}\), and \(\pr(Tx)\) is \(|Tx|/8\) as reciever \(r\) can possible mistake transmitter \(s\) for any of it's 8 neighbours. \(\pr(Obs)\) is a Rayleigh random variable normalised by the number of receivers \(|Rx|\). 
+
+\begin{equation}
+\pr(Obs | Tx) = \exp\left(-||x_r - x_s||_2^\alpha\right) \exp(-\gamma ||x_r - x_s||_2^2) \frac{|Tx|}{8|Rx|}
+\end{equation}
+
+\end{document}

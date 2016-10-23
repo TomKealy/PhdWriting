@@ -1,0 +1,358 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{a4wide}
+\usepackage{verbatim}
+\usepackage{latexsym}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\newcommand{\Prob}[1]
+{\mathbb{P}\left( #1 \right)}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{conj}{Conjecture}[section]
+
+\theoremstyle{plain}
+  \newtheorem{theorem}{Theorem}[section]
+  \newtheorem{cor}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{conj}[theorem]{Conjecture}
+ \newtheorem{condition}{Condition}
+
+\newcommand{\tn}{\widetilde{\nabla}_{n} }
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\re}{{\mathbb{R}}}
+\newcommand{\II}{{\mathbb{I}}}
+\newcommand{\ep}{{\mathbb{E}}}
+\newcommand{\FF}{{\mathcal{F}}}
+\newcommand{\TT}{{\mathcal{T}}}
+\newcommand{\phin}{\phig{n}}
+\newcommand{\phig}[1]{\phi^{(#1)}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\eff}{{\rm eff}}
+
+\begin{document}
+\title{Stochastic Dominance}
+\author{Tom Kealy}
+
+\section{Stochastic Dominance}
+\begin{definition}[Stochastic Order]
+For two disjoint sets of probabilities \(p_i\) and \(q_i\), \(\vec{q}\) is said to dominate \(\vec{p}\) if for any \(l \in \mathbb{N}\):
+
+\begin{equation}
+\sum_i^l q_i \geq \sum_i^l p_i
+\end{equation}
+\end{definition}
+
+\section{Huffman Tree Searching}
+Given a set \(S, \text{ } \lvert S \rvert = n\) of items, containing an unknown subset of \(D, \text{ } \lvert D \rvert = k\) of defective items, a group testing procedure to find a single defective can be defined as follows:
+
+\bigskip	
+\begin{algorithm}[H]
+ \SetLine % For v3.9
+ %\SetAlgoLined % For previous releases [?]
+ \KwData{A Set of \(n\) items, \(k << n\) of which are defective and a probability vector \(\vec{p}\)}
+ \KwResult{A decision tree}
+ 	Define \(l:=n\) (length of the tree)\
+ \While{\(l>1\)}{
+ 	Find the two smallest nodes in probability\;
+ 	Create a parent node by adding together the probabilities of these nodes, and appending the items from the children into a group\;
+ 	Set \(l:=l-1\) 		
+  }
+ \caption{Construction of the Huffman decision tree}
+\end{algorithm}
+\bigskip	
+
+That is, the decision tree has as external nodes the set of items and internal nodes the groups of items queries will be performed against. These groups are not equal in size, but are instead weighted by probability. 
+
+\bigskip	
+\begin{algorithm}[H]
+ \SetLine % For v3.9
+ %\SetAlgoLined % For previous releases [?]
+ \KwData{A Set of \(n\) items, \(k << n\) of which are defective}
+ \KwResult{A single defective item}
+ Create a decision tree as above\;
+ Define \(G = n\) (Group-size)\;
+ \eIf{\(G==2\)}{
+ 	Test the left item
+ 	\eIf{Test is positive}{The left item is defective}{The right item is defective}
+ 	}
+ {Test the left branch of root node of the tree\;
+  \eIf{If the test is positive}{
+  Set the left branch as the root of the tree\; Set \(G = \text{\# items in left branch}\)}{
+  Set the right branch as the root of the tree\; Set \(G =\text{\# items in right branch} \) }  	
+  }
+ \caption{Searching the Tree for a single defective}
+\end{algorithm}
+\bigskip	
+
+\begin{definition}[Defective Probability]
+An item in the set \(S\) is independently defective with probability
+
+\begin{equation}
+\bar{p}_i = \frac{p_i}{\sum_i p_i}
+\end{equation}
+
+conditional on there being at least one defective item in the set \(S\).
+\end{definition}
+
+\begin{definition}[Leftmost Defective]
+Item \(i\) is the leftmost defective with probability:
+
+\begin{equation}
+q_i = \frac{p_i \prod_{j=1}^{i-1}\left(1-p_j\right)}{1 - \prod_{j=1}^{i-1}\left(1-p_j\right)}
+\end{equation}
+
+conditional on there being at least a single defective item in the set.
+\end{definition}
+
+\begin{thm}
+\(\{q_i\}\) dominate \(\{p_i\}\)
+\end{thm}
+
+\begin{proof}
+\begin{definition}
+\(\theta_i = \prod_{j=1}^{i-1}\left(1-p_j\right)\)
+Note:
+\(\theta_1 = 1\)
+\( \theta_i \geq 0 \text{ } \forall i\)
+\end{definition}
+
+We will show that \(\sum_{k=1}^l q_k \geq \sum_{k=1}^l \bar{p}_k\) for any (\(l<M)\), that is to show
+\begin{equation}
+\frac{\sum_{k=1}^l p_k\theta_k}{\sum_{i=1}^M p_k\theta_k} - \frac{\sum_{k=1}^l p_k}{\sum_{i=1}^M p_k} \geq 0
+\end{equation}
+This is equivalent to the positivity of 
+\begin{align}
+& \left(\sum_{k=1}^l p_k\theta_k\right)\left(\sum_{i=1}^M p_k\right) - \left(\sum_{k=1}^l p_k\right)\left(\sum_{i=1}^M p_k\theta_k\right) \\
+=& \sum_{k=1}^l \left(\sum_{i=1}^M p_i\left(\theta_k - \theta_i\right)\right) \\
+=& \sum_{k=1}^l \left(\sum_{i=1}^k p_i\left(\theta_k - \theta_i\right)\right) + \sum_{k=1}^l\left(\sum_{i=k+1}^M p_i\left(\theta_k-\theta_i\right)\right) \label{pretrans}
+\end{align}
+The first term can be re-written (after a co-ordinate swap):
+
+\begin{align}
+\sum_{i=1}^l \sum_{k=1}^l p_k p_i \left(\theta_k - \theta_i\right) = \sum_{k=1}^l \sum_{i=k+1}^l p_i p_k \left(\theta_i - \theta_k\right) 
+\end{align}
+Now, adding this to the second term from (\ref{pretrans}) results in:
+
+\begin{align}
+&\sum_{k=1}^l p_k \left(\sum_{i=k+1}^M p_i\left(\theta_k - \theta_i\right) + \sum_{i=k+1}^l -p_i\left(\theta_k - \theta_i\right)\right) \\
+=& \sum_{k=1}^l p_k \sum_{l+1}^M p_i\left(\theta_k - \theta_i\right) \\
+&\geq 0
+\end{align}
+and the result follows.
+\end{proof}
+
+\begin{lem}
+For a set of items \(S, \text{ } \lvert S \rvert = n\) with non-identical probabilities \(p_i, \text{ } i \in \{1\ldots n\} \), such that some unspecified number, \(k\) are defectivem layed out on a Huffman tree, the above procedure will return a defective (the 'leftmost') in a number of tests \(T\) bounded by:
+
+\begin{equation}
+H\left(\vec{\bar{p}}\right) \leq T \leq H\left(\vec{\bar{p}}\right) + 1
+\end{equation}
+where \( H\left( \circ \right) \) is the entropy function, and
+
+\begin{equation}
+\vec{\bar{p}} = \frac{\vec{p}}{\sum_{i=1}^n p_i}
+\end{equation}
+\end{lem}
+
+\begin{proof}
+The lemma follows the dominance of \(\{q_i\}\) over \(\{p_i\}\) and the optimality property of Huffman codes.
+\end{proof}
+
+\subsection{Counting the total number of tests}
+
+\begin{lem}[Demcomposition of the entropy]
+The entropy has the property, that for any \(m \in \mathbb{N}\):
+\begin{align}
+H\left(\vec{p}\right) &= H\left([p_1+\ldots + p_m,p_{m+1}+\ldots + p_n]\right) \\
+&+ \left(p_1 + \ldots + p_m\right)H\left(\frac{p_1}{\sum_{i=1}^m p_i},\ldots,\frac{p_m}{\sum_{i=1}^m p_i}\right) \\
+&+ \left(p_{m+1} + \ldots + p_n\right)H\left(\frac{p_{m+1}
+}{\sum_{i=m+1}^n p_i},\ldots,\frac{p_m}{\sum_{i=m+1}^n p_i}\right)
+\end{align}
+\end{lem}
+
+\begin{definition}
+A Group Testing problem \( M\left(n,k,\vec{p}\right) \) is the minimum number of tests \(T \) required to uniquely identify all \(k\) defectives in a set \(S\) of \(\lvert S \rvert = n \) items, when each item is defective with an independent probability \(p_i\).
+\end{definition}
+
+\begin{cor}
+\(\sum_{i=1}^n p_i = k\)
+\end{cor}
+
+\begin{cor}
+When \(p_i = \frac{k}{n} \text{ } \forall \text{ } i\), \( M\left(n,k,\vec{p}\right) \) = \( M\left(n,k\right) \)
+\end{cor}
+
+\begin{lem}
+For any \(m < n\), and \(l<m\):
+\begin{equation}
+M\left(n,k,\vec{p}\right) \leq M\left(m,1,\vec{p}_m\right) + M\left(n-l,k-1,\vec{p}_{n-l}\right)
+\end{equation}
+where 
+\begin{equation}
+\vec{p}_m = \left(\frac{p_1}{\sum_{i=1}^m p_i},\ldots,\frac{p_m}{\sum_{i=1}^m p_i}\right)
+\end{equation}
+and:
+\begin{equation}
+\vec{p}_{n-m} = \left(\frac{p_{m+1}
+}{\sum_{i=m+1}^n p_i},\ldots,\frac{p_m}{\sum_{i=m+1}^n p_i}\right)
+\end{equation}
+\end{lem}
+\begin{proof}
+The total number of tests must be the number of tests required to find a single defective in a subset of \(m\) items, plus the number tests to find the remaining defectives in the remaining \(n-m\) items.
+\end{proof}
+
+\begin{conj}
+\begin{equation}
+M\left(n,k,\vec{p}\right) \leq H\left(\vec{p}\right)
+\end{equation}
+\end{conj}
+
+\begin{proof}[Sketch]
+Using Algorithm 2 find a single defective in a set of \(n\) items. By linearity of expectation:
+\begin{align}
+\mathbb{E}T = \mathbb{E}M\left(n,k,\vec{p}\right) &= \mathbb{E}M\left(m,1,\vec{p}_m\right) + \mathbb{E}M\left(n-l,k-1,\vec{p}_{n-l}\right) \\
+&\leq H\left(\vec{p}_m\right) + H\left(\vec{p}_{n-m}\right)
+\end{align}
+\end{proof}
+This proof didn't really go anywhere, it's not really that straightforward to estimate to second term \(\mathbb{E}M\left(n-l,k-1,\vec{p}_{n-l}\right) \). Intuitively I'd expect:
+
+\begin{equation}
+\mathbb{E}M\left(n-l,k-1,\vec{p}_{n-l}\right) \leq \mathbb{E}M\left(n-m,k-1,\vec{p}_{n-m}\right) 
+\end{equation}
+as we're trying to solve a sparser problem (\(n-l \geq n-m\) as \(l<m\)). However, this needs to be proved. 
+
+Some other bounds that come to mind (not optimal):
+
+\begin{equation}
+\mathbb{E}M\left(n,k,\vec{p}\right) \leq n
+\end{equation}
+i.e. in the worst case, we have to check all \(n\) items. 
+
+If we divide the \(n\) items into \(k\) groups of size \(\lceil\frac{n}{k}\rceil\) and condition on the event that there is a defective in each group we have:
+
+\begin{equation}
+\mathbb{E}\left(M\left(n,k,\vec{p}\right)|\text{1 defective per group}\right) \leq k H\left( \vec{p}_{\lceil \frac{n}{k} \rceil }\right)
+\end{equation}
+
+\subsection{Counting in Rounds}
+Divide the \(n\) items into \(\kappa_1\) groups (labelled \(S_1 \ldots S_{\kappa_1}\)) s.t. 
+
+\begin{align}
+\Delta_i &= \Prob{\text{set \(S_i\) contains no defectives}}\\
+ &= \prod_{j\in S_i}\left(1-p_j\right) \\
+ &\sim 1/2
+\end{align}
+I.e. this defines an implicit function:
+\begin{equation}
+f^{\left(1\right)}: 1\ldots n \rightarrow 1\ldots \kappa_1
+\end{equation}
+let
+
+\begin{equation}
+p_{j,s_i} = \frac{p_j}{P_i} \text{ , } P_i = \sum_{k\in S_k}p_k
+\end{equation}
+For each group \(S_i\), do a pilot test. We search further if
+
+\begin{equation}
+I_i = \mathbbm{1}_{\text{\{\(S_i\) contains a defective\}}} = 1
+\end{equation}
+The total number of tests we will do is then
+\begin{equation}
+\sum_{i=1}^{\kappa_1} I_i\left[H\left(p_{j,s_i}\right)+1\right]
+\end{equation}
+so,
+\begin{equation}
+\mathbb{E}T^{\left(1\right)} \leq \kappa_1 + \sum_{i=1}^{\kappa_1} \left(1-\Delta_i\right)\left[H\left(p_{j,s_i}\right)+1\right]
+\end{equation}
+Now,
+
+\begin{align}
+H\left(p_{j,s_i}\right) &= \sum_{j\in S_i} -p_{j,S_i}\log{p_
+{j,S_i}} \\
+&= \frac{1}{P_i}\left[\sum_{j\in S_i} -p_{j}\log{p_j} + \sum_{j\in S_i} p_{j}\log{P_i}\right] \\
+&= \frac{1}{P_i}\sum_{j\in S_i} -p_{j}\log{p_j} + \log{P_i}
+\end{align}
+Where the second and third lines follow from the definition of \(p_{j,S_i}\).
+We have,
+\begin{equation}
+\Delta_i \sim e^{-P_i} \sim 1/2
+\end{equation}
+Which follows from the generalised Bernoulli inequality:	
+\begin{equation}
+\prod_i \left(1+x_i\right) \geq 1+\sum_i x_i
+\end{equation}
+So,
+\begin{align}
+P_i &\sim \ln{2} \\
+\log{P_i} &\sim \log{\ln{2}}
+\label{probnorm}
+\end{align}
+Putting this all together:
+\begin{align}
+\mathbb{E}T^{\left(1\right)} &\leq \kappa_1 + \sum_{i=1}^{\kappa_1} \left(1-\Delta_i\right)\left[H\left(p_{j,s_i}\right)+1\right] \\
+&\leq \kappa_1 + \frac{1}{2\ln{2}}\left[\sum_{j=1}^n-p_j\log{p_j} + \kappa_1\log{\ln{2}} +\kappa_1\right]
+\end{align}
+
+\subsection{Counting in Rounds II}
+We arrange the tests into \(k\) rounds, organised as a sequence of \(J-1\) negative tests before a positive test. As before, label each group in round \(i\) from \(1\ldots j\). Each test tests a groups of items chosen such that
+
+\begin{align}
+\Delta_i &= \Prob{\text{set \(S_i\) contains no defectives}}\\
+ &= \prod_{m\in S_m}\left(1-p_m\right) \\
+ &\sim 1/2
+\end{align}
+where \(p_m\) is the probability that item \(m\) in group \(j\) is not defective.
+
+Denote:
+
+\begin{equation}
+T_j = \sum_{\text{tests in round i}} \mathbbm{1}_{\text{Test j is negative}}
+\end{equation}
+
+The number of tests in round \(i\) is:
+
+\begin{align}
+T_{tot}^i &= T_j + \left[H\left(p_{j,s_j}\right) + 1\right] \\
+&= T_j+ \frac{1}{P_i}\sum_{j\in S_i}\left[ -p_{j}\log{p_j} + \log{P_i} + 1\right]
+\end{align}
+
+The total number of tests is then:
+
+\begin{align}
+T_{tot} &= \sum	_{i=1}^k T_{tot}^i \\ 
+&= \sum_{i=1}^k\left[ T_j + \left[H\left(p_{j,s_j}\right) + 1\right]\right] \\
+&= \sum_{i=1}^k T_j + \sum_{i=1}^k\frac{1}{P_i}\sum_{j\in S_i}\left[ -p_{j}\log{p_j} + \log{P_i} + 1\right] \\
+&= \sum_{i=1}^k T_j + \sum_{i=1}^k\frac{1}{P_i}\sum_{j\in S_i}-p_{j}\log{p_j} + \sum_{i=1}^k \sum_{j\in S_i} \log{P_i} + \sum_{i=1}^k \sum_{j\in S_i} 1
+\end{align}
+
+Using (\ref{probnorm}) this can be simplified to:
+
+\begin{align}
+T_{tot} = \sum_{i=1}^k T_j + \frac{1}{\ln{2}}\sum_{i=1}^k\sum_{j\in S_i}-p_{j}\log{p_j} + \\ \log{\ln{2}} \sum_{i=1}^k \sum_{j\in S_i}  + \sum_{i=1}^k \sum_{j\in S_i} 1
+\end{align}
+
+The last sum is \(k/2\) - the inner sum is over items in a single positive test - which happens with probability \(p_j\) and so is equal to \(\Delta_i \sim 1/2\).
+
+The first sum is over items which are not in positive tests, this occurs with probability \(\left(1-\Delta_i\right) \sim 1/2\). So we are left with:
+
+\begin{align}
+T_{tot} = k + \frac{1}{\ln{2}}\sum_{i=1}^k\sum_{j\in S_i}-p_{j}\log{p_j} + \\ \log{\ln{2}}\frac{k}{2}
+\end{align}
+
+
+\end{document}
+
+\end{document}

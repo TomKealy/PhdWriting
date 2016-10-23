@@ -1,0 +1,98 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage{extarrows}
+
+\newcommand{\sectionbreak}{\clearpage}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+
+\begin{document}
+\title{Channel Dispersion Thoughts}
+\author{Tom Kealy}
+
+\date{\today}
+
+\maketitle
+
+Define the information density etc as per the Verdu, Polyanski paper. We have an input alphabet \(\mathscr{X}\) with \(n\) symbols, and an output alphabet, \(\mathscr{Y}\) with \(2\) symbols. There is also some discrete spaces where the probability distributions live, \(S\left(\mathscr{X}\right)\) and \(S\left(\mathscr{Y}\right)\).
+
+In particular the channel dispersion is:
+
+\begin{equation}
+V = \sum_{x,y \in \mathscr{X}, \mathscr{Y}} p\left(x,y\right) \left(\log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}\right)^2 - I\left(\mathscr{X} ; \mathscr{Y}\right)^2 
+\end{equation}
+
+This can be rewritten as: 
+
+\begin{equation}
+V = \sum_{x,y \in \mathscr{X}, \mathscr{Y}} I\left(\mathscr{X} ; \mathscr{Y}\right) \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}} - I\left(\mathscr{X} ; \mathscr{Y}\right)^2
+\end{equation}
+
+Define \(Q\) as:
+
+\begin{equation}
+Q = \sum_{x,y \in \mathscr{X}, \mathscr{Y}} I\left(\mathscr{X} ; \mathscr{Y}\right) \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}
+\end{equation}
+
+Now \(Q^2\) is:
+
+\begin{equation}
+Q^2 = \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} I\left(\mathscr{X} ; \mathscr{Y}\right) \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}\right)^2
+\end{equation}
+
+By Cauchy-Swartz:
+
+\begin{equation}
+Q^2 \leq \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} I\left(\mathscr{X} ; \mathscr{Y}\right)\right)^2 \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}\right)^2
+\end{equation}
+
+Using the bound on the mutual information: 
+
+\begin{equation}
+I\left(\mathscr{X} ; \mathscr{Y}\right)  \leq 1 
+\end{equation}
+
+So, 
+
+\begin{equation}
+Q^2 \leq \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} 1 \right)^2 \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}\right)^2
+\end{equation}
+
+The first term is at most \(n\), so: 
+
+\begin{equation}
+Q^2 \leq n \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}\right)^2
+\end{equation}
+
+So
+
+\begin{equation}
+Q \leq \sqrt{n \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}\right)^2}
+\end{equation}
+
+\begin{equation}
+Q \leq \sqrt{n} \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} \log{\frac{p\left(y \mid x\right)}{p\left(x\right)}}\right)
+\end{equation}
+
+Then we are left with:
+
+\begin{equation}
+V \leq \sqrt{n} \left( \sum_{x,y \in \mathscr{X}, \mathscr{Y}} \log{\frac{p\left(y \mid x\right)} {p\left(x\right)}}\right) - 1
+\end{equation}
+
+So I don't think the channel dispersion can be bounded in anything better than \(\BigO{\sqrt{n}\log{n}}\).
+
+\end{document}

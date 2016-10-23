@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{titlesec}
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+\titleformat{\part}[display]
+{\normalfont\LARGE\bfseries\centering}{}{0pt}{}
+
+\newcommand{\mf}{\psi\left(h\right)}
+
+\input{macros}
+\begin{document}
+\nocite{*}
+\title{Bayesian Bounds, and Large Deviations}
+\date{\today}
+\author{Tom Kealy}
+\maketitle
+
+This is a short note, outlining some ideas between the variational Bayesian framework and Large Deviations theory. 
+
+Following \cite{Banerjee}, we state a simple lemma (the compression lemma) which can simplify some bounds obtained in PAC Bayesian learning.
+
+\begin{lemma}
+Let \(\left(\Omega, \mathcal{F}, \pr\right)\) be a probability space, on a metric space \(\left(H, \mu\right)\). Let \(\psi\left(h\right)\) be a measurable function on \(H\), and \(P,Q\) be distributions on \(\Omega\). We have:
+
+\begin{equation}
+\ep_{Q} \left(\mf \right) - \log{\ep_{P} \left(\exp{\mf }\right)} \leq D\left(Q||P\right)
+\end{equation}
+futher
+
+\begin{equation}
+\sup_{\psi}{\ep_{Q} \left(\mf \right) - \log{\ep_{P} \left(\exp{\mf }\right)}} = D\left(Q||P\right)
+\end{equation}
+\end{lemma}
+This is an elementary version of the Donsker-Varadhan formula - it's true for reasons deeper than this, but the proof is correspondingly more difficult. 
+\begin{proof}
+For any measurable \(\mf \), we have: 
+
+\begin{align}
+\ep{\mf} &= \ep_Q{\log{\frac{dQ}{dP} \exp{\mf} \frac{dP}{dQ} }}
+\\& = D\left(Q||P\right) + \ep_Q{\log{\exp{\mf} \frac{dP}{dQ} }} 
+\\& \leq D\left(Q||P\right) + \log{\ep_Q{\exp{\mf} \frac{dP}{dQ} }}
+\\& = D\left(Q||P\right) + \log{\ep_P{\exp{\mf}}}
+\end{align}
+The supremum is achieved if we take:
+\begin{equation}
+\mf = \log{\frac{dQ}{dP}}
+\end{equation}
+
+\end{proof}
+\begin{thebibliography}{9}
+
+\bibitem{Banerjee}
+  On Bayesian Bounds,
+  Arindam Banerjee
+
+\end{thebibliography}  
+\end{document}

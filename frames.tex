@@ -1,0 +1,63 @@
+\documentclass{article}
+\bibliographystyle{plain}
+\input{macros}
+
+\title{Frames}
+
+\begin{document}
+\maketitle
+
+Given a set of observations described by a linear model:
+
+\begin{equation}
+y = Ax + n 
+\end{equation}
+
+where \(y \in \re^{m}, x\in \re^n, A \in \re^{m \times n}, and n ~ N\left(0,1\right) \in \re^m\), we wish to recover \(x\) from these measurements. 
+
+One approach is to form a basis, or an over-complete basis, from \(y\) as:
+
+\begin{equation}
+Q = yy^t
+\end{equation}
+
+if we let \(v = Ax\), we see that \(Q\) is approximately \(vv^t\). One way to form a solution is to find an \(\hat{x}\) which is maximally correlated with the \(k\) largest eigenvectors of \(Q\).
+
+I.e we can express \(\hat{x}\) as:
+
+\begin{equation}
+\hat{x} = \sum_{i=1}^k \lambda_i yy^t
+\end{equation}
+
+in particular \(v\) is a \( \vectornorm{v}^2 \) eigen-vector of \(vv^t\).
+
+One way to find such an \(\hat{x}\) would be to form the matrix \(\textbf{U}\) by taking the \(k\) largest eigen-vectors of \(Q\) normalised by their respective eigen-values, and then correlating these eigen-vectors against the matrix \(A\). 
+
+\subsubsection*{OMP}
+
+\begin{algorithm}[H]
+
+ \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+ \SetKwFunction{Match}{match}\SetKwFunction{Update}{update}
+ \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+ \Input{Matrix \(\textbf{U}\), sensing matrix \(\textbf{A}\), stopping criterion \(s\)}
+ initialization \\
+ \(k \leftarrow 0\) \\
+ \(\Lambda_0 = \emptyset\) \\
+ \(\textbf{r}_k \leftarrow \textbf{U}\) \;
+ \While{\(k \neq s\) or \(\textbf{r}_k \neq 0 \)}{
+   \(k \leftarrow k+1\)\;
+   \Match{\(h_k = A^T \textbf{r}^{k-1}\)}\;
+   \(\Lambda_k = \Lambda_{k-1} \cup \argmin_j{h_k\left(j\right)} \)\;
+  \Update:\;
+  \(\hat{\textbf{x}} \leftarrow \textbf{A}_{\Lambda_k}^\dagger \textbf{U}\)\;
+  \(\textbf{r}_k \leftarrow \textbf{U} - \textbf{A}_{\Lambda_k}^\dagger \textbf{U} \)
+ }
+ \Output{\(\hat{\textbf{x}} = \argmin_{x:\supp\left(x\right) \subseteq  \Lambda_k}\|U-Ax\|_2\)}
+ \caption{Orthogonal Matching Pursuit}
+\end{algorithm}
+
+OMP iteratively detects the support set of the signal - proceeding by extending the estimate by a single index per iteration. The algorithm uses a matched filter to find the column which is maximally correlated with the current estimate, and solves a least-squares problem to update the residual vector.
+
+\end{document}

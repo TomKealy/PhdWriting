@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[algoruled]{algorithm2e}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{conj}{Conjecture}[section]
+
+\begin{document}
+\title{Coupling of Markov Chains}
+\author{Tom Kealy}
+
+\section{Variation Distance}
+If we run a Markov Chain for a finite time, how do we know if it has reached its stationary distribution. For example, think of shuffling cards by choosing a card independently and uniformly at random and putting this card on the top of the deck. This process is a Markov Chain. (You can check that the chain is finite, irreducible, aperiodic, and that the stationary distribution is the uniform distribution).
+
+How many steps before we obtain a shuffle which is close to uniformly distributed? We introduce the following distance measure, to quantify what 'close to the stationary distribution' means:
+
+\begin{definition}[Variation Distance]
+The \textbf{variation distance} between two distribution, \(D_1\) and \(D_2\) on a countable space \(S\) is given by
+\begin{equation}
+\norm{D_1 - D_2} = \frac{1}{2} \sum_{x \in S} |D_1\left(x\right) - D_2\left(x\right)|
+\end{equation}
+\end{definition}
+
+\begin{lem}
+For any \(A \subset S\), let \(D_i\left(A\right) = \sum_{x\in A} D_i\left(x\right)\) for \(i=1,2\). Then:
+\begin{equation}
+\norm{D_1 - D_2} = \underset{A \subset S}{\operatorname{max}} |D_1\left(A\right) - D_2\left(A\right)|
+\end{equation}
+\label{vardistlemma}
+\end{lem}
+
+\begin{proof}
+Let \(S^+ \subset S\) be the set of states s.t \(D_1\left(x\right) \geq D_2\left(x\right)\), and let \(S^- \subset S\) be the set of states s.t \(D_2\left(x\right) \geq D_1\left(x\right)\). We have
+\begin{equation}
+\underset{A \subset S}{\operatorname{max}} D_1\left(A\right) - D_2\left(A\right) = D_1\left(S^+\right) - D_2\left(S^+\right)
+\end{equation}
+and
+\begin{equation}
+\underset{A \subset S}{\operatorname{max}} D_2\left(A\right) - D_1\left(A\right) = D_2\left(S^-\right) - D_1\left(S^-\right)
+\end{equation}
+But \(D_1\left(S\right) = D_2\left(S\right) = 1\), we have
+\begin{equation}
+D_1\left(S^+\right) - D_1\left(S^-\right) = D_2\left(S^+\right) - D_2\left(S^-\right) = 1
+\end{equation}
+which implies that
+\begin{equation}
+D_1\left(S^+\right) - D_2\left(S^+\right) = D_2\left(S^-\right) - D_1\left(S^-\right)
+\end{equation}
+so, 
+\begin{equation}
+\underset{A \subset S}{\operatorname{max}} |D_2\left(A\right) - D_1\left(A\right)| = |D_1\left(S^+\right) - D_2\left(S^+\right)| = |D_1\left(S^-\right) - D_2\left(S^-\right)|
+\end{equation}
+so,
+\begin{align}
+D_1\left(S^+\right) - D_2\left(S^+\right)| + |D_1\left(S^-\right) - D_2\left(S^-\right)| \\ = \sum{x \in S} |D_1\left(x\right) - D_2\left(x\right)| \\ = 2\norm{D_1 - D_2}
+\end{align}
+taking the maximum completes the proof.
+\end{proof}
+Suppose we take a 52-card deck and shuffle all the cards - but leaving the ace of spades on top. We can thus bound the variation distance between the resulting distance between the resulting distribution \(D_1\) and the uniform distribution \(U\) by considering the set of states \(B\) where the ace of spades is on the top of the deck:
+\begin{align}
+\norm{D_1 - U} = \underset{A \subset S}{\operatorname{max}} |D_1\left(A\right) - U\left(A\right)| &\geq \\
+|D_1\left(B\right) - U\left(B\right)| = 1 - \frac{1}{52}
+\end{align}
+\begin{definition}[Mixing time]
+Let \(\pi\) be the stationary distribution of a Markov Chain with state space \(S\). Let \(p_x^t\) be the distribution of the state of the chain starting at state \(x\) after \(t\) steps. We define
+\begin{equation}
+\Delta_x\left(t\right) = \norm{p_x^t - \pi}
+\label{timedepvardist} 
+\end{equation}
+\begin{equation}
+\Delta\left(t\right) = \underset{x \in S}{\operatorname{max}} \Delta_x\left(t\right)
+\label{maxvardist}
+\end{equation}
+We also define
+\begin{equation}
+\tau\left(\epsilon\right) = \min{\{t:\Delta\left(t\right)\leq \varepsilon\}} 
+\label{firstmixingtime}
+\end{equation}
+and
+\begin{equation}
+\tau	\left(\varepsilon\right) = \underset{x \in S}{\operatorname{max}} \tau\left(\varepsilon\right)
+\label{maxmixingtime}
+\end{equation}
+That is (\ref{timedepvardist}) is the variation distance between the stationary distribution and \(p_x^t\) and (\ref{maxvardist}) is the maximum of these values over all states \(x\). (\ref{firstmixingtime}) is the first step at which the variation distance between the stationary distribution and \(p_x^t\) is less than \(\varepsilon\). (\ref{maxmixingtime}) is the maximum of these values over all states \(x\), it is called the \textbf{mixing time} of the Markov Chain.
+\end{definition}
+A chain is called rapidly mixing if \(\tau	\left(\varepsilon\right) \) is polynomial in \(\log{\frac{1}{\varepsilon}}\) and the size of the problem (e.g. the number of cards in a deck).
+\section{Coupling}
+\begin{definition}[Coupling]
+A \textbf{coupling} of a Markov Chain \(M_t\) with state space \(S\) is a Markov Chain \(Z_t = \left(X_t,Y_t\right)\) on the state space \(S \times S\) such that:
+\begin{equation}
+\mathbb{P}\left(X_{t+1}=x'\mid Z_t =\left(x,y\right) \right) = \mathbb{P}\left(M_{t+1}=x'\mid M_t =x \right) 
+\end{equation}
+\begin{equation}
+\mathbb{P}\left(Y_{t+1}=y'\mid Z_t =\left(x,y\right) \right) = \mathbb{P}\left(M_{t+1}=y'\mid M_t =y \right) 
+\end{equation}
+\end{definition}
+A coupling is simply two copies of the same MC running simultaneously - for example two independent runs of the same MC. We will be interested couplings that bring two copies of the same chain to the the same state, and then keep them there. 
+
+\begin{lem}[Coupling Lemma]
+Let \(Z_t = \left(X_t,Y_t\right) \) be a coupling for a Markov Chain \(M_t\) on a state space \(S\). Suppose \(\exists\) a \(T\) s.t, for every \(x,y \in S\)
+\begin{equation}
+\mathbb{P}\left(X_T \neq Y_T \mid X_0 = x, Y_0 = y \right)\leq \varepsilon
+\end{equation}
+Then
+\begin{equation}
+\tau\left(\varepsilon\right) \leq T
+\end{equation}
+\end{lem}
+\begin{proof}
+Consider the coupling when \(Y_0\) is chosen according to the stationary distribution and \(X_0\) takes any arbitrary value. For the give \(T\) and \(\varepsilon\) and for any \(A \subset S\),
+\begin{align}
+\mathbb{P}\left(X_T \in A\right) &\geq \mathbb{P}\left(\left(X_T=Y_t\right)\cap\left(Y_T \in A\right)\right) \\
+&= 1 - \mathbb{P}\left(\left(X_T \neq Y_t\right)\cup\left(Y_T \not\in A\right)\right) \\
+&\geq \left(1 - \mathbb{P}\left(Y_T \not\in A\right)\right) - \mathbb{P}\left(X_T \neq Y_T\right) \\
+&\geq \mathbb{P}\left(Y_T \in A\right) - \varepsilon \\
+&= \pi\left(A\right) - \varepsilon
+\end{align}
+The second line follows from the union bound, the third because
+\begin{equation}
+\mathbb{P}\left(X_T \neq Y_T\right)  \leq \varepsilon
+\end{equation} 
+for \textbf{any} initial states \( X_0,Y_0 \). \( \mathbb{P}\left(Y_T \in A\right) = \pi\left(A\right) \) as \(Y_T\) is distributed according to the stationary distribution. 
+Repeating the argument for the set \(S-A\) shows that \(\mathbb{P}\left(X_T \not\in A\right) \geq \pi\left(S-A\right) - \varepsilon\), or \( \mathbb{P}\left(X_T \in A\right) \leq \pi\left(A\right) + \varepsilon\).  It follows that,
+\begin{equation}
+\underset{x \in A}{\operatorname{max}}|p_x^T\left(A\right) - \pi\left(A\right)| \leq \varepsilon
+\end{equation}
+so by Lemma \ref{vardistlemma} the variation distance from the stationary distribution after the chain runs for T steps is bounded above by \(\varepsilon\). 
+\end{proof}
+\subsection{Variation distance is non-increasing}
+\begin{lem}
+Given distributions \(\sigma_x, \sigma_y\) on a space \(S\), let \(z = \left(X,Y\right)\) be a random variable on \(S \times S\) where \(X\) is distributed according to \(\sigma_x\) and \(Y\) is distributed according to \(\sigma_y\). Then
+\begin{equation}
+\mathbb{P}\left(X \neq Y\right) \geq \norm{\sigma_x - \sigma_y}
+\end{equation}
+Moreover, there exists a joint distribution \(Z\) where equality holds.
+\label{noninclemma}
+\end{lem}
+\begin{proof}
+For each \(s \in S\) we have
+\begin{equation}
+\mathbb{P}\left(X = Y = x\right) \leq \min\left({\mathbb{P}\left(X=x\right),\mathbb{P}\left(Y=x\right)}\right)
+\end{equation}
+So, summing over \(x\in S\),
+\begin{equation}
+\mathbb{P}\left(X = Y\right) \leq \sum_{x\in S} \min\left({\mathbb{P}\left(X=x\right),\mathbb{P}\left(Y=x\right)}\right)
+\end{equation}
+so,
+\begin{align}
+\mathbb{P}\left(X \neq Y\right) &\geq 1 - \sum_{x\in S} \min\left({\mathbb{P}\left(X=x\right),\mathbb{P}\left(Y=x\right)}\right)\\
+&= \sum_{x\in S} \mathbb{P}\left(X=x\right)- \min\left({\mathbb{P}\left(X=x\right),\mathbb{P}\left(Y=x\right)}\right)
+\end{align}
+For \(\sigma_x < \sigma_y\) the second term in the sum is 0. For \(\sigma_y < \sigma_x\) it is:
+\begin{equation}
+\mathbb{P}\left(X=x\right)- \mathbb{P}\left(Y=x\right) = \sigma_x - \sigma_y.
+\end{equation}
+Following lemma \ref{vardistlemma} this is equal to \(\norm{\sigma_x - \sigma_y}\)
+\end{proof}
+\section{Geometric Convergence}
+\begin{thm}[General Mixing]
+Let \textbf{P} be the transition matrix for a finite, irreducible, aperiodic Markov Chain. Let \(m_j\) be the smallest entry in the \(j^th\) column, and let \(m = \sum_j m_j\). Then for all \(x\) and \(t\), 
+\begin{equation}
+\norm{p_x^t - \pi} \leq \left(1-m\right)^t
+\end{equation}
+\end{thm}
+
+\begin{proof}
+If the minimum entry in column \(j\) is \(m_j\), then in one step the chain reaches state \(j\) with probability \(m_j\). Hence, a coupling can be created that achieves this. This holds for all \(j\), so at each step the two chains can be made to couple with probability at \(m\). Hence the probability they have not coupled after \(m\) steps is at most \(\left(1-m\right)^t\), using the coupling lemma. (Should this \(m\) be a \(t\)?).
+\end{proof}
+
+I.e. under very general conditions, Markov Chains converge quickly to their stationary distributions, with the variation distance converging geometrically in the number of steps. If the mixing time is bounded from above, we can refine this result.
+
+\begin{thm}[Refined Mixing]
+Let \textbf{P} be the transition matrix for a finite, irreducible, aperiodic Markov Chain \(M_t\) with \(\tau\left(c\right) \leq T \text{ for some } c\leq 1/2\). Then for this Markov Chain, \(\tau\left(\varepsilon\right) \leq \lceil \ln{\varepsilon}/\ln{2c}\rceil T \)
+\end{thm}
+\begin{proof}
+Consider any two initial states \(X_0,Y_0\). We have \(\norm{p_x^T - \pi} \leq c\) by definition of \(\tau\left(c\right)\). Thus, \(\norm{p_x^T - p_y^T} \leq 2c\). By lemma \ref{noninclemma} \(\exists\) a random variable \(Z_{T,x,y} = \left(X_T,Y_T\right)\) with the marginals distributed according to \( \left(p_x^T,p_y^T\right) \) s.t \( \mathbb{P}\left(X_T \neq Y_T\right) \leq 2c \).
+Now consider a Markov Chain with transition matrix \( \textbf{P}^T \). \( Z_{T,x,y}\) is a coupling for this chain. This guarantees that the probability that the two states have not coupled in one step is at most \(2c\). For \(k\) steps it is \(\left(2c\right)^k\). By the coupling lemma, this new chain is within variation distance \(\varepsilon\) of it's stationary distribution after \(k\) steps if:
+\begin{equation}
+\left(2c\right)^k \leq \varepsilon
+\end{equation}
+I.e.
+\begin{equation}
+k \leq \lceil \frac{\ln{\varepsilon}}{\ln{2c}}\rceil
+\end{equation}
+steps until the new chain is within \(\varepsilon\) of it's stationary distribution. However, each \(T\) steps of the old chain corresponds to a single step of the new chain, so
+\begin{equation}
+\tau\left(\varepsilon\right) \leq \lceil \frac{\ln{\varepsilon}}{\ln{2c}}\rceil T
+\end{equation}
+\end{proof}
+\section{Applications}
+\subsection{Card Shuffling}
+Think of shuffling cards by choosing a card independently and uniformly at random and putting this card on the top of the deck. This process is a Markov Chain. We can choose a coupling first we obtain \(X_{t+1}\) from \(X_{t}\) by choosing a position \(j\) uniformly at random, and moving the \(j^{th}\) card to the top, denoting the value of the card \(c\). We obtain \(Y_{t+1}\) from \(Y_t\), by moving the card with value \(c\) to the top. In both chains, the probability that a specific card is moved to the top is \(1/n\), and once a card is moved to the top it always remains in the same position in both copies of the chain. 
+Now, to bound the number of steps until the copies become coupled we simply bound how many times cards must be chosen uniformly at random before every card is chosen once (coupon collecting). So, we know that if the Markov chain runs for \(m\) steps, the probability that a specific card has not been moved to the top is at most:
+\begin{equation}
+\left(1-\frac{1}{n}\right)^m
+\end{equation}
+Choosing \(m\) such that \(m \geq n\ln{n} + cn\) the probability is:
+\begin{equation}
+\left(1-\frac{1}{n}\right)^{n\ln{n} + cn} \leq e^{-\ln{n} + cn}
+\end{equation}
+and so by the union bound, the probability that any card has not been moved to the top is at most \(e^{-c}\). Choosing \(c = \ln{\left(1/\varepsilon\right)}\), and the coupling lemma allows us to conclude that after \(n\ln{\left(\frac{n}{\varepsilon}\right)}\) steps the variation distance between the uniform distribution and the state of the chain is bounded above by \(\varepsilon\).
+\subsection{Routing on the Hypercube}
+\subsection{Approximately counting proper coulorings}
+\end{document}

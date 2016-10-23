@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\newcommand{\sectionbreak}{\clearpage}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newtheorem{example}{Example}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+
+\begin{document}
+\title{Decoding bounds}
+\author{Tom Kealy}
+
+\date{\today}
+
+\maketitle
+\section{Typical Set decoding}
+
+The decoding strategy is to only decode defective sets if the defective set is typical. Write \(\Sigma_{n,k}\) , for the collection of sets of size\(k\) out of \(n\) items and \(\theta\left(S\right)\) for the vector of all test outcomes then:
+
+\begin{equation}
+\mathit{A_y} = \theta^{-1} \left(S\right) = \{ S \in \Sigma_{n,k} \text{ : } \theta\left(S\right) = \textbf{y} \}
+\end{equation} 
+
+As the probabilities are not equal, we can do better than picking amongst the \(\mathit{A_y}\) with equal probability. Define:
+
+\begin{equation}
+\tilde{\mathit{A_y}} = \mathit{A_y} \cap \{\epsilon\text{-typical set}\}
+\end{equation}
+for some \(\epsilon\). 
+
+Then decode the largest in probability. I.e.
+
+\begin{equation}
+\mathbb{P}\left(\text{succ}\right) = \frac{q_i}{\sum_{j=1}^{n} q_j }
+\end{equation}
+Where
+
+\begin{equation}
+q_i \leq 2^{N\left(H-\epsilon\right)}
+\end{equation}
+and:
+
+\begin{equation}
+q_j \geq 2^{-N\left(H+\epsilon\right)}
+\end{equation}
+so,
+
+\begin{equation}
+\sum q_j \geq |\tilde{\mathit{A_y}}|2^{-N\left(H+\epsilon\right)}
+\end{equation}
+Putting these together:
+
+\begin{align}
+\mathbb{P}\left(\text{succ}\right) \leq 
+\frac {2^{-N\left(H-\varepsilon\right)}} 
+{|\tilde{\mathit{A_y}} |2^{-N\left(H+\varepsilon\right)}} 
+&= 2^{-N(H-\varepsilon)} 2^{N(H+\varepsilon)} \\
+&= 2^{-N(H+\varepsilon)+N(H+\varepsilon)}\\
+&= 2^{-NH +N\varepsilon + NH +N\varepsilon}\\
+&= \frac{2^{2N\varepsilon}}{|\tilde{\mathit{A_y}}|}
+\end{align}
+
+\section{AEP for non-iid sequences}
+\begin{definition}
+Given a sequence of \(n\) random variables \(X_1\ldots X_n\) s.t. \(\mathbb{P}\left(X_i = 1\right) = p_i\), and a random variable \(X\) s.t. \(\mathbb{E}X = \frac{k}{n}\), let \(S_n = n^{-1}\sum_{i=1}^n X_i\). Then the weak law of large numbers implies:
+
+\begin{equation}
+S_n \rightarrow \mathbb{E}X
+\end{equation}
+in probability
+\end{definition}
+
+Define the random variable, \(Z_i = \log{p_i}\) with expectation 
+
+\begin{equation}
+\mathbb{E}Z_i = -p_i\log{p_i} -\left(1-p_i\right)\log{\left(1-p_i\right)} = h_2\left(p_i\right) 
+\end{equation}
+
+and variance:
+
+\begin{align}
+\mathbb{V}Z_i & = p_i z_i^2 - \mathbb{E}Z_i \\ 
+&= p_i\left(-\log{p_i}\right)^2 + \left(1-p_i\right)\left(-\log{1-p_i}\right)^2 -\mathbb{E}Z_i \\ 
+&= \left(1-p_i\right)p_i\left(\log{1-p_i} - \log{p_i}\right)^2\\
+&= g\left(p_i\right)
+\label{entropyvar}
+\end{align}
+
+This isn't so surprising as the sequence \(\{X_i\}\) has a Poisson limit (Le Cam's theorem).
+
+Then the WLLN implies:
+
+\begin{equation}
+\frac{1}{n}\sum_{i=1}^n Z_i \rightarrow \sum_{i=1}^n h_2\left(p_i\right)
+\end{equation}
+
+This result can be refined a little, note that for the sequence \(X_1 \ldots X_n\), \(\mathbb{E}X_i = p_i\) and that \(\mathbb{V}X_i = p_i\left(1-p_i\right)\), where \(\mathbb{V}\) denotes the variance. Let \(S_n\) be defined as above, and 
+
+\begin{equation}
+\mathbb{E}S_n = \frac{1}{n} \left(p_1 \ldots p_n\right) = \bar{p}
+\end{equation}
+
+\begin{equation}
+\mathbb{V}S_n = \frac{1}{n^2} \left(\mathbb{V}X_1 \ldots	\mathbb{X_n} \right) = \frac{1}{n^2} \sum_{i=1}^{n} p_i\left(1-p_i\right)
+\end{equation}
+
+Note that \(\mathbb{V}X_i = p_i\left(1-p_i\right) \leq 0.25\) for all \(i\), and that \(\mathbb{V}S_n \leq 0.25n\). 
+Using Chebyshev's inequality we have:
+
+\begin{equation}
+\mathbb{P}\left(|S_n - \bar{p}| \leq \epsilon \right) \leq \frac{\mathbb{V}S_n}{\epsilon^2} \leq \frac{1}{4n\epsilon^2}
+\end{equation}
+where \(\epsilon \in \left(0,1\right)\).
+
+Using the sequence \(\{Z_i\}\), and defining \(Y_n = n^{-1}\log{S_n}\) s.t. \(\mathbb{E}Y_n = \sum_{i=1}^n h_2\left(p_i\right)\) and \(\mathbb{V}Y_n = n^{-2}\sum\mathbb{V}Z_i = n^{-2}\sum g\left(p_i\right),\), the AEP can be stated as:
+
+\begin{align}
+\mathbb{P}\left(|Y_n - \sum_{i=1}^n h_2\left(p_i\right)| \leq \epsilon \right) &\leq \frac{\mathbb{V}Y_n}{\epsilon^2} \\ 
+&\leq \frac{1}{n^2}\frac{\sum_{i=1}^n g\left(p_i\right)}{\epsilon^2}
+\end{align}
+
+\begin{thm}[Bernstein]
+Let \(\{X_i\}_{i=1}^n\) be independent rvs with zero mean and finite variance s.t. \(|X_i| \leq M \forall i\), write \(L:= \sum_{j=1}^N\) then for \(t\geq 0\):
+
+\begin{equation}
+\mathbb{P}\left(\sum_{i=1}^N X_i \geq t\right) \leq \exp{\left(-\frac{t^2}{4L}\right)}
+\end{equation}
+\end{thm}
+
+This using this inequality and equation (\ref{entropyvar}) on the rvs \(\{Z_i\}\):
+
+\begin{equation}
+\mathbb{P}\left( \left(\sum_{i=1}^N Z_i -H\left(p\right)\right) \geq t\right) \leq \exp{\left(-\frac{t^2}{4\sum_{i=1}^N g\left(p_i\right)}\right)}
+\end{equation}
+
+This implies that instead of conditioning over equiprobable sets of size \(n\choose k\), we can bound the success probability by:
+
+\begin{equation}
+\mathbb{P}\left(\textbf{succ}\right) = \frac{2^T}{2^{\sum \theta\left(p_i\right) } }
+\end{equation}
+with the conjecture that 
+
+\begin{equation}
+\theta \left(\circ \right) = h_2 \left(\circ \right)
+\end{equation}
+
+Putting this together with the results from the previous section (after marginalising out all possible sets \(\mathit{A_y}\)) we get:
+
+\begin{equation}
+\mathbb{P}\left(\textbf{succ}\right) \leq {2^{T-\sum \theta\left(p_i\right) +2N\varepsilon } }
+\end{equation}
+
+Choosing \(\varepsilon = 1/2N\) gives us:
+
+\begin{equation}
+\mathbb{P}\left(\textbf{succ}\right) \leq {2^{T-H\left(\vec{p}\right) + 1} }
+\end{equation}
+
+
+\end{document}

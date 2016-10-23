@@ -1,0 +1,170 @@
+\section{Appendix: Nyquist rate sensing}
+We define the inner product between two vectors as follows:
+
+\begin{definition}
+\begin{equation}
+\langle x, y \rangle = x^T y = \sum_i x_i y_i
+\end{equation}	
+where \(x_i, y_i\) are the components of the vectors \(x,y\) in the \(i^{th}\) direction with respect to some basis vectors \(e_i\).
+\end{definition}
+
+We can define a matrix representation for the set of basis vectors \(f_i\), by taking all inner products between all pairs basis vectors:
+
+\begin{definition}
+\begin{equation}
+F_{n, ij} = \langle f_i, f_j \rangle
+\end{equation}
+
+This matrix has the representation:
+
+\begin{equation}
+F_{ij} = min(i,j)
+\end{equation}
+
+An example of such a matrix is:
+
+\begin{equation}
+F_n= \begin{pmatrix}
+ 1 & 1 & 1 & 1  & 1 \\
+  1 & 2 & 2 & 2  & 2\\
+     1 & 2 & 3 & 3  & 3  \\
+    1 & 2 & 3 & 4  & 4  \\
+     1 & 2 & 3 & 4  & 5 
+\end{pmatrix}
+\end{equation}
+\end{definition}
+
+This matrix is invertible.
+
+\begin{theorem}
+\begin{equation}
+det(F_n) = 1
+\end{equation}
+\end{theorem}
+\begin{proof}
+Consider the matrix \(F^n\). Subtract the \(n-1\)th column from the \(n\)th. We obtain a matrix with \(0\) on the final column except the entry \(F^n_(n,n) = 1\). Since the top \((n-1) \times (n-1)\) is \(F^{n-1}\) we find that 
+
+\begin{equation}
+det(F_n) = 1 \times det(F_{n-1})
+\end{equation} 
+
+By recursion and \(det(F_1) = 1\) we have \(det(F_n) = 1\).
+
+\end{proof}
+
+This matrix can be factorised as \(F = LL^T\) where 
+
+
+From this it follows that
+
+\begin{equation}
+F^{-1} = \begin{pmatrix}
+ 2 & -1 & 0 & 0  & 0 \ldots 0 \\
+  -1 & 2 & -1 & 0  & 0 \ldots 0\\
+     0 & -1 & 2 & -1  & 0 \ldots0  \\
+    \ldots  \\
+     0 & 0 & 0 & 0  \ldots -1 & 1 
+\end{pmatrix}
+\end{equation}
+
+To find the \(a_i\), we correlate (take the inner product of) the signal against the basis (\ref{basis}).
+
+\begin{definition}
+\begin{align}
+h_j &= \langle g, f_j \rangle \\
+&= \sum_j g\left(x\right) f_j\left(x\right) \\
+&= \sum_j a_i f_i\left(x\right) f_j\left(x\right) \\
+&= a_i \langle f_i, f_j\rangle \\
+&\left(= \sum_{x=1}^j g\left(x\right)\right)
+\end{align}
+
+In matrix language \(h = F a^T\). This is the inner product between the signal \(g\) and the basis functions \(f_i\).
+\end{definition}
+
+To recover \(\hat{a}\), we minimise
+
+\begin{equation}
+\vectornorm{h - Fa}_2^2
+\end{equation}
+
+in the noiseless case, and
+
+\begin{equation}
+\vectornorm{h_\varepsilon - Fa}_2^2 + \lambda\vectornorm{a}_1
+\label{recon}
+\end{equation}
+
+in the noisy case, where 
+
+\begin{equation}
+\left(h_\varepsilon\right)_j = \langle\left(g+\varepsilon\right), f_j\rangle
+\end{equation}
+
+and \(\varepsilon \sim \mathcal{N}(0,\sigma^2\ I)\).
+
+From \(\hat{a}\) we can recover \(\hat{g}\) from the following relation:
+
+\begin{equation}
+\hat{g} = L^{T} \hat{a}
+\end{equation}
+
+The nodes individually take measurements (as in \cite{mishali2010theory}) by mixing the incoming analogue signal \(G\left(t\right)\) with a random mixing function \(p_i\left(t\right)\) aliasing the spectrum, followed by low pass filtering at and sampling at a a sub-Nyquist rate.
+
+\(G\left(t\right)\) is assumed to be bandlimited (i.e \(|g| < W\), where \(g\) is the Fourier Transform of \(G\)) and composed of up to \(k\) uncorrelated transmissions over the \(L\) possible narrowband channels - i.e. the signal is \(k\)-sparse. 
+
+The mixing functions - which are independent for each node - are required to be periodic, with period \(T_p\). Formally, let \(Z_l\) be a sequence of i.i.d random variables (for example Bernoulli, or Gaussian), and for some positive integer \(L\) let \(p\left(t, Z\right)\) denote the random process
+
+\begin{equation}
+p\left(t, Z\right) = Z_l \text{ } t \in \left[\frac{l}{W}, \frac{l+1}{W}\right), l = 0, \ldots L-1
+\end{equation}
+
+The signals, \(p_j\left(t\right)\) are then periodic extensions of \(p\left(t, Z\right)\):
+
+\begin{equation}
+p_j\left(t+mT_p\right) = p\left(t, Z_l,\right), \text{ } for, t\in \left[0, L/W\right]
+\end{equation}
+
+The result of the mixing procedure at node \(j\) is therefore the product \(Gp_j\), sampled at a rate \(M\) times slower than the Nyquist rate \(W\) i.e (at times \(t = \frac{\pi M}{W}\)) (note that the impulse response of the ideal low-pass analogue filter is \(h\left(t\right) = \frac{W}{L}\mathrm{sinc}\left(\frac{\pi W}{L}t\right)\) is an inner product with a set of sampling functions \(\{\frac{\pi W }{L}\mathrm{sinc}\left(\frac{\pi M}{L}k - \frac{\pi W}{L}\tau\right)\}\):
+
+\begin{equation}
+y_j\left(k\right) = \langle G\left(\tau\right), \frac{\pi W }{L}\mathrm{sinc}\left(\frac{\pi M}{L}k - \frac{\pi W}{L}\tau\right) \rangle
+\end{equation}
+
+In the frequency domain the output of a single node is:
+
+\begin{equation}
+y_i\left(e^{j 2 \pi f T_s }\right) = \sum_{l = -L_0}^{+L_0} c_{il} g\left(f-lf_p\right)
+\end{equation}
+\\
+since frequencies outside of \([-f_s/2, f_s/2]\) will filtered out. \(L_0\) is the smallest integer number of non-zero contributions in \(X\left(f\right)\) over \([-f_s/2, f_s/2]\) - at most \(\lceil f_{NYQ}/f_p\rceil\) if we choose \(f_s = f_p\). These relations can be written in matrix form as:
+
+Broadly, access to spectrum is managed in two, complementary ways, namely through licensed and licence exempt access. Licensing authorises a particular user (or users) to access a specific frequency band. Licence exemption allows any user to access a band provided they meet certain technical requirements intended to limit the impact of interference on other spectrum users.
+
+A licence exempt approach might be particularly suitable for managing access to white spaces. 
+
+Consequently 4G is now being rolled out in the UK and US and with 5G being planned for 2020 and beyond \cite{Dahlman2014}.  
+
+
+The realisation of any Cognitive Radio standard (such as IEEE 802.22 \cite{stevenson2009ieee}), requires the co-existence of primary (TV users) and secondary (everybody else who wants to use TVWS spectrum) users of the frequency spectrum to ensure proper interference mitigation and appropriate network behaviour. We note, that whereas TVWS bands are an initial step towards dynamic spectrum access, the principles and approaches we describe are applicable to other frequency bands - in particular it makes ultra-wideband spectrum sensing possible.
+
+The challenges of this technology are that Cognitive Radios (CRs) must sense whether spectrum is available, and must be able to detect very weak primary user signals. Furthermore they must sense over a wide bandwidth (due to the amount of TVWS spectrum proposed), which challenges traditional Nyquist sampling techniques, because the sampling rates required are not technically feasible with current RF or Analogue-to-Digital conversion technology.
+
+The contributions of this paper are that we propose a new model for sparse frequency spectra and a distributed solver which obviates the need for a Fusion Centre (centralised node) as in \cite{Zhang2011b}) to do any data processing. 
+
+That is the solution is found in a distributed manner, by local computations and communications in with one-hop neighbours. This can be applied to other models which previously required central processing.
+
+Moreover, our algorithm is simple to understand (it is an extension of the multi-block ADMM \cite{mota2013d}) and can be applied to other composite optimisation problems.
+
+We also give new proofs of ideas found in \cite{mota2013d}. 
+
+
+Note that the Fourier Transform of \(f_i\left(x\right)\) is:
+
+\begin{equation}
+\hat{f}_i\left(k\right) = j\frac{e^{-ijk}}{k}
+\end{equation}
+
+is an appropriate formalism
+
+
+ We consider the problem of reconstructing wideband frequency spectra from distributed, compressive measurements. The measurements are made by a network of nodes, each independently mixing the ambient spectra with low frequency, random signals. The reconstruction takes place via local transmissions between nodes, each performing simple statistical operations such as ridge regression and shrinkage.

@@ -1,0 +1,67 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: nicethesis.aux
+The style file: plain.bst
+Database file #1: thesis.bib
+Warning--I didn't find a database entry for "Strategy2013"
+Warning--I didn't find a database entry for "watkincandes"
+Warning--I didn't find a database entry for "Donoho2006"
+Warning--I didn't find a database entry for "Hwang1972"
+Warning--empty journal in Aldridge2013
+Warning--empty journal in Baldassini2013
+Warning--there's a number but no volume in Boyd2010a
+Warning--empty year in Boyd2010a
+Warning--empty journal in Bristow2014
+Warning--empty institution in Burbidge2007
+Warning--empty journal in Candes2006
+Warning--empty journal in donoho2004neighborly
+Warning--empty journal in Donoho
+Warning--there's a number but no volume in Donoho
+Warning--empty year in Donoho
+Warning--can't use both volume and number fields in hastie2005elements
+Warning--empty year in mota2013d
+Warning--empty year in shi2014linear
+Warning--empty journal in Shi2013
+Warning--empty year in yucek2009survey
+You've used 96 entries,
+            2118 wiz_defined-function locations,
+            1026 strings with 21161 characters,
+and the built_in function-call counts, 37210 in all, are:
+= -- 3823
+> -- 1612
+< -- 38
++ -- 654
+- -- 538
+* -- 2640
+:= -- 5859
+add.period$ -- 311
+call.type$ -- 96
+change.case$ -- 553
+chr.to.int$ -- 0
+cite$ -- 112
+duplicate$ -- 1428
+empty$ -- 2899
+format.name$ -- 538
+if$ -- 7954
+int.to.chr$ -- 0
+int.to.str$ -- 96
+missing$ -- 97
+newline$ -- 481
+num.names$ -- 192
+pop$ -- 592
+preamble$ -- 1
+purify$ -- 460
+quote$ -- 0
+skip$ -- 1068
+stack$ -- 0
+substring$ -- 2776
+swap$ -- 423
+text.length$ -- 38
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 376
+warning$ -- 16
+while$ -- 385
+width$ -- 98
+write$ -- 1056
+(There were 20 warnings)

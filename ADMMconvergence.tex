@@ -1,0 +1,124 @@
+\documentclass{article}
+\input{macros}
+
+\title{The convergence of (Centralised)( ADMM}
+
+\begin{document}
+
+\section{Preliminaries and Notation}
+
+One such algorithm is the alternating direction method of multipliers \cite{Boyd2010a}, (ADMM). This algorithm solves problems of the form
+
+\begin{align}
+\argmin_{x} f\left( x \right) + g\left(z\right) \nonumber
+\\
+\text{s.t } Ux +Vz = c
+\label{admm}
+\end{align}
+
+where \(f\) and \(g\) are assumed to be closed convex functions with range in \(\re\), \(U \in \re^{p \times n}\) and \(V\in \re^{p \times m}\) are matrices (not assumed to have full rank), and \(c \in \re^p\).
+
+ADMM consists of iteratively minimising the augmented Lagrangian 
+
+\begin{align*}
+L_p\left(x, z, \eta\right) = f\left( x\right) +& g\left(z\right)+\eta^T\left(Ux+Vz-c\right) + \frac{\rho}{2}\|Ux+Vz-c\|_2^2
+\label{admm_form}
+\end{align*}
+
+(\(\eta\) is a Lagrange multiplier), and \(\rho\) is a parameter we can choose to make \(g(z)\) smooth \cite{nesterov2005smooth}, with the following iterations:
+
+\begin{align}
+x^{k+1} &:= \argmin_{x} L_\rho\left(x,z^k,\eta^k\right)\\
+z^{k+1} &:= \argmin_{z} L_\rho\left(x^{k+1},z,\eta^k\right)\\
+\eta^{k+1} &:= \eta^{k} + \rho \left(Ux^{k+1} + Vz^{k+1} - c\right)
+\label{admm_algo}
+\end{align}
+
+The alternating minimisation works because of the decomposability of the objective function: the \(x\) minimisation step is independent of the \(z\) minimisation step and vice versa.  
+
+We will work frequently with the \textit{dual} of problem \eqref{admm} which is
+
+\begin{equation}
+D\left(\lambda\right) = \argmax_{\lambda} -F^*\left(A^Tx\right) + \langle \lambda, c \rangle - G^*\left(B^t\lambda\right)
+\end{equation}
+
+where \(f^*\) is the convex conjugate:
+
+\begin{equation}
+F^*\left(p\right) = \sup_p \langle x,p \rangle - f\left(x\right)
+\end{equation}
+
+For example the convex conjugate of the \(l_1\) norm \( g\left(x\right) = \abs{x} \) is:
+
+\begin{equation}
+f^*\left(x^*\right) =  \twopartdef { 0 } {\abs{x} \leq 1} {\infty} {\abs{x} > 1}
+\end{equation}
+
+One way to measure how far the iterations of ADMM are from the optimal solution is to define the primal and dual residuals:
+
+\begin{align}
+r_k &= c - Ax_k - Bz_k \\
+d_k &= \rho A^T B \left(x_k - x_{k-1}\right)
+\end{align}
+
+\section{Convergence of ADMM}
+
+\begin{theorem}
+Consider the ADMM iterations defined by \eqref{admm}. Supposing that both \(f,g\) are strongly convex and that:
+
+\begin{equation}
+\rho^3 \leq \frac{\sigma_f \sigma_g }{\tau\left(A^TA\right)\tau\left(B^TB\right)}
+\end{equation}
+
+Then the sequence of iterates \(\{\eta_k\}\) satisfy:
+
+\begin{equation}
+D\left(\eta^*\right) - D\left(\eta\right) \leq \frac{\vectornorm{\eta^* - \eta_1}}{2\rho(k-1)}
+\end{equation}
+\label{convergence}
+\end{theorem}
+
+Before we prove theorem \ref{convergence} we need a couple of lemmas.
+
+\begin{definition}
+$$\Psi\left(\lambda\right) = A \nabla F^*\left(A^T\lambda\right)$$
+$$\Phi\left(\lambda\right) = B\nabla G^*\left(B^T\lambda\right)$$
+\end{definition}
+
+Note that the derivative of \( D\left(\lambda \right) \) is \(b - \Phi - \Psi \), and maximising the dual problem is equivalent to finding a solution to \( c \in \Phi\left(\lambda^*\right) + \Psi\left(\lambda^*\right) \). Since \(f,g\) are both strongly convex, then \(\Psi, \Phi\) are both Lipchitz continuous with \(L_{\Psi} \leq \frac{\tau(A^TA)}{\sigma_f}\) and \(L_{\Phi} \leq \frac{\tau(B^TB)}{\sigma_g}\) 
+
+\begin{lemma}
+Let \(\lambda, z \in \re^n\), and define
+
+\begin{align}
+\lambda^{1/2} &= \lambda + \rho\left(c - Ax^{k+1} - Bz^{k}\right) \\
+\lambda^{+} &= \lambda + \left(c - Ax^{k+1} - Bz^{k+1}\right)
+\end{align}
+
+Then we have 
+
+\begin{align}
+Ax^{k+1} &= A \nabla F^*\left(A^T \lambda^{1/2}\right) := \Psi\left(\lambda^{1/2}\right) \\
+Bz^{k+1} &= B \nabla G^*\left(B^T \lambda^+\right) := \Phi\left(\lambda^+\right)
+\end{align}
+\end{lemma}
+
+\begin{lemma}
+Suppose that
+
+\begin{equation}
+\rho^3 \leq \frac{\sigma_f \sigma_g }{\tau\left(A^TA\right)\tau\left(B^TB\right)}
+\end{equation}
+and that \(Bz = \Phi(\lambda)\). Then for any \(\gamma \in \re^n\):
+
+\begin{equation}
+D\left(\lambda^+\right) - D\left(\gamma\right) \geq \rho^{-1} \langle \gamma- \lambda, \lambda - \lambda^+ \rangle + \frac{1}{2\rho}\vectornorm{\lambda - \lambda^+}^2
+\end{equation}
+\end{lemma}
+
+Proof
+\begin{proof}[Theorem \eqref{convergence}]
+
+\end{proof}
+
+\end{document}

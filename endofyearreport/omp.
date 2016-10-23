@@ -1,0 +1,31 @@
+\subsubsection*{OMP}
+
+\begin{algorithm}[H]
+
+ \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+ \SetKwFunction{Match}{match}\SetKwFunction{Update}{update}
+ \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+ \Input{Observation vector \(\textbf{y}\), sensing matrix \(\textbf{A}\), stopping criterion \(s\)}
+ initialization \\
+ \(k \leftarrow 0\) \\
+ \(\Lambda_0 = \emptyset\) \\
+ \(\textbf{r}_k \leftarrow \textbf{y}\) \;
+ \While{\(k \neq s\) or \(\textbf{r}_k \neq 0 \)}{
+   \(k \leftarrow k+1\)\;
+   \Match{\(h_k = A^T \textbf{r}^{k-1}\)}\;
+   \(\Lambda_k = \Lambda_{k-1} \cup \argmin_j{h_k\left(j\right)} \)\;
+  \Update:\;
+  \(\hat{\textbf{x}} \leftarrow \textbf{A}_{\Lambda_k}^\dagger \textbf{y}\)\;
+  \(\textbf{r}_k \leftarrow \textbf{y} - \textbf{A}_{\Lambda_k}^\dagger \textbf{y} \)
+ }
+ \Output{\(\hat{\textbf{x}} = \argmin_{x:\supp\left(x\right) \subseteq  \Lambda_k}\|y-Ax\|_2\)}
+ \caption{Orthogonal Matching Pursuit}
+\end{algorithm}
+
+OMP iteratively detects the support set of the signal - proceeding by extending the estimate by a single index per iteration. The algorithm uses a matched filter to find the column which is maximally correlated with the current estimate, and solves a least-squares problem to update the residual vector.
+
+Remarks:
+\begin{itemize}
+\item The residual vector at step \(k\), \(\textbf{r}_k\), can be viewed as the orthoganalisation of the observation vector against the previously chosen columns of \(\textbf{A}\).
+\end{itemize}

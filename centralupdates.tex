@@ -1,0 +1,166 @@
+\documentclass{article}
+\input{macros}
+
+\title{Deriving the Centralised Updates}
+
+\begin{document}
+
+\section{Preliminaries}
+
+Given a set of measurements of the form
+
+\begin{equation}
+y = Ax + n 
+\end{equation}
+
+where \(x \in \re^n\) is an \(s\)-sparse vector we wish to recover, \(y \in \re^m\) is a set of noisy measurements, \(A \in \re^{m \times n}\) is a design or measurement matrix s.t. \(x\) is not in the null-space of \(A\), and \(z \in \re^m\) is AGWN. The signal \(x\) can be recovered by algorithms minimising the objective function:
+
+\begin{equation}
+L = \frac{1}{2} \vectornorm{Ax-y}_2^2 + \lambda\vectornorm{x}_1
+\label{LASSO}
+\end{equation}
+
+where \(\lambda\) is a parameter which trades off the reconstruction accuracy and sparsity of \(x\): larger \(\lambda\) means sparser \(x\). 
+
+One such algorithm is the alternating direction method of multipliers \cite{Boyd2010a}, (ADMM). This algorithm solves problems of the form
+
+\begin{align}
+\argmin_{x} f\left( x \right) + g\left(z\right) \nonumber
+\\
+\text{s.t } Ux +Vz = c
+\label{admm}
+\end{align}
+
+where \(f\) and \(g\) are assumed to be convex function with range in \(\re\), \(U \in \re^{p \times n}\) and \(V\in \re^{p \times m}\) are matrices (not assumed to have full rank), and \(c \in \re^p\).
+
+ADMM consists of iteratively minimising the augmented Lagrangian 
+
+\begin{align*}
+L_p\left(x, z, \eta\right) = f\left( x\right) +& g\left(z\right)+\eta^T\left(Ux+Vz-c\right) + \frac{\rho}{2}\|Ux+Vz-c\|_2^2
+\label{admm_form}
+\end{align*}
+
+(\(\eta\) is a Lagrange multiplier), and \(\rho\) is a parameter we can choose to make \(g(z)\) smooth \cite{nesterov2005smooth}, with the following iterations:
+
+\begin{align}
+x^{k+1} &:= \argmin_{x} L_\rho\left(x,z^k,\eta^k\right)\\
+z^{k+1} &:= \argmin_{z} L_\rho\left(x^{k+1},z,\eta^k\right)\\
+\eta^{k+1} &:= \eta^{k} + \rho \left(Ux^{k+1} + Vz^{k+1} - c\right)
+\label{admm_algo}
+\end{align}
+
+The alternating minimisation works because of the decomposability of the objective function: the \(x\) minimisation step is independent of the \(z\) minimisation step and vice versa.  
+
+We illustrate an example, relevant to the type of problems encountered in signal processing.
+
+ADMM can be formulated as an iterative MAP estimation procedure for the problem \eqref{LASSO}. We can write \eqref{LASSO} in constrained form as:
+
+\begin{eqnarray}
+\frac{1}{2}\|Ax-b\|_2^2 + \lambda\|z\|_1 \\
+\text{s.t } z = x
+\end{eqnarray}
+
+i.e this is of the form \eqref{admm} with \( f\left(x\right) =\|Ax-y\|_2^2\), \(g\left(z\right) = \lambda\|z\|_1\), \(U=I\), \(V=-I\), and \(c=0\).
+
+The associated (augmented) Lagrangian is:
+
+\begin{equation}
+L_\rho = \frac{1}{2}\|Ax-b\|_2^2 + \lambda\|z\|_1 + \eta\left(x-z\right) + \frac{\rho}{2}\|x-z\|^2
+\label{eq:lasso-lagrangian}
+\end{equation}
+
+The ADMM iterations for LASSO, which can be found by alternately differentiating \eqref{eq:lasso-lagrangian} with respect to \(x\),\(z\) and \(\eta\), are (in closed form):
+
+\begin{align}
+x^{k+1} &:= \left(A^TA + \rho I\right)^{-1}\left(A^Ty +\rho\left( z^k - \eta^k/\rho\right)\right)\\
+z^{k+1} &:= S_{\lambda/\rho}\left(x^{k+1} + \eta^k/\rho\right)
+ \\
+\eta^{k+1} &:= \eta^{k} + \rho\left(x^{k+1}-z^{k+1}\right)
+\label{admm_algo_lasso}
+\end{align}
+
+where \(S_{\lambda/\rho}\left(\circ\right)\) is the soft thresholding operator: \(S_\gamma\left(x\right)_i = \mathrm{sign}(x_i)\left(|x_i| - \gamma\right)^+\).
+
+These can be found differentiating \eqref{eq:lasso-lagrangian} with respect to \(x\) and \(z\) as follows:
+
+\begin{align*}
+\frac{\partial L}{\partial x } = -A^T\left(y-Ax\right) + \rho (x-z) + \eta
+\end{align*}
+
+as 
+
+\begin{equation}
+\frac{\partial}{\partial x} \vectornorm{F(x)}_2^2 = 2\left(\frac{\partial}{\partial x} F(x)\right) F(x) 
+\label{dellx}
+\end{equation}
+
+by the chain rule, and \(\partial/\partial x (Ax) = -A^T\) (see the Matrix Cookbook) as differentiation exchanges a linear operator with its adjoint.
+
+Setting \eqref{dellx} to zero and collecting like terms:
+
+\begin{equation}
+\left(A^TA + \rho I\right)x = A^Ty + \rho z - \eta
+\end{equation}
+
+so we find the optimal \(x\) is:
+
+\begin{equation}
+x = \left(A^T A + \rho I\right)^{-1}\left(A^Ty + \rho \left( z - \eta/\rho\right)\right)
+\label{optx}
+\end{equation}
+
+note that this estimator is a weighted average of the ordinary least squares estimate (\(A^Ty\)) and a Gaussian prior. This is to be expected, as the minimisation problem w.r.t x is an \(l_2\)-regularised MAP problem.
+
+for \(z > 0\)
+
+\begin{equation}
+\frac{\partial L} {\partial z} = \lambda + \rho (x-z) - \eta
+\label{dellz-positive}
+\end{equation}
+
+from which we obtain:
+
+\begin{equation*}
+z = x + \frac{1}{\rho} ( \eta - \lambda )
+\end{equation*}
+
+since \(z>0\) then \(x + \frac{1}{\rho} ( \eta - \lambda I) > 0\) when \(x + \frac{\eta}{\rho} > \frac{\lambda}{\rho}\).
+
+Similarly for \(z < 0\):
+
+\begin{equation}
+\frac{\partial L} {\partial z} = -\lambda + \rho (x-z) 
+\label{dellz-negative}
+\end{equation}
+
+setting \eqref{dellz-negative} to zero we obtain:
+
+\begin{equation*}
+z = x + \frac{1}{\rho}(\eta + \lambda)
+\end{equation*}
+
+since \(z<0\) then \(x + \frac{1}{\rho} ( \eta + \lambda ) < 0\) when \(x + \frac{\eta}{\rho} < - \frac{\lambda}{\rho}\).
+
+at \(z=0\) we find:
+
+\begin{equation*}
+-\frac{\lambda}{\rho} \leq x + \frac{\eta}{\rho} \leq \frac{\lambda}{\rho}
+\end{equation*}
+
+i.e.
+
+\begin{equation}
+\mid x+ \frac{\eta}{\rho}\mid \leq \frac{\lambda}{\rho}
+\label{zbounds}
+\end{equation}
+
+combining \eqref{dellz-negative}, \eqref{dellz-positive}, \eqref{zbounds} together we find the optimal \(z\) is:
+
+\begin{equation}
+z = \mathrm{sign}(x+\frac{\eta}{\rho})\text{ }\mathrm{max}\left( \mid x+\frac{\eta}{\rho} \mid - \frac{\lambda}{\rho} ,0\right)
+\label{optz}
+\end{equation}
+
+Together \eqref{optx}, \eqref{optz} and the third step of \eqref{admm_algo_lasso} constitute the steps of the ADMM algorithm.
+
+\end{document}
